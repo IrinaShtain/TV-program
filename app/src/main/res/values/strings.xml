@@ -7,4 +7,7 @@
     <string name="your_tv_program">Your TV channels show programs</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
 </resources>
