@@ -13,39 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/channel_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/channel_logo"
+            android:contentDescription="@string/channel_logo" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/channel_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:text="@string/time" />
+                android:gravity="center"
+                android:text="@string/channel_name" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/channel_category"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:text="@string/date" />
+                android:gravity="center"
+                android:text="@string/channel_category" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:gravity="center_horizontal"
-            android:text="@string/title" />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

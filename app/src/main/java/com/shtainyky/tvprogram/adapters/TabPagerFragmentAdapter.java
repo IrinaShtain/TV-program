@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.shtainyky.tvprogram.TVProgramViewPagerFragment;
+import com.shtainyky.tvprogram.navigationdrawerfragments.TVProgramViewPagerFragment;
 
 public class TabPagerFragmentAdapter extends FragmentPagerAdapter {
     private String[] channels;
@@ -14,7 +14,7 @@ public class TabPagerFragmentAdapter extends FragmentPagerAdapter {
     public TabPagerFragmentAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
-        channels = new String[]{"1", "2", "3", "5", " 6", "7", "8", "8", "8", "8"};
+        channels = new String[]{"1", "25555555555555555555", "3", "5", " 6", "7", "8", "8", "8", "8"};
     }
 
     @Override
