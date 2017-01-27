@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TV program</string>
+    <string name="categories">List of categories</string>
+    <string name="channels">List of channels</string>
+    <string name="preferred_channels">List of preferred channels</string>
+    <string name="tv_program">TV program</string>
+    <string name="your_tv_program">Your TV channels show programs</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>

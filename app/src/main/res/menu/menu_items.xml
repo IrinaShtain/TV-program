@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_tv_program"
+        android:icon="@drawable/ic_all_channels"
+        android:checkable="true"
+        android:title="@string/tv_program"/>
+    <item
+        android:id="@+id/item_list_categories"
+        android:icon="@drawable/ic_category"
+        android:checkable="true"
+        android:title="@string/categories"/>
+    <item
+        android:id="@+id/item_list_channels"
+        android:icon="@drawable/ic_list_channels"
+        android:checkable="true"
+        android:title="@string/channels"/>
+    <item
+        android:id="@+id/item_list_preferred_channels"
+        android:icon="@drawable/ic_prefered"
+        android:checkable="true"
+        android:title="@string/preferred_channels"/>
+
+</menu>
