@@ -27,10 +27,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         setupToolbarMenu();
         setupNavigationDrawerMenu();
         setFragment(new TVProgramFragment());
     }
+
 
     @Override
     public void onBackPressed() {
