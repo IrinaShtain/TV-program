@@ -1,30 +1,28 @@
 package com.shtainyky.tvprogram.navigationdrawerfragments;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.shtainyky.tvprogram.HttpManager;
+import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.utils.HttpManager;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.Program;
 import com.shtainyky.tvprogram.parser.Parse;
+import com.shtainyky.tvprogram.utils.Constants;
+import com.shtainyky.tvprogram.utils.SomeMethods;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,11 +30,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TVProgramViewPagerFragment extends Fragment {
-    private int position;
+    private int channelId;
+    private String forDate;
     private RecyclerView mTVProgramRecyclerView;
     private TVProgramAdapter mAdapter;
-    private TextView textView;
-    private String result;
+    private List<Program> mPrograms;
+    private Button mGetDateButton;
+    private DatabaseSource mSource;
+    private ProgressBar mProgress;
 
     public TVProgramViewPagerFragment() {
     }
@@ -47,84 +48,47 @@ public class TVProgramViewPagerFragment extends Fragment {
             container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
-        textView = (TextView) view.findViewById(R.id.vp_textView);
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            position = bundle.getInt("position");
-            String temp = "Position = " + position;
-            textView.setText(temp);
-        }
-
+        mSource = new DatabaseSource(getContext());
+        mProgress = (ProgressBar) view.findViewById(R.id.progress);
+        mGetDateButton = (Button) view.findViewById(R.id.buttonDate);
+        mGetDateButton.setText(DateFormat.format("dd/MM/yyyy ", Calendar.getInstance()));
+        forDate = String.valueOf(mGetDateButton.getText());
+        mPrograms = new ArrayList<>();
         mTVProgramRecyclerView = (RecyclerView) view
                 .findViewById(R.id.tvprogram_recycler_view);
         mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
 
-        //will be fixed
-        List<Program> programs = new ArrayList<>();
-        mAdapter = new TVProgramAdapter(programs);
-        mTVProgramRecyclerView.setAdapter(mAdapter);
-        // will delete
-        Button button = (Button) view.findViewById(R.id.getData);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isOnline()) {
-                    Toast.makeText(getContext(), getString(R.string.internet), Toast.LENGTH_SHORT).show();
-                    Calendar date = new GregorianCalendar();
-                    String uri = "http://52.50.138.211:8080/ChanelAPI/programs/" + date.getTimeInMillis();
-                    requestData(uri);
-                    //new MyTask().execute(uri);
-                } else {
-                    Toast.makeText(getContext(), "No internet", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-//
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            channelId = bundle.getInt("position");
+            requestData(channelId, forDate);
+        }
         return view;
     }
 
-    private void requestData(String uri) {
-        StringRequest request = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        result = Parse.parseJSONtoString(response);
-                        textView.setText(result);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        queue.add(request);
-
+    private void requestData(int ChannelID, String forDate) {
+        new MyTask().execute(String.valueOf(ChannelID), forDate);
     }
 
-    protected boolean isOnline() {
-        ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+
+    public class MyTask extends AsyncTask<String, Void, List<Program>> {
+        @Override
+        protected List<Program> doInBackground(String... params) {
+            mPrograms = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
+            Log.i("myLog", "mPrograms = " + mPrograms.size());
+            Log.i("myLog", "setTitle = " + channelId + "forDate = " + forDate);
+            return mPrograms;
+        }
+
+        @Override
+        protected void onPostExecute(List<Program> programs) {
+            mProgress.setVisibility(View.INVISIBLE);
+            mAdapter = new TVProgramAdapter(programs);
+            mTVProgramRecyclerView.setAdapter(mAdapter);
+        }
     }
 
-//    public class MyTask extends AsyncTask<String, Void, String> {
-//        @Override
-//        protected String doInBackground(String... params) {
-//            String content = HttpManager.getData(params[0]);
-//            return content;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            String s1 = Parse.parseJSONtoString(s);
-//            textView.setText(s1);
-//        }
-//    }
 
     private class TVProgramHolder extends RecyclerView.ViewHolder {
         TextView mTitleTextView;

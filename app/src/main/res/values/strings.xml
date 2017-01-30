@@ -15,4 +15,10 @@
     <string name="channel_category">Channel category</string>
     <string name="category_name">Category name</string>
     <string name="internet">Internet</string>
+    <string name="please">Please, wait for loading data…</string>
+    <string name="data_are_loaded">Data are loaded. Thank you for waiting</string>
+    <string name="no_internet">Please, turn on the Internet and restart the application</string>
+    <string name="loading_data">Loading data…</string>
+    <string name="question_add_preferred">Would you like to put channel %1$s in list of preferred channels?</string>
+
 </resources>

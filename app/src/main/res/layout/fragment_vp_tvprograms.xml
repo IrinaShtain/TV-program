@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <Button
-        android:id="@+id/getData"
+    android:orientation="vertical"
+    >
+    <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GetData"/>
-
-    <TextView
-        android:id="@+id/vp_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="TextView"
-        android:textSize="50sp" />
+        android:layout_below="@+id/buttonDate"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tvprogram_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonDate"
+        />
 
-</LinearLayout>
+
+    <Button
+        android:id="@+id/buttonDate"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

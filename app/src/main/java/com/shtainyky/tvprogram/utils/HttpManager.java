@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram;
+package com.shtainyky.tvprogram.utils;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import okhttp3.Response;
 
 
 public class HttpManager {
+
     private static OkHttpClient client = new OkHttpClient();
 
     public static String getData(String url) {

@@ -1,5 +1,6 @@
 package com.shtainyky.tvprogram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import com.shtainyky.tvprogram.navigationdrawerfragments.ListOfCategoriesFragmen
 import com.shtainyky.tvprogram.navigationdrawerfragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.navigationdrawerfragments.ListOfPreferredChannelsFragment;
 import com.shtainyky.tvprogram.navigationdrawerfragments.TVProgramFragment;
+import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar mToolbar;
@@ -30,9 +32,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupToolbarMenu();
         setupNavigationDrawerMenu();
-        setFragment(new TVProgramFragment());
+        if (QueryPreferences.getStoredFirstInstallation(this))
+        {
+            Intent intent = new Intent(getApplicationContext(), LoadingData.class);
+            startActivity(intent);
+        }
+        else {
+            setFragment(new TVProgramFragment());
+        }
     }
-
 
     @Override
     public void onBackPressed() {

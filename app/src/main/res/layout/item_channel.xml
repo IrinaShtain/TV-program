@@ -17,7 +17,6 @@
             android:id="@+id/channel_logo"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/channel_logo"
             android:contentDescription="@string/channel_logo" />
 
         <LinearLayout

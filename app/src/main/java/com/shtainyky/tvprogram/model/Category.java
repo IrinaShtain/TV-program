@@ -3,7 +3,7 @@ package com.shtainyky.tvprogram.model;
 public class Category {
     private int id;
     private String title;
-    private String image;
+    private String image_url;
 
     public int getId() {
         return id;
@@ -21,11 +21,11 @@ public class Category {
         this.title = title;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return image_url;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String image_url) {
+        this.image_url = image_url;
     }
 }
