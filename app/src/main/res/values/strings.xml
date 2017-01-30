@@ -20,5 +20,12 @@
     <string name="no_internet">Please, turn on the Internet and restart the application</string>
     <string name="loading_data">Loading data…</string>
     <string name="question_add_preferred">Would you like to put channel %1$s in list of preferred channels?</string>
+    <string name="question_delete_preferred">Would you like to delete channel %1$s from list of preferred channels?</string>
+    <string name="channel_will_be_preferred">The channel %1$s will be added into list of preferred channels</string>
+    <string name="channel_is_preferred">The channel %1$s was already added into list of preferred channels</string>
+    <string name="delete_channel_is_preferred">The channel %1$s will be deleted from list of preferred channels</string>
+    <string name="answer_no">NO</string>
+    <string name="answer_yes">YES</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

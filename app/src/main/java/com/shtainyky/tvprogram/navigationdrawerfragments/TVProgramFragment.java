@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
 
 public class TVProgramFragment extends Fragment {
     private View view;
+    TabPagerFragmentAdapter adapter;
 
     @Nullable
     @Override
@@ -23,10 +25,11 @@ public class TVProgramFragment extends Fragment {
         return view;
     }
 
+
     private void setupTabs() {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        TabPagerFragmentAdapter adapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager());
+        adapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

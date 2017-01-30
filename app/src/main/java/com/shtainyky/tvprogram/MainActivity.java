@@ -57,18 +57,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.item_tv_program:
                 setFragment(new TVProgramFragment());
-                Toast.makeText(this, "item_tv_program", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_list_categories:
-                Toast.makeText(this, "item_list_categories", Toast.LENGTH_SHORT).show();
                 setFragment(new ListOfCategoriesFragment());
                 break;
             case R.id.item_list_channels:
                 setFragment(new ListOfChannelsFragment());
-                Toast.makeText(this, "item_list_channels", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_list_preferred_channels:
-                Toast.makeText(this, "item_list_preferred_channels", Toast.LENGTH_SHORT).show();
                 setFragment(new ListOfPreferredChannelsFragment());
                 break;
         }

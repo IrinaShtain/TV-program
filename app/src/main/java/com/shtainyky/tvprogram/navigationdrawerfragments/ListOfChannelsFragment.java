@@ -22,10 +22,11 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Channel;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
-import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.v4.content.ContextCompat.*;
 
 public class ListOfChannelsFragment extends Fragment {
 
@@ -34,6 +35,8 @@ public class ListOfChannelsFragment extends Fragment {
     private ListOfChannelsAdapter mAdapter;
     private List<Channel> mChannels = new ArrayList<>();
     private DatabaseSource mSource;
+    private int categoryId;
+    private Bundle bundle;
 
     @Nullable
     @Override
@@ -46,21 +49,34 @@ public class ListOfChannelsFragment extends Fragment {
                 .findViewById(R.id.list_of_channels_recycler_view);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
-        requestData();
+        bundle = this.getArguments();
+        if (bundle != null) {
+            categoryId = bundle.getInt("categoryId");
+        }
+        requestData(categoryId);
         return view;
     }
 
-
-    public void requestData() {
-        new MyChannelsTask().execute();
+    @Override
+    public void onStart() {
+        requestData(categoryId);
+        super.onStart();
     }
 
-    private class MyChannelsTask extends AsyncTask<Void, Void, List<Channel>> {
+    public void requestData(int categoryId) {
+        new MyChannelsTask().execute(categoryId);
+    }
+
+    private class MyChannelsTask extends AsyncTask<Integer, Void, List<Channel>> {
         @Override
-        protected List<Channel> doInBackground(Void... params) {
-            if (QueryPreferences.areChannelsLoaded(getContext())) {
+        protected List<Channel> doInBackground(Integer... params) {
+            if (params[0] == 0) {
                 mChannels = mSource.getAllChannel();
             }
+            else {
+                mChannels = mSource.getChannelsForCategory(params[0]);
+            }
+            Log.i("myLog", "MyChannelsTask");
             return mChannels;
         }
 
@@ -76,46 +92,60 @@ public class ListOfChannelsFragment extends Fragment {
         TextView mChannelNameTextView;
         TextView mChannelCategoryTextView;
         ImageView mImageView;
-        String channelName;
+        String mChannelName;
+        int mChannelId;
+        int mChannelPreferred;
 
         ListOfChannelsHolder(View itemView) {
             super(itemView);
             mChannelNameTextView = (TextView) itemView.findViewById(R.id.channel_name);
+            mChannelNameTextView.setOnClickListener(this);
             mChannelCategoryTextView = (TextView) itemView.findViewById(R.id.channel_category);
+            mChannelCategoryTextView.setOnClickListener(this);
             mImageView = (ImageView) itemView.findViewById(R.id.channel_logo);
+            mImageView.setOnClickListener(this);
         }
 
         public void bindChannel(Channel channel) {
-            channelName = channel.getName();
+            mChannelName = channel.getName();
+            mChannelId = channel.getId();
+            mChannelPreferred = channel.getIs_preferred();
             mChannelNameTextView.setText(channel.getName());
             mChannelCategoryTextView.setText(String.valueOf(channel.getCategory_name()));
             String imageName = Constants.CHANNEL_IMAGE + channel.getId() + Constants.PNG;
             Parse.loadImageBitmapFromStorage(getContext(), imageName, mImageView);
-            Log.i("myLog", "bindChannel");
-
         }
 
         @Override
         public void onClick(View v) {
-            Log.i("myLog", "onClick");
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Please, choose")
-                    .setMessage(getResources().getString(R.string.question_add_preferred,channelName))
+                    .setMessage(getResources().getString(R.string.question_add_preferred, mChannelName))
                     .setCancelable(false)
-                    .setNegativeButton(getResources().getString(android.R.string.no),
+                    .setNegativeButton(getResources().getString(R.string.answer_no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getContext(), "setNegativeButton", Toast.LENGTH_SHORT).show();
-                                    Log.i("myLog", "setNegativeButton");
+                                    Toast.makeText(getContext(), R.string.cancel, Toast.LENGTH_SHORT).show();
                                 }
                             })
-                    .setPositiveButton(getResources().getString(android.R.string.yes),
+                    .setPositiveButton(getResources().getString(R.string.answer_yes),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getContext(), "setPositiveButton", Toast.LENGTH_SHORT).show();
-                                    Log.i("myLog", "setPositiveButton");
+                                    if (mChannelPreferred == 1)
+                                    {
+                                        Toast.makeText(getContext(),
+                                                getResources().getString(R.string.channel_is_preferred, mChannelName),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        mSource.setChannelPreferred(mChannelId, 1);
+                                        Toast.makeText(getContext(),
+                                                getResources().getString(R.string.channel_will_be_preferred, mChannelName),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+
                                 }
                             });
             AlertDialog alert = builder.create();

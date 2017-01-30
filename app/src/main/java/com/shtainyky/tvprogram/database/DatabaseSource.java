@@ -92,6 +92,48 @@ public class DatabaseSource {
 
         return channels;
     }
+    public List<Channel> getChannelsForCategory(Integer categoryId) {
+        List<Channel> channels = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS  +
+                " WHERE " + COLUMN_CHANNEL_CATEGORY_ID + " = " + String.valueOf(categoryId);
+        open();
+        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Channel channel = new Channel();
+                channel.setId(cursor.getInt(0));
+                channel.setName(cursor.getString(1));
+                channel.setCategory_name(getCategoryNameForChannel(cursor.getInt(3)));
+                channels.add(channel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        close();
+
+        return channels;
+    }
+    public List<Channel> getPreferredChannels() {
+        List<Channel> channels = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS  +
+                " WHERE " + COLUMN_CHANNEL_IS_PREFERRED + " = 1 " ;
+        open();
+        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Channel channel = new Channel();
+                channel.setId(cursor.getInt(0));
+                channel.setName(cursor.getString(1));
+                channel.setCategory_name(getCategoryNameForChannel(cursor.getInt(3)));
+                channels.add(channel);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        close();
+
+        return channels;
+    }
 
     private String getCategoryNameForChannel(int id) {
         String query = "SELECT " + COLUMN_CATEGORY_TITLE + " FROM " + TABLE_NAME_CATEGORIES
@@ -121,6 +163,17 @@ public class DatabaseSource {
         }
 
         QueryPreferences.setChannelLoaded(mContext, true);
+    }
+    public void setChannelPreferred(int channelPreferredId, int state)
+    {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CHANNEL_IS_PREFERRED, state);
+        open();
+        int k= mDatabase.update(TABLE_NAME_CHANNELS, values, COLUMN_CHANNEL_ID + " = ?",
+                new String[]{String.valueOf(channelPreferredId)});
+        Log.i("myLog", "mDatabase.updat " + k);
+        close();
+
     }
 
     //working with categories
@@ -169,40 +222,28 @@ public class DatabaseSource {
             values.put(COLUMN_PROGRAM_TIME, program.getTime());
             values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
             mDatabase.insert(TABLE_NAME_PROGRAMS, null, values);
-
-            Log.i("myLog", "COLUMN_PROGRAM_TITLE = " + program.getTitle());
-            Log.i("myLog", "COLUMN_PROGRAM_CHANNEL_ID = " + program.getChannel_id());
-            Log.i("myLog", "COLUMN_PROGRAM_DATE = " + program.getDate());
-
         }
-        Log.i("myLog", "queryNumEntries.queryNumEntries() = " + DatabaseUtils.queryNumEntries(mDatabase, TABLE_NAME_PROGRAMS));
         close();
         QueryPreferences.setProgramLoaded(mContext, true);
     }
 
     public List<Program> getPrograms(int channelId, String forDate) {
         List<Program> programs = new ArrayList<>();
-        Log.i("myLog", "getProgramschannelId = " + channelId + "forDate= " + forDate);
-
         String[] tableColumns = new String[] {COLUMN_PROGRAM_DATE, COLUMN_PROGRAM_TIME, COLUMN_PROGRAM_TITLE};
         String whereClause = COLUMN_PROGRAM_CHANNEL_ID + " = ? AND " + COLUMN_PROGRAM_DATE + " = ?";
         String[] whereArgs = new String[] {String.valueOf(channelId), forDate};
         open();
         Cursor cursor = mDatabase.query(TABLE_NAME_PROGRAMS, tableColumns, whereClause, whereArgs,null, null,null,null);
-        Log.i("myLog", "cursor.g = " + cursor.getColumnCount());
-        Log.i("myLog", "cursor.moveToFirst() = " + cursor.moveToFirst());
         if (cursor.moveToFirst()) {
             int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
             int dateColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_DATE);
             int timeColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TIME);
-            Log.i("myLog", "cursor.COLUMN_PROGRAM_TIME() = " + timeColIndex);
             do {
                 Program program = new Program();
                 program.setTitle(cursor.getString(titleColIndex));
                 program.setTime(cursor.getString(timeColIndex));
                 program.setDate(cursor.getString(dateColIndex));
                 programs.add(program);
-                Log.i("myLog", "setTitle" + cursor.getString(0));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -213,9 +254,7 @@ public class DatabaseSource {
         List<Program> programs = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_NAME_PROGRAMS;
         open();
-        //Log.i("myLog", "queryNumEntries.queryNumEntries() = " + DatabaseUtils.queryNumEntries(mDatabase, TABLE_NAME_PROGRAMS));
         Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-        Log.i("myLog", "cursor.moveToFirst() = " + cursor.moveToFirst());
 
         if (cursor.moveToFirst()) {
             int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
@@ -234,6 +273,7 @@ public class DatabaseSource {
 
         return programs;
     }
+
 
 
 }

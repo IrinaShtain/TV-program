@@ -14,19 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.utils.HttpManager;
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Program;
-import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.utils.Constants;
-import com.shtainyky.tvprogram.utils.SomeMethods;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TVProgramViewPagerFragment extends Fragment {
@@ -62,23 +56,29 @@ public class TVProgramViewPagerFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             channelId = bundle.getInt("position");
-            requestData(channelId, forDate);
+            requestData(mPrograms,channelId, forDate);
         }
         return view;
     }
 
-    private void requestData(int ChannelID, String forDate) {
-        new MyTask().execute(String.valueOf(ChannelID), forDate);
+
+    private void requestData(List<Program> list, int ChannelID, String forDate) {
+        new MyTVProgramTask(mPrograms).execute(String.valueOf(ChannelID), forDate);
     }
 
 
-    public class MyTask extends AsyncTask<String, Void, List<Program>> {
+    public class MyTVProgramTask extends AsyncTask<String, Void, List<Program>> {
+        private List<Program> list;
+
+        public MyTVProgramTask(List<Program> list) {
+            this.list = list;
+        }
+
         @Override
         protected List<Program> doInBackground(String... params) {
-            mPrograms = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
-            Log.i("myLog", "mPrograms = " + mPrograms.size());
-            Log.i("myLog", "setTitle = " + channelId + "forDate = " + forDate);
-            return mPrograms;
+            list = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
+            Log.i("myLog", "MyTVProgramTask"+ params[0]);
+            return list;
         }
 
         @Override
@@ -86,6 +86,7 @@ public class TVProgramViewPagerFragment extends Fragment {
             mProgress.setVisibility(View.INVISIBLE);
             mAdapter = new TVProgramAdapter(programs);
             mTVProgramRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
