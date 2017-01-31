@@ -8,6 +8,19 @@ public class QueryPreferences {
     private static final String PREF_CHANNELS_LOADED = "CHANNEL_LOADED";
     private static final String PREF_CATEGORIES_LOADED = "CATEGORIES_LOADED";
     private static final String PREF_PROGRAMS_LOADED = "PROGRAMS_LOADED";
+    private static final String PREF_SERVICE_WORKING = "PREF_SERVICE_WORKED";
+
+    public static boolean getStoredIsServiceWorking(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_SERVICE_WORKING, true);
+    }
+
+    public static void setIsServiceWorking(Context context, boolean isServiceWorking) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_SERVICE_WORKING, isServiceWorking)
+                .apply();
+    }
 
     public static boolean getStoredFirstInstallation(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)

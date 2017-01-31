@@ -20,5 +20,10 @@
         android:icon="@drawable/ic_prefered"
         android:checkable="true"
         android:title="@string/preferred_channels"/>
+    <item
+        android:id="@+id/item_manual_sync"
+        android:icon="@drawable/ic_action_sync"
+        android:checkable="true"
+        android:title="@string/tv_program_manual"/>
 
 </menu>

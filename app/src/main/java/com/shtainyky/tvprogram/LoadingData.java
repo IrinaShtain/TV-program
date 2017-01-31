@@ -15,6 +15,7 @@ import com.shtainyky.tvprogram.model.Category;
 import com.shtainyky.tvprogram.model.Channel;
 import com.shtainyky.tvprogram.model.Program;
 import com.shtainyky.tvprogram.parser.Parse;
+import com.shtainyky.tvprogram.service.MyIntentService;
 import com.shtainyky.tvprogram.utils.Constants;
 import com.shtainyky.tvprogram.utils.HttpManager;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
@@ -40,8 +41,7 @@ public class LoadingData extends AppCompatActivity {
             new MyLoadingCategoriesTask().execute();
             new MyLoadingProgramTask().execute();
 
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_LONG).show();
         }
     }
@@ -50,16 +50,21 @@ public class LoadingData extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.loading_data);
     }
-    private void finishLoading()
-    {
+
+    private void finishLoading() {
         Toast.makeText(getApplicationContext(), R.string.data_are_loaded, Toast.LENGTH_SHORT).show();
         QueryPreferences.setStoredFirstInstallation(getApplicationContext(), false);
+
+        Intent i = new Intent(this, MyIntentService.class);
+        startService(i);
+
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+
         finish();
     }
 
-    private  class MyLoadingCategoriesTask extends AsyncTask<Void, Void, Void> {
+    private class MyLoadingCategoriesTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -78,6 +83,7 @@ public class LoadingData extends AppCompatActivity {
                 }
             }
             mSource.insertListCategories(categories);
+            QueryPreferences.setCategoryLoaded(getApplicationContext(), true);
             Log.i(TAG, "CATEGORIESdoInBackgroundEnd");
 
             return null;
@@ -85,8 +91,8 @@ public class LoadingData extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Toast.makeText(getApplicationContext(), "CATEGORIES ARE LOADED", Toast.LENGTH_SHORT).show();
-            if (QueryPreferences.areChannelsLoaded(getApplicationContext())&&QueryPreferences.areProgramLoaded(getApplicationContext()))
+            Toast.makeText(getApplicationContext(), R.string.categories_are_loaded, Toast.LENGTH_SHORT).show();
+            if (QueryPreferences.areChannelsLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
         }
     }
@@ -110,36 +116,63 @@ public class LoadingData extends AppCompatActivity {
                 }
             }
             mSource.insertListChannels(channels);
+            QueryPreferences.setChannelLoaded(getApplicationContext(), true);
             Log.i(TAG, "MyLoadingChannelsTaskdoInBackgroundEnd");
 
-        return null;
+            return null;
 
-    }
+        }
 
         @Override
         protected void onPostExecute(Void aVoid) {
 
-            Toast.makeText(getApplicationContext(), "Channels ARE LOADED", Toast.LENGTH_SHORT).show();
-            if (QueryPreferences.areCategoriesLoaded(getApplicationContext())&&QueryPreferences.areProgramLoaded(getApplicationContext()))
+            Toast.makeText(getApplicationContext(), R.string.channels_are_loaded, Toast.LENGTH_SHORT).show();
+            if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
         }
     }
-    private  class MyLoadingProgramTask extends AsyncTask<Void, Void, Void> {
+
+    private class MyLoadingProgramTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
+            Log.i(TAG, "MyLoadingProgramTaskdoInBackgroundStart");
             String response = HttpManager.getData(Constants.URI_PROGRAMS + Calendar.getInstance().getTimeInMillis());
             List<Program> programs = Parse.parseJSONtoListPrograms(response);
             mSource.insertListPrograms(programs);
-            Log.i(TAG, "onResponse");
-
+            QueryPreferences.setProgramLoaded(getApplicationContext(), true);
+            Log.i(TAG, "MyLoadingProgramTaskdoInBackgroundEnd");
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if (QueryPreferences.areCategoriesLoaded(getApplicationContext())&& QueryPreferences.areChannelsLoaded(getApplicationContext()))
+            Toast.makeText(getApplicationContext(), R.string.programs_are_loaded, Toast.LENGTH_SHORT).show();
+            if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
                 finishLoading();
+        }
+    }
+
+    private class MyLoadingProgramForLongPeriodTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Log.i("mLog", "MyLoadingProgramForLongPeriodTask");
+            Calendar calendar = Calendar.getInstance();
+            for (int i = 0; i < 31; i++) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                long timeStamp = calendar.getTimeInMillis();
+                String response = HttpManager.getData(Constants.URI_PROGRAMS + timeStamp);
+                List<Program> programs = Parse.parseJSONtoListPrograms(response);
+                mSource.insertListPrograms(programs);
+                Log.i("mLog", String.valueOf(timeStamp));
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Toast.makeText(getApplicationContext(), "Program for month ARE LOADED", Toast.LENGTH_SHORT).show();
         }
     }
 }

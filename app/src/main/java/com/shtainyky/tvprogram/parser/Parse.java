@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.shtainyky.tvprogram.R;
@@ -19,14 +17,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -42,10 +37,9 @@ public class Parse {
             for (int i = 0; i < array.length(); i++) {
 
                 JSONObject object = array.getJSONObject(i);
-
                 program = new Program();
                 program.setChannel_id(object.getInt("channel_id"));
-                program.setDate((String) DateFormat.format("dd/MM/yyyy ", new GregorianCalendar(TimeZone.getTimeZone(object.getString("date")))));
+                program.setDate(object.getString("date"));
                 program.setTime(object.getString("time"));
                 program.setTitle(object.getString("title"));
 

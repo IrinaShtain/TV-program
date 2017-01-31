@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.navigationdrawerfragments;
+package com.shtainyky.tvprogram.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Category;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
-import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +53,7 @@ public class ListOfCategoriesFragment extends Fragment {
     private class MyProgramTask extends AsyncTask<Void, Void, List<Category>> {
         @Override
         protected List<Category> doInBackground(Void... params) {
-            if (QueryPreferences.areCategoriesLoaded(getContext())) {
-                mCategories = mSource.getAllCategories();
-            }
+            mCategories = mSource.getAllCategories();
             Log.i("myLog", "MyProgramTask");
             return mCategories;
         }

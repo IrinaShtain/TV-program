@@ -1,5 +1,7 @@
-package com.shtainyky.tvprogram.navigationdrawerfragments;
+package com.shtainyky.tvprogram.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,9 +23,12 @@ import com.shtainyky.tvprogram.model.Program;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TVProgramViewPagerFragment extends Fragment {
+    private static final int REQUEST_DATE = 0;
     private int channelId;
     private String forDate;
     private RecyclerView mTVProgramRecyclerView;
@@ -32,53 +37,85 @@ public class TVProgramViewPagerFragment extends Fragment {
     private Button mGetDateButton;
     private DatabaseSource mSource;
     private ProgressBar mProgress;
+    private View view;
 
     public TVProgramViewPagerFragment() {
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
+        view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
+        mPrograms = new ArrayList<>();
         mSource = new DatabaseSource(getContext());
         mProgress = (ProgressBar) view.findViewById(R.id.progress);
         mGetDateButton = (Button) view.findViewById(R.id.buttonDate);
-        mGetDateButton.setText(DateFormat.format("dd/MM/yyyy ", Calendar.getInstance()));
-        forDate = String.valueOf(mGetDateButton.getText());
-        mPrograms = new ArrayList<>();
-        mTVProgramRecyclerView = (RecyclerView) view
-                .findViewById(R.id.tvprogram_recycler_view);
-        mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager
-                (getActivity()));
+
+        setupButtonDate();
+        setupUI();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             channelId = bundle.getInt("position");
-            requestData(mPrograms,channelId, forDate);
+            requestData(channelId, forDate);
         }
         return view;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data
+                    .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
+            setupUI();
+            Log.i("myLog", forDate );
+        }
+    }
 
 
-    private void requestData(List<Program> list, int ChannelID, String forDate) {
-        new MyTVProgramTask(mPrograms).execute(String.valueOf(ChannelID), forDate);
+    public void setupButtonDate(){
+        mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", Calendar.getInstance()));
+
+        final String strings = forDate;
+
+        mGetDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.setTargetFragment(TVProgramViewPagerFragment.this, REQUEST_DATE);
+                requestData(channelId, forDate);
+                dialog.show(getFragmentManager(), "TVProgramViewPagerFragment");
+            }
+        });
+    }
+
+    public void setupUI() {
+        forDate = String.valueOf(mGetDateButton.getText());
+        mTVProgramRecyclerView = (RecyclerView) view
+                .findViewById(R.id.tvprogram_recycler_view);
+        mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager
+                (getActivity()));
+    }
+
+    private void requestData(int ChannelID, String forDate) {
+        new MyTVProgramTask().execute(String.valueOf(ChannelID), forDate);
     }
 
 
     public class MyTVProgramTask extends AsyncTask<String, Void, List<Program>> {
-        private List<Program> list;
 
-        public MyTVProgramTask(List<Program> list) {
-            this.list = list;
-        }
 
         @Override
         protected List<Program> doInBackground(String... params) {
-            list = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
-            Log.i("myLog", "MyTVProgramTask"+ params[0]);
-            return list;
+            mPrograms = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
+            Log.i("myLog", "MyTVProgramTask = size" + mPrograms.size());
+            Log.i("myLog", "MyTVProgramTask = params[1]" + params[1]);
+            return mPrograms;
         }
 
         @Override

@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.navigationdrawerfragments;
+package com.shtainyky.tvprogram.fragments;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +25,12 @@ import com.shtainyky.tvprogram.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.content.ContextCompat.*;
-
-public class ListOfChannelsFragment extends Fragment {
-
-    private RecyclerView mChannelsRecyclerView;
-    private ProgressBar mProgressBar;
-    private ListOfChannelsAdapter mAdapter;
-    private List<Channel> mChannels = new ArrayList<>();
+public class ListOfPreferredChannelsFragment extends Fragment {
     private DatabaseSource mSource;
-    private int categoryId;
-    private Bundle bundle;
+    private ProgressBar mProgressBar;
+    private ListOfPreferredChannelsAdapter mAdapter;
+    private List<Channel> mChannels = new ArrayList<>();
+    private RecyclerView mChannelsRecyclerView;
 
     @Nullable
     @Override
@@ -44,59 +38,48 @@ public class ListOfChannelsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
         mSource = new DatabaseSource(getContext());
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
-
         mChannelsRecyclerView = (RecyclerView) view
                 .findViewById(R.id.list_of_channels_recycler_view);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
-        bundle = this.getArguments();
-        if (bundle != null) {
-            categoryId = bundle.getInt("categoryId");
-        }
-        requestData(categoryId);
+        requestData();
         return view;
+    }
+
+    public void requestData() {
+        new MyPreferredChannelsTask().execute();
     }
 
     @Override
     public void onStart() {
-        requestData(categoryId);
+        requestData();
         super.onStart();
     }
 
-    public void requestData(int categoryId) {
-        new MyChannelsTask().execute(categoryId);
-    }
-
-    private class MyChannelsTask extends AsyncTask<Integer, Void, List<Channel>> {
+    private class MyPreferredChannelsTask extends AsyncTask<Void, Void, List<Channel>> {
         @Override
-        protected List<Channel> doInBackground(Integer... params) {
-            if (params[0] == 0) {
-                mChannels = mSource.getAllChannel();
-            }
-            else {
-                mChannels = mSource.getChannelsForCategory(params[0]);
-            }
-            Log.i("myLog", "MyChannelsTask");
+        protected List<Channel> doInBackground(Void... params) {
+            mChannels = mSource.getPreferredChannels();
             return mChannels;
         }
 
         @Override
         protected void onPostExecute(List<Channel> channels) {
             mProgressBar.setVisibility(View.INVISIBLE);
-            mAdapter = new ListOfChannelsAdapter(channels);
+            mAdapter = new ListOfPreferredChannelsAdapter(channels);
             mChannelsRecyclerView.setAdapter(mAdapter);
         }
     }
 
-    private class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ListOfPreferredChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mChannelNameTextView;
         TextView mChannelCategoryTextView;
         ImageView mImageView;
         String mChannelName;
-        int mChannelId;
-        int mChannelPreferred;
+        private int mChannelId;
 
-        ListOfChannelsHolder(View itemView) {
+
+        ListOfPreferredChannelsHolder(View itemView) {
             super(itemView);
             mChannelNameTextView = (TextView) itemView.findViewById(R.id.channel_name);
             mChannelNameTextView.setOnClickListener(this);
@@ -109,7 +92,6 @@ public class ListOfChannelsFragment extends Fragment {
         public void bindChannel(Channel channel) {
             mChannelName = channel.getName();
             mChannelId = channel.getId();
-            mChannelPreferred = channel.getIs_preferred();
             mChannelNameTextView.setText(channel.getName());
             mChannelCategoryTextView.setText(String.valueOf(channel.getCategory_name()));
             String imageName = Constants.CHANNEL_IMAGE + channel.getId() + Constants.PNG;
@@ -120,7 +102,7 @@ public class ListOfChannelsFragment extends Fragment {
         public void onClick(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Please, choose")
-                    .setMessage(getResources().getString(R.string.question_add_preferred, mChannelName))
+                    .setMessage(getResources().getString(R.string.question_delete_preferred, mChannelName))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.answer_no),
                             new DialogInterface.OnClickListener() {
@@ -133,18 +115,12 @@ public class ListOfChannelsFragment extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (mChannelPreferred == 1)
-                                    {
-                                        Toast.makeText(getContext(),
-                                                getResources().getString(R.string.channel_is_preferred, mChannelName),
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                    else {
-                                        mSource.setChannelPreferred(mChannelId, 1);
-                                        Toast.makeText(getContext(),
-                                                getResources().getString(R.string.channel_will_be_preferred, mChannelName),
-                                                Toast.LENGTH_LONG).show();
-                                    }
+                                    mSource.setChannelPreferred(mChannelId, 0);
+                                    Toast.makeText(getContext(),
+                                            getResources().getString(R.string.delete_channel_is_preferred, mChannelName),
+                                            Toast.LENGTH_LONG).show();
+                                    requestData();
+
 
                                 }
                             });
@@ -153,22 +129,22 @@ public class ListOfChannelsFragment extends Fragment {
         }
     }
 
-    private class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsFragment.ListOfChannelsHolder> {
+    private class ListOfPreferredChannelsAdapter extends RecyclerView.Adapter<ListOfPreferredChannelsHolder> {
         private List<Channel> mChannels;
 
-        public ListOfChannelsAdapter(List<Channel> channels) {
+        public ListOfPreferredChannelsAdapter(List<Channel> channels) {
             mChannels = channels;
         }
 
         @Override
-        public ListOfChannelsFragment.ListOfChannelsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ListOfPreferredChannelsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.item_channel, parent, false);
-            return new ListOfChannelsFragment.ListOfChannelsHolder(view);
+            return new ListOfPreferredChannelsHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ListOfChannelsFragment.ListOfChannelsHolder holder, int position) {
+        public void onBindViewHolder(ListOfPreferredChannelsHolder holder, int position) {
             Channel channel = mChannels.get(position);
             holder.bindChannel(channel);
         }
@@ -178,5 +154,4 @@ public class ListOfChannelsFragment extends Fragment {
             return mChannels.size();
         }
     }
-
 }
