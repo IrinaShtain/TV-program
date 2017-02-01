@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,7 @@ public class DatePickerFragment extends DialogFragment {
     public static final String EXTRA_DATE = "EXTRA_DATE";
     private DatePicker mDatePicker;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
@@ -37,7 +39,7 @@ public class DatePickerFragment extends DialogFragment {
 
         mDatePicker.init(mYear, mMonth, mDay, null);
         mDatePicker.setMinDate(calendar.getTimeInMillis());
-        calendar.add(Calendar.MONTH, 1);
+        calendar.add(Calendar.DAY_OF_MONTH, 10);
         mDatePicker.setMaxDate(calendar.getTimeInMillis());
 
         return new AlertDialog.Builder(getActivity())

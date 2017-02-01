@@ -21,13 +21,14 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Channel;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfPreferredChannelsFragment extends Fragment {
     private DatabaseSource mSource;
-    private ProgressBar mProgressBar;
+    private AVLoadingIndicatorView mProgressBar;
     private ListOfPreferredChannelsAdapter mAdapter;
     private List<Channel> mChannels = new ArrayList<>();
     private RecyclerView mChannelsRecyclerView;
@@ -37,7 +38,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
         mSource = new DatabaseSource(getContext());
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mProgressBar = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
         mChannelsRecyclerView = (RecyclerView) view
                 .findViewById(R.id.list_of_channels_recycler_view);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Program;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +37,7 @@ public class TVProgramViewPagerFragment extends Fragment {
     private List<Program> mPrograms;
     private Button mGetDateButton;
     private DatabaseSource mSource;
-    private ProgressBar mProgress;
+    private AVLoadingIndicatorView mProgress;
     private View view;
 
     public TVProgramViewPagerFragment() {
@@ -50,7 +51,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
         mPrograms = new ArrayList<>();
         mSource = new DatabaseSource(getContext());
-        mProgress = (ProgressBar) view.findViewById(R.id.progress);
+        mProgress = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
         mGetDateButton = (Button) view.findViewById(R.id.buttonDate);
 
         setupButtonDate();
@@ -63,6 +64,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         }
         return view;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -73,12 +75,13 @@ public class TVProgramViewPagerFragment extends Fragment {
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
             setupUI();
-            Log.i("myLog", forDate );
+            requestData(channelId, String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
+            Log.i("myLog", forDate);
         }
     }
 
 
-    public void setupButtonDate(){
+    public void setupButtonDate() {
         mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", Calendar.getInstance()));
 
         final String strings = forDate;
@@ -106,9 +109,20 @@ public class TVProgramViewPagerFragment extends Fragment {
         new MyTVProgramTask().execute(String.valueOf(ChannelID), forDate);
     }
 
+    void startAnim() {
+        mProgress.show();
+    }
+
+    void stopAnim() {
+        mProgress.hide();
+    }
+
 
     public class MyTVProgramTask extends AsyncTask<String, Void, List<Program>> {
-
+        @Override
+        protected void onPreExecute() {
+            startAnim();
+        }
 
         @Override
         protected List<Program> doInBackground(String... params) {
@@ -120,7 +134,7 @@ public class TVProgramViewPagerFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Program> programs) {
-            mProgress.setVisibility(View.INVISIBLE);
+            stopAnim();
             mAdapter = new TVProgramAdapter(programs);
             mTVProgramRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();

@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Program;
 import com.shtainyky.tvprogram.parser.Parse;
@@ -54,10 +55,17 @@ public class MyIntentService extends IntentService {
                         public void onResponse(String response) {
                             String utfString="";
                             try {
-                                utfString = new String(utfString.getBytes("ISO-8859-1"), "UTF-8");
+                                utfString = new String(response.getBytes("ISO-8859-1"), "UTF-8");
                                 List<Program> programs = Parse.parseJSONtoListPrograms(utfString);
-                                Log.i(TAG, "UnsupportedEncodingException " + finalI);
-                                mSource.insertListPrograms(programs);
+                                if (programs != null){
+                                    mSource.insertListPrograms(programs);
+                                    Log.i(TAG, "UnsupportedEncodingException " + finalI);
+
+                                }
+                                else {
+                                    Log.i(TAG, "NUULL " + utfString);
+                                    Log.i(TAG, "NUULLresponse " + response);
+                                }
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                                 Log.i(TAG, "UnsupportedEncodingException " );
@@ -74,6 +82,7 @@ public class MyIntentService extends IntentService {
                     });
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             queue.add(request);
+            Toast.makeText(getApplicationContext(), R.string.data_are_loading_for_a_month, Toast.LENGTH_SHORT).show();
         }
 
         NotificationAboutLoading.sendNotification(getApplicationContext());

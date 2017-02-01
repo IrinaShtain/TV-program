@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Channel;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
 public class ListOfChannelsFragment extends Fragment {
 
     private RecyclerView mChannelsRecyclerView;
-    private ProgressBar mProgressBar;
+    private AVLoadingIndicatorView mProgress;
     private ListOfChannelsAdapter mAdapter;
     private List<Channel> mChannels = new ArrayList<>();
     private DatabaseSource mSource;
@@ -41,7 +41,7 @@ public class ListOfChannelsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
         mSource = new DatabaseSource(getContext());
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mProgress = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
 
         mChannelsRecyclerView = (RecyclerView) view
                 .findViewById(R.id.list_of_channels_recycler_view);
@@ -64,8 +64,19 @@ public class ListOfChannelsFragment extends Fragment {
     public void requestData(int categoryId) {
         new MyChannelsTask().execute(categoryId);
     }
+    void startAnim(){
+        mProgress.show();
+    }
 
+    void stopAnim(){
+        mProgress.hide();
+    }
     private class MyChannelsTask extends AsyncTask<Integer, Void, List<Channel>> {
+        @Override
+        protected void onPreExecute() {
+            startAnim();
+        }
+
         @Override
         protected List<Channel> doInBackground(Integer... params) {
             if (params[0] == 0) {
@@ -80,12 +91,11 @@ public class ListOfChannelsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Channel> channels) {
-            mProgressBar.setVisibility(View.INVISIBLE);
+            stopAnim();
             mAdapter = new ListOfChannelsAdapter(channels);
             mChannelsRecyclerView.setAdapter(mAdapter);
         }
     }
-
     private class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mChannelNameTextView;
         TextView mChannelCategoryTextView;

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
@@ -20,6 +19,7 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Category;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,14 @@ public class ListOfCategoriesFragment extends Fragment {
     private ListOfCategoriesAdapter mAdapter;
     private List<Category> mCategories = new ArrayList<>();
     private DatabaseSource mSource;
-    private ProgressBar mProgressBar;
+    private AVLoadingIndicatorView mProgress;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         mSource = new DatabaseSource(getContext());
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mProgress = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
         mCategoryRecyclerView = (RecyclerView) view
                 .findViewById(R.id.categories_recycler_view);
         mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager
@@ -50,7 +50,19 @@ public class ListOfCategoriesFragment extends Fragment {
         new MyProgramTask().execute();
     }
 
+    void startAnim(){
+        mProgress.show();
+    }
+
+    void stopAnim(){
+        mProgress.hide();
+    }
     private class MyProgramTask extends AsyncTask<Void, Void, List<Category>> {
+        @Override
+        protected void onPreExecute() {
+            startAnim();
+        }
+
         @Override
         protected List<Category> doInBackground(Void... params) {
             mCategories = mSource.getAllCategories();
@@ -60,7 +72,7 @@ public class ListOfCategoriesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Category> categories) {
-            mProgressBar.setVisibility(View.INVISIBLE);
+            stopAnim();
             mAdapter = new ListOfCategoriesAdapter(categories);
             mCategoryRecyclerView.setAdapter(mAdapter);
         }

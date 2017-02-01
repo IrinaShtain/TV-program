@@ -231,7 +231,6 @@ public class DatabaseSource {
     //working with programs
     public void insertListPrograms(List<Program> programs) {
         open();
-        if (programs != null) {
             for (int i = 0; i < programs.size(); i++) {
                 Program program = programs.get(i);
                 ContentValues values = new ContentValues();
@@ -241,7 +240,8 @@ public class DatabaseSource {
                 values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
                 mDatabase.insert(TABLE_NAME_PROGRAMS, null, values);
             }
-        }
+        Log.i("myLog", "getDate ="+ programs.get(0).getDate());
+        Log.i("myLog", "size ="+ programs.size());
         close();
         QueryPreferences.setProgramLoaded(mContext, true);
     }
