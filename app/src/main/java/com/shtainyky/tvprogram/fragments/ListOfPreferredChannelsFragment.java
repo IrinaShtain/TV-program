@@ -5,14 +5,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,35 +27,84 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shtainyky.tvprogram.fragments.ListOfChannelsFragment.ARG_CATEGORY_ID;
+import static com.shtainyky.tvprogram.fragments.TVProgramFragment.ARG_PREFERRED;
+
 public class ListOfPreferredChannelsFragment extends Fragment {
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mProgressBar;
     private ListOfPreferredChannelsAdapter mAdapter;
     private List<Channel> mChannels = new ArrayList<>();
     private RecyclerView mChannelsRecyclerView;
+    private Button mButtonPreferred;
+    private View mView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
+        mView = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
+        // setupButton();
         mSource = new DatabaseSource(getContext());
-        mProgressBar = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
-        mChannelsRecyclerView = (RecyclerView) view
+        mProgressBar = (AVLoadingIndicatorView) mView.findViewById(R.id.progress);
+        mChannelsRecyclerView = (RecyclerView) mView
                 .findViewById(R.id.list_of_channels_recycler_view);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
         requestData();
-        return view;
+        return mView;
     }
 
     public void requestData() {
         new MyPreferredChannelsTask().execute();
     }
 
-    @Override
-    public void onStart() {
-        requestData();
-        super.onStart();
+
+    public void setupButton() {
+        mButtonPreferred = (Button) mView.findViewById(R.id.buttonPreferred);
+        mButtonPreferred.setVisibility(View.VISIBLE);
+        if (mChannels.size() != 0) {
+            mButtonPreferred.setText(R.string.show_preferred);
+            mButtonPreferred.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "Preferred Button", Toast.LENGTH_SHORT).show();
+                    Fragment fragment = new TVProgramFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(ARG_PREFERRED, 1);
+                    fragment.setArguments(bundle);
+                    setFragment(fragment);
+                }
+            });
+        } else {
+            mButtonPreferred.setText(R.string.show_nothing);
+            mButtonPreferred.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = new ListOfChannelsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(ARG_CATEGORY_ID, 0);
+                    fragment.setArguments(bundle);
+                    setFragment(fragment);
+                }
+            });
+        }
+    }
+    private void setFragment(Fragment fragment)
+    {
+        FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
+        Fragment mFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
+        if (mFragment == null) {
+            mFragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 
     private class MyPreferredChannelsTask extends AsyncTask<Void, Void, List<Channel>> {
@@ -66,9 +116,9 @@ public class ListOfPreferredChannelsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Channel> channels) {
-            mProgressBar.setVisibility(View.INVISIBLE);
             mAdapter = new ListOfPreferredChannelsAdapter(channels);
             mChannelsRecyclerView.setAdapter(mAdapter);
+            setupButton();
         }
     }
 

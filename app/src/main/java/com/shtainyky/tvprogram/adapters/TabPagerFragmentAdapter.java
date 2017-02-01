@@ -11,13 +11,14 @@ import com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment;
 
 import java.util.List;
 
+import static com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment.ARG_POSITION;
+
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     private List<String> mChannels;
 
-    public TabPagerFragmentAdapter(Context context, FragmentManager fm) {
+    public TabPagerFragmentAdapter(Context context, FragmentManager fm, List<String> channels) {
         super(fm);
-        DatabaseSource mSource = new DatabaseSource(context);
-        mChannels = mSource.getAllChannelsTitles();
+        mChannels = channels;
 
     }
 
@@ -25,7 +26,7 @@ public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         TVProgramViewPagerFragment fragment= new TVProgramViewPagerFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("position", position + 1);
+        bundle.putInt(ARG_POSITION, position + 1);
         fragment.setArguments(bundle);
         return fragment;
     }

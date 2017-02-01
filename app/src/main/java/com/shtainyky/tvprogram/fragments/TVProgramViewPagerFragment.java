@@ -30,6 +30,7 @@ import java.util.List;
 
 public class TVProgramViewPagerFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
+    public static final String ARG_POSITION = "position";
     private int channelId;
     private String forDate;
     private RecyclerView mTVProgramRecyclerView;
@@ -59,7 +60,7 @@ public class TVProgramViewPagerFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            channelId = bundle.getInt("position");
+            channelId = bundle.getInt(ARG_POSITION);
             requestData(channelId, forDate);
         }
         return view;

@@ -24,6 +24,8 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shtainyky.tvprogram.fragments.ListOfChannelsFragment.ARG_CATEGORY_ID;
+
 public class ListOfCategoriesFragment extends Fragment {
     private RecyclerView mCategoryRecyclerView;
     private ListOfCategoriesAdapter mAdapter;
@@ -104,7 +106,7 @@ public class ListOfCategoriesFragment extends Fragment {
         public void onClick(View v) {
             Fragment fragment = new ListOfChannelsFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("categoryId", mCategoryId + 1);
+            bundle.putInt(ARG_CATEGORY_ID, mCategoryId + 1);
             fragment.setArguments(bundle);
 
             FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();

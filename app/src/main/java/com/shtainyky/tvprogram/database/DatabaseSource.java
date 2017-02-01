@@ -85,6 +85,24 @@ public class DatabaseSource {
         }
         return channelsTitles;
     }
+    public List<String> getPreferredChannelsTitles() {
+        List<String> channelsTitles = new ArrayList<>();
+        if (QueryPreferences.areCategoriesLoaded(mContext)) {
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS +
+                    " WHERE " + COLUMN_CHANNEL_IS_PREFERRED + " = 1 ";
+            open();
+
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    channelsTitles.add(cursor.getString(1));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            close();
+        }
+        return channelsTitles;
+    }
 
     public List<Channel> getAllChannel() {
         List<Channel> channels = new ArrayList<>();
@@ -293,6 +311,7 @@ public class DatabaseSource {
 
         return programs;
     }
+
 
 
 }

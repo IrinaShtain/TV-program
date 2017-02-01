@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfChannelsFragment extends Fragment {
+    public static final String ARG_CATEGORY_ID = "categoryId";
 
     private RecyclerView mChannelsRecyclerView;
     private AVLoadingIndicatorView mProgress;
@@ -49,7 +50,7 @@ public class ListOfChannelsFragment extends Fragment {
                 (getActivity()));
         bundle = this.getArguments();
         if (bundle != null) {
-            categoryId = bundle.getInt("categoryId");
+            categoryId = bundle.getInt(ARG_CATEGORY_ID);
         }
         requestData(categoryId);
         return view;

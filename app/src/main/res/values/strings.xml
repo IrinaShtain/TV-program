@@ -37,5 +37,7 @@
     <string name="delete_data_db">Data are deleted from database</string>
     <string name="data_syns">Please, wait. Data will be loaded form server soon.</string>
     <string name="data_are_loading">Data are loading now. Please, try again later</string>
+    <string name="show_preferred">Show TVProgram for preferred channels</string>
+    <string name="show_nothing">No channels selected \n Select?</string>
 
 </resources>
