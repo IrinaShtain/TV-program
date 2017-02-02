@@ -9,16 +9,42 @@ public class QueryPreferences {
     private static final String PREF_CATEGORIES_LOADED = "CATEGORIES_LOADED";
     private static final String PREF_PROGRAMS_LOADED = "PROGRAMS_LOADED";
     private static final String PREF_SERVICE_WORKING = "PREF_SERVICE_WORKED";
+    private static final String PREF_FIRST_TIME_SERVICE = "PREF_FIRST_TIME_SERVICE";
+    private static final String PREF_DAY_UPDATING = "PREF_DAY_UPDATING";
 
-    public static boolean getStoredIsServiceWorking(Context context) {
+    public static boolean getShouldUpdateDayProgram(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(PREF_SERVICE_WORKING, true);
+                .getBoolean(PREF_DAY_UPDATING, false);
     }
 
-    public static void setIsServiceWorking(Context context, boolean isServiceWorking) {
+    public static void setShouldUpdateDayProgram(Context context, boolean isFirstInstallation) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(PREF_SERVICE_WORKING, isServiceWorking)
+                .putBoolean(PREF_DAY_UPDATING, isFirstInstallation)
+                .apply();
+    }
+
+    public static boolean getStoredFirstTimeService(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_FIRST_TIME_SERVICE, true);
+    }
+
+    public static void setStoredFirstTimeService(Context context, boolean isFirstInstallation) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_FIRST_TIME_SERVICE, isFirstInstallation)
+                .apply();
+    }
+
+    public static int getCountLoadedDays(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(PREF_SERVICE_WORKING, 0);
+    }
+
+    public static void setCountLoadedDays(Context context, int count) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putInt(PREF_SERVICE_WORKING, count)
                 .apply();
     }
 

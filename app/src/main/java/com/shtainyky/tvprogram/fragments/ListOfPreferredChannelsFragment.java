@@ -89,8 +89,8 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             });
         }
     }
-    private void setFragment(Fragment fragment)
-    {
+
+    private void setFragment(Fragment fragment) {
         FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
         Fragment mFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
         if (mFragment == null) {

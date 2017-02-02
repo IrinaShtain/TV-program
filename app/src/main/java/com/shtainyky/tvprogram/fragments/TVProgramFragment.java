@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
+import com.shtainyky.tvprogram.adapter.TabPagerFragmentAdapter;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 
 import java.util.List;
@@ -33,21 +33,19 @@ public class TVProgramFragment extends Fragment {
         if (bundle != null) {
             arg = bundle.getInt(ARG_PREFERRED);
         }
-        if (arg == 0){
+        if (arg == 0) {
             list = mSource.getAllChannelsTitles();
-        }
-        else {
+        } else {
             list = mSource.getPreferredChannelsTitles();
         }
         setupTabs(list);
         return view;
     }
 
-
     private void setupTabs(List<String> titlesList) {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), titlesList);
+        mAdapter = new TabPagerFragmentAdapter(getActivity().getSupportFragmentManager(), titlesList);
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }

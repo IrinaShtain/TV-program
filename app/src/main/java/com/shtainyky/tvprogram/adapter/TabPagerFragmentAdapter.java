@@ -1,12 +1,10 @@
-package com.shtainyky.tvprogram.adapters;
+package com.shtainyky.tvprogram.adapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment;
 
 import java.util.List;
@@ -16,7 +14,7 @@ import static com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment.ARG_P
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     private List<String> mChannels;
 
-    public TabPagerFragmentAdapter(Context context, FragmentManager fm, List<String> channels) {
+    public TabPagerFragmentAdapter(FragmentManager fm, List<String> channels) {
         super(fm);
         mChannels = channels;
 
@@ -24,7 +22,7 @@ public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        TVProgramViewPagerFragment fragment= new TVProgramViewPagerFragment();
+        TVProgramViewPagerFragment fragment = new TVProgramViewPagerFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_POSITION, position + 1);
         fragment.setArguments(bundle);
@@ -35,6 +33,7 @@ public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mChannels.size();
     }
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mChannels.get(position);

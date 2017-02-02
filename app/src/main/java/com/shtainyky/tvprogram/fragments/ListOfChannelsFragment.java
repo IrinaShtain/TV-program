@@ -128,7 +128,7 @@ public class ListOfChannelsFragment extends Fragment {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Please, choose")
+            builder.setTitle(R.string.selecting_title)
                     .setMessage(getResources().getString(R.string.question_add_preferred, mChannelName))
                     .setCancelable(false)
                     .setNegativeButton(getResources().getString(R.string.answer_no),

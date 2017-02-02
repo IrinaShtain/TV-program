@@ -10,49 +10,46 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.Category;
 import com.shtainyky.tvprogram.model.Channel;
 import com.shtainyky.tvprogram.model.Program;
 import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.service.MyIntentService;
-import com.shtainyky.tvprogram.service.NotificationAboutLoading;
 import com.shtainyky.tvprogram.utils.Constants;
-import com.shtainyky.tvprogram.utils.HttpManager;
+import com.shtainyky.tvprogram.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
-import com.shtainyky.tvprogram.utils.SomeMethods;
+import com.shtainyky.tvprogram.utils.CheckInternet;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
 
-public class LoadingData extends AppCompatActivity {
+public class LoadingDataActivity extends AppCompatActivity {
     private final static String TAG = "myLog";
     private DatabaseSource mSource;
-    private AVLoadingIndicatorView avi;
+    private AVLoadingIndicatorView mCustomProgresBar;
+    private ProgressBar mProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadind_data);
         setupToolbarMenu();
-        avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
-       // ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.progress);
+        mCustomProgresBar = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgress.setProgress(5);
+
         mSource = new DatabaseSource(this);
-        if (SomeMethods.isOnline(this)) {
+        if (CheckInternet.isOnline(this)) {
             new MyLoadingChannelsTask().execute();
             new MyLoadingCategoriesTask().execute();
-            new MyLoadingProgramTask().execute();
             new MyLoadingProgramForLongPeriodTask().execute();
 
         } else {
-            Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),
+                    R.string.no_internet,
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -64,9 +61,6 @@ public class LoadingData extends AppCompatActivity {
     private void finishLoading() {
         Toast.makeText(getApplicationContext(), R.string.data_are_loaded, Toast.LENGTH_SHORT).show();
         QueryPreferences.setStoredFirstInstallation(getApplicationContext(), false);
-//
-//        Intent i = new Intent(this, MyIntentService.class);
-//        startService(i);
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
@@ -101,6 +95,7 @@ public class LoadingData extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            mProgress.setProgress(30);
             Toast.makeText(getApplicationContext(), R.string.categories_are_loaded, Toast.LENGTH_SHORT).show();
             if (QueryPreferences.areChannelsLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
@@ -109,6 +104,7 @@ public class LoadingData extends AppCompatActivity {
 
 
     private class MyLoadingChannelsTask extends AsyncTask<Void, Void, Void> {
+
         @Override
         protected Void doInBackground(Void... params) {
             Log.i(TAG, "doInBackgroundMyLoadingChannelsTask");
@@ -135,91 +131,48 @@ public class LoadingData extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            mProgress.setProgress(15);
             Toast.makeText(getApplicationContext(), R.string.channels_are_loaded, Toast.LENGTH_SHORT).show();
             if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
         }
     }
 
-    private class MyLoadingProgramTask extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            Log.i(TAG, "MyLoadingProgramTaskdoInBackgroundStart");
-            String response = HttpManager.getData(Constants.URI_PROGRAMS + Calendar.getInstance().getTimeInMillis());
-            List<Program> programs = Parse.parseJSONtoListPrograms(response);
-            mSource.insertListPrograms(programs);
-            QueryPreferences.setProgramLoaded(getApplicationContext(), true);
-            Log.i(TAG, "MyLoadingProgramTaskdoInBackgroundEnd");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            Toast.makeText(getApplicationContext(), R.string.programs_are_loaded, Toast.LENGTH_SHORT).show();
-            if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
-                finishLoading();
-        }
-    }
-
-    private class MyLoadingProgramForLongPeriodTask extends AsyncTask<Void, Void, Void> {
+    private class MyLoadingProgramForLongPeriodTask extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
-            Toast.makeText(getApplicationContext(), R.string.data_are_loading_for_a_month, Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getApplicationContext(),
+                    getResources().getString(R.string.data_are_loading_for_seven_day),
+                    Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            Calendar calendar = Calendar.getInstance();
-            final DatabaseSource mSource = new DatabaseSource(getApplicationContext());
-            for (int i = 1; i < 11; i++) {
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
+            for (int i = 0; i < 8; i++) {
+                Calendar calendar = Calendar.getInstance();
+                DatabaseSource mSource = new DatabaseSource(getApplicationContext());
+                calendar.add(Calendar.DAY_OF_YEAR, i);
                 long timeStamp = calendar.getTimeInMillis();
-                final int finalI = i;
-                StringRequest request = new StringRequest(Constants.URI_PROGRAMS + timeStamp,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                String utfString = "";
-                                try {
-                                    utfString = new String(response.getBytes("ISO-8859-1"), "UTF-8");
-                                    List<Program> programs = Parse.parseJSONtoListPrograms(utfString);
-                                    if (programs != null) {
-                                        mSource.insertListPrograms(programs);
-                                        Log.i(TAG, "UnsupportedEncodingException " + finalI);
-
-                                    } else {
-                                        Log.i(TAG, "NUULL " + utfString);
-                                        Log.i(TAG, "NUULLresponse " + response);
-                                    }
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                    Log.i(TAG, "UnsupportedEncodingException ");
-                                }
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                queue.add(request);
+                String response = HttpManager.getData(Constants.URI_PROGRAMS + timeStamp);
+                List<Program> programs = Parse.parseJSONtoListPrograms(response);
+                mSource.insertListPrograms(programs);
+                publishProgress(i);
+                Log.i(TAG, "HttpManager " + i);
             }
-
-            //NotificationAboutLoading.sendNotification(getApplicationContext());
             return null;
         }
 
         @Override
+        protected void onProgressUpdate(Integer... values) {
+            mProgress.setProgress(30 + values[0]*10);
+        }
+
+        @Override
         protected void onPostExecute(Void aVoid) {
-            Toast.makeText(getApplicationContext(), R.string.data_are_loading_for_a_month, Toast.LENGTH_SHORT).show();
+            QueryPreferences.setCountLoadedDays(getApplicationContext(), 7);
             Toast.makeText(getApplicationContext(), R.string.programs_are_loaded, Toast.LENGTH_SHORT).show();
-            QueryPreferences.setIsServiceWorking(getApplicationContext(), false);
             if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
                 finishLoading();
         }

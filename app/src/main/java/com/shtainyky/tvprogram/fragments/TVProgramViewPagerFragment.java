@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
@@ -25,7 +24,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TVProgramViewPagerFragment extends Fragment {
@@ -84,8 +82,6 @@ public class TVProgramViewPagerFragment extends Fragment {
 
     public void setupButtonDate() {
         mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", Calendar.getInstance()));
-
-        final String strings = forDate;
 
         mGetDateButton.setOnClickListener(new View.OnClickListener() {
             @Override

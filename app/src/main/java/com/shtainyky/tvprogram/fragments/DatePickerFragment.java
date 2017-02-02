@@ -6,17 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,12 +36,13 @@ public class DatePickerFragment extends DialogFragment {
 
         mDatePicker.init(mYear, mMonth, mDay, null);
         mDatePicker.setMinDate(calendar.getTimeInMillis());
-        calendar.add(Calendar.DAY_OF_MONTH, 10);
+
+        calendar.add(Calendar.DAY_OF_MONTH, QueryPreferences.getCountLoadedDays(getContext()));
         mDatePicker.setMaxDate(calendar.getTimeInMillis());
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("Choose date for displaying TV program")
+                .setTitle(R.string.select_date)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -58,6 +56,7 @@ public class DatePickerFragment extends DialogFragment {
                 })
                 .create();
     }
+
     private void sendResult(int resultCode, Date date) {
         if (getTargetFragment() == null) {
             return;

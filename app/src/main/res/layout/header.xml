@@ -4,18 +4,17 @@
     android:layout_height="190dp"
     android:background="@drawable/header_images">
 
-        <TextView
-            android:layout_margin="10dp"
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_centerInParent="true"
-            android:text="@string/your_tv_program"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/your_tv_program"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
 
 </RelativeLayout>

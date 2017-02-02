@@ -28,16 +28,16 @@ import static com.shtainyky.tvprogram.fragments.ListOfChannelsFragment.ARG_CATEG
 
 public class ListOfCategoriesFragment extends Fragment {
     private RecyclerView mCategoryRecyclerView;
-    private ListOfCategoriesAdapter mAdapter;
-    private List<Category> mCategories = new ArrayList<>();
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mProgress;
+    private List<Category> mCategories;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         mSource = new DatabaseSource(getContext());
+        mCategories = new ArrayList<>();
         mProgress = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
         mCategoryRecyclerView = (RecyclerView) view
                 .findViewById(R.id.categories_recycler_view);
@@ -52,13 +52,14 @@ public class ListOfCategoriesFragment extends Fragment {
         new MyProgramTask().execute();
     }
 
-    void startAnim(){
+    void startAnim() {
         mProgress.show();
     }
 
-    void stopAnim(){
+    void stopAnim() {
         mProgress.hide();
     }
+
     private class MyProgramTask extends AsyncTask<Void, Void, List<Category>> {
         @Override
         protected void onPreExecute() {
@@ -75,7 +76,7 @@ public class ListOfCategoriesFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Category> categories) {
             stopAnim();
-            mAdapter = new ListOfCategoriesAdapter(categories);
+            ListOfCategoriesAdapter mAdapter = new ListOfCategoriesAdapter(categories);
             mCategoryRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -122,7 +123,6 @@ public class ListOfCategoriesFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
             }
-
         }
     }
 

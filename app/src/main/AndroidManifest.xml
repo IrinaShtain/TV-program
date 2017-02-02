@@ -11,9 +11,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-        <activity android:name=".MainActivity"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoadingData"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoadingDataActivity"
+            android:screenOrientation="portrait" />
 
         <service
-            android:name=".service.MyIntentService"
-            android:exported="false"/>
+            android:name=".service.UpdatingTodayProgramIntentService"
+            android:exported="false" />
+        <service
+            android:name=".service.LoadingMonthProgramsIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

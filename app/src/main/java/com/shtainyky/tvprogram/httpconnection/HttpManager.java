@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.utils;
+package com.shtainyky.tvprogram.httpconnection;
 
 import java.io.IOException;
 

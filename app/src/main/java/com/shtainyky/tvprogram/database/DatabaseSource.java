@@ -3,7 +3,6 @@ package com.shtainyky.tvprogram.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -85,6 +84,7 @@ public class DatabaseSource {
         }
         return channelsTitles;
     }
+
     public List<String> getPreferredChannelsTitles() {
         List<String> channelsTitles = new ArrayList<>();
         if (QueryPreferences.areCategoriesLoaded(mContext)) {
@@ -247,24 +247,34 @@ public class DatabaseSource {
     }
 
     //working with programs
+    public void updateListPrograms(List<Program> programs, String whereDate) {
+        open();
+        Log.i("myLog", "update =" + programs.get(0).getDate());
+        mDatabase.delete(TABLE_NAME_PROGRAMS, COLUMN_PROGRAM_DATE + " = ?", new String[]{whereDate});
+        insertListPrograms(programs);
+        Log.i("myLog", "size =" + programs.size());
+        close();
+
+    }
+
     public void insertListPrograms(List<Program> programs) {
         open();
-            for (int i = 0; i < programs.size(); i++) {
-                Program program = programs.get(i);
-                ContentValues values = new ContentValues();
-                values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
-                values.put(COLUMN_PROGRAM_DATE, program.getDate());
-                values.put(COLUMN_PROGRAM_TIME, program.getTime());
-                values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
-                mDatabase.insert(TABLE_NAME_PROGRAMS, null, values);
-            }
-        Log.i("myLog", "getDate ="+ programs.get(0).getDate());
-        Log.i("myLog", "size ="+ programs.size());
+        for (int i = 0; i < programs.size(); i++) {
+            Program program = programs.get(i);
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
+            values.put(COLUMN_PROGRAM_DATE, program.getDate());
+            values.put(COLUMN_PROGRAM_TIME, program.getTime());
+            values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
+            mDatabase.insert(TABLE_NAME_PROGRAMS, null, values);
+        }
+        Log.i("myLog", "getDate =" + programs.get(0).getDate());
+        Log.i("myLog", "size =" + programs.size());
         close();
         QueryPreferences.setProgramLoaded(mContext, true);
     }
 
-    public List<Program> getPrograms(int channelId, String forDate) {
+    public synchronized List<Program> getPrograms(int channelId, String forDate) {
         List<Program> programs = new ArrayList<>();
         String[] tableColumns = new String[]{COLUMN_PROGRAM_DATE, COLUMN_PROGRAM_TIME, COLUMN_PROGRAM_TITLE};
         String whereClause = COLUMN_PROGRAM_CHANNEL_ID + " = ? AND " + COLUMN_PROGRAM_DATE + " = ?";
@@ -287,31 +297,4 @@ public class DatabaseSource {
         close();
         return programs;
     }
-
-    public List<Program> getAllpr() {
-        List<Program> programs = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME_PROGRAMS;
-        openRead();
-        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
-            int dateColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_DATE);
-            int timeColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TIME);
-            do {
-                Program program = new Program();
-                program.setDate(cursor.getString(dateColIndex));
-                program.setTitle(cursor.getString(titleColIndex));
-                program.setTime(cursor.getString(timeColIndex));
-                programs.add(program);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        close();
-
-        return programs;
-    }
-
-
-
 }
