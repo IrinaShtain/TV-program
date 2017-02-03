@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.Channel;
+import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -32,7 +32,7 @@ public class ListOfChannelsFragment extends Fragment {
     private RecyclerView mChannelsRecyclerView;
     private AVLoadingIndicatorView mProgress;
     private ListOfChannelsAdapter mAdapter;
-    private List<Channel> mChannels = new ArrayList<>();
+    private List<ChannelItem> mChannels = new ArrayList<>();
     private DatabaseSource mSource;
     private int categoryId;
     private Bundle bundle;
@@ -72,14 +72,14 @@ public class ListOfChannelsFragment extends Fragment {
     void stopAnim(){
         mProgress.hide();
     }
-    private class MyChannelsTask extends AsyncTask<Integer, Void, List<Channel>> {
+    private class MyChannelsTask extends AsyncTask<Integer, Void, List<ChannelItem>> {
         @Override
         protected void onPreExecute() {
             startAnim();
         }
 
         @Override
-        protected List<Channel> doInBackground(Integer... params) {
+        protected List<ChannelItem> doInBackground(Integer... params) {
             if (params[0] == 0) {
                 mChannels = mSource.getAllChannel();
             }
@@ -91,7 +91,7 @@ public class ListOfChannelsFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<Channel> channels) {
+        protected void onPostExecute(List<ChannelItem> channels) {
             stopAnim();
             mAdapter = new ListOfChannelsAdapter(channels);
             mChannelsRecyclerView.setAdapter(mAdapter);
@@ -115,7 +115,7 @@ public class ListOfChannelsFragment extends Fragment {
             mImageView.setOnClickListener(this);
         }
 
-        public void bindChannel(Channel channel) {
+        void bindChannel(ChannelItem channel) {
             mChannelName = channel.getName();
             mChannelId = channel.getId();
             mChannelPreferred = channel.getIs_preferred();
@@ -163,9 +163,9 @@ public class ListOfChannelsFragment extends Fragment {
     }
 
     private class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsFragment.ListOfChannelsHolder> {
-        private List<Channel> mChannels;
+        private List<ChannelItem> mChannels;
 
-        public ListOfChannelsAdapter(List<Channel> channels) {
+        ListOfChannelsAdapter(List<ChannelItem> channels) {
             mChannels = channels;
         }
 
@@ -178,7 +178,7 @@ public class ListOfChannelsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ListOfChannelsFragment.ListOfChannelsHolder holder, int position) {
-            Channel channel = mChannels.get(position);
+            ChannelItem channel = mChannels.get(position);
             holder.bindChannel(channel);
         }
 

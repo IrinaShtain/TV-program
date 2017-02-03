@@ -5,33 +5,31 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.model.Category;
-import com.shtainyky.tvprogram.model.Channel;
-import com.shtainyky.tvprogram.model.Program;
+import com.shtainyky.tvprogram.model.CategoryItem;
+import com.shtainyky.tvprogram.model.ChannelItem;
+import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CATEGORY_ID;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CATEGORY_IMAGE_URL;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CATEGORY_TITLE;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CHANNEL_CATEGORY_ID;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CHANNEL_ID;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CHANNEL_IMAGE_URL;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CHANNEL_IS_PREFERRED;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_CHANNEL_TITLE;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_PROGRAM_CHANNEL_ID;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_PROGRAM_DATE;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_PROGRAM_TIME;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.COLUMN_PROGRAM_TITLE;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.TABLE_NAME_CATEGORIES;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.TABLE_NAME_CHANNELS;
-import static com.shtainyky.tvprogram.database.DatabaseConstants.TABLE_NAME_PROGRAMS;
+import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL;
+import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_TITLE;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_TITLE;
+import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_CHANNEL_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_DATE;
+import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TIME;
+import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TITLE;
 
 public class DatabaseSource {
 
@@ -44,24 +42,11 @@ public class DatabaseSource {
         mDbHelper = new DatabaseHelper(mContext);
     }
 
-    private void open() {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    private void openRead() {
-        mDatabase = mDbHelper.getReadableDatabase();
-    }
-
-    private void close() {
-        mDbHelper.close();
-    }
-
     public void deleteAllTables() {
-        open();
-        mDatabase.delete(TABLE_NAME_CHANNELS, null, null);
-        mDatabase.delete(TABLE_NAME_PROGRAMS, null, null);
-        mDatabase.delete(TABLE_NAME_CATEGORIES, null, null);
-        close();
+        mContext.getContentResolver().delete(ContractClass.Channels.CONTENT_URI, null, null);
+        mContext.getContentResolver().delete(ContractClass.Categories.CONTENT_URI, null, null);
+        mContext.getContentResolver().delete(ContractClass.Channels.CONTENT_URI, null, null);
+
         Toast.makeText(mContext, R.string.delete_data_db, Toast.LENGTH_SHORT).show();
     }
 
@@ -70,131 +55,153 @@ public class DatabaseSource {
     public List<String> getAllChannelsTitles() {
         List<String> channelsTitles = new ArrayList<>();
         if (QueryPreferences.areCategoriesLoaded(mContext)) {
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS;
-            open();
-
-            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    channelsTitles.add(cursor.getString(1));
-                } while (cursor.moveToNext());
+            Cursor c = mContext.getContentResolver().query(
+                    ContractClass.Channels.CONTENT_URI,
+                    ContractClass.Channels.DEFAULT_PROJECTION,
+                    null,
+                    null,
+                    null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        String firstName = c.getString(c.getColumnIndex(COLUMN_CHANNEL_TITLE));
+                        channelsTitles.add(firstName);
+                    } while (c.moveToNext());
+                }
+                c.close();
             }
-            cursor.close();
-            close();
         }
+        Log.d("myLog", "getAllChannelsTitles");
         return channelsTitles;
     }
 
     public List<String> getPreferredChannelsTitles() {
         List<String> channelsTitles = new ArrayList<>();
         if (QueryPreferences.areCategoriesLoaded(mContext)) {
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS +
-                    " WHERE " + COLUMN_CHANNEL_IS_PREFERRED + " = 1 ";
-            open();
-
-            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    channelsTitles.add(cursor.getString(1));
-                } while (cursor.moveToNext());
+            Cursor c = mContext.getContentResolver().query(
+                    ContractClass.Channels.CONTENT_URI,
+                    ContractClass.Channels.DEFAULT_PROJECTION,
+                    COLUMN_CHANNEL_IS_PREFERRED + "=?",
+                    new String[]{"1"},
+                    null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        channelsTitles.add(c.getString(c.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    } while (c.moveToNext());
+                }
+                c.close();
             }
-            cursor.close();
-            close();
         }
+        Log.d("myLog", "getPreferredChannelsTitles");
         return channelsTitles;
     }
 
-    public List<Channel> getAllChannel() {
-        List<Channel> channels = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS;
-        open();
-
-        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Channel channel = new Channel();
-                channel.setId(cursor.getInt(0));
-                channel.setName(cursor.getString(1));
-                channel.setCategory_name(getCategoryNameForChannel(cursor.getInt(3)));
-                channels.add(channel);
-            } while (cursor.moveToNext());
+    public List<ChannelItem> getAllChannel() {
+        List<ChannelItem> channels = new ArrayList<>();
+        Cursor cursor = mContext.getContentResolver().query(
+                ContractClass.Channels.CONTENT_URI,
+                ContractClass.Channels.DEFAULT_PROJECTION,
+                null,
+                null,
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    ChannelItem channel = new ChannelItem();
+                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
+                    channel.setCategory_name(categoryName);
+                    channels.add(channel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
+        Log.d("myLog", "getAllChannel");
+        return channels;
 
-        cursor.close();
-        close();
+    }
 
+    public List<ChannelItem> getChannelsForCategory(Integer categoryId) {
+        List<ChannelItem> channels = new ArrayList<>();
+        Log.d("myLog", "getChannelsForCategory" + categoryId);
+        Cursor cursor = mContext.getContentResolver().query(
+                ContractClass.Channels.CONTENT_URI,
+                ContractClass.Channels.DEFAULT_PROJECTION,
+                COLUMN_CHANNEL_CATEGORY_ID + "=?",
+                new String[]{String.valueOf(categoryId)},
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    ChannelItem channel = new ChannelItem();
+                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
+                    channel.setCategory_name(categoryName);
+                    channels.add(channel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        Log.d("myLog", "getChannelsForCategory");
         return channels;
     }
 
-    public List<Channel> getChannelsForCategory(Integer categoryId) {
-        List<Channel> channels = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS +
-                " WHERE " + COLUMN_CHANNEL_CATEGORY_ID + " = " + String.valueOf(categoryId);
-        open();
-        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Channel channel = new Channel();
-                channel.setId(cursor.getInt(0));
-                channel.setName(cursor.getString(1));
-                channel.setCategory_name(getCategoryNameForChannel(cursor.getInt(3)));
-                channels.add(channel);
-            } while (cursor.moveToNext());
+    public List<ChannelItem> getPreferredChannels() {
+        List<ChannelItem> channels = new ArrayList<>();
+        Cursor cursor = mContext.getContentResolver().query(
+                ContractClass.Channels.CONTENT_URI,
+                ContractClass.Channels.DEFAULT_PROJECTION,
+                COLUMN_CHANNEL_IS_PREFERRED + "=?",
+                new String[]{"" + 1},
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    ChannelItem channel = new ChannelItem();
+                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    channel.setCategory_name(getCategoryNameForChannel(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
+                    channels.add(channel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            Log.d("myLog", "getPreferredChannels");
         }
-
-        cursor.close();
-        close();
-
-        return channels;
-    }
-
-    public List<Channel> getPreferredChannels() {
-        List<Channel> channels = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME_CHANNELS +
-                " WHERE " + COLUMN_CHANNEL_IS_PREFERRED + " = 1 ";
-        open();
-        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Channel channel = new Channel();
-                channel.setId(cursor.getInt(0));
-                channel.setName(cursor.getString(1));
-                channel.setCategory_name(getCategoryNameForChannel(cursor.getInt(3)));
-                channels.add(channel);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        close();
-
         return channels;
     }
 
     private String getCategoryNameForChannel(int id) {
-        String query = "SELECT " + COLUMN_CATEGORY_TITLE + " FROM " + TABLE_NAME_CATEGORIES
-                + " WHERE " + COLUMN_CATEGORY_ID + " = " + String.valueOf(id);
-        openRead();
-        String titleCategory;
-        Cursor cursor = mDatabase.rawQuery(query, null);
+        Log.d("myLog", "getCategoryNameForChannel" + id);
+//
+        String titleCategory = "category";
+        Cursor cursor = mContext.getContentResolver().query(
+                ContractClass.Categories.CONTENT_URI,
+                ContractClass.Categories.DEFAULT_PROJECTION,
+                COLUMN_CATEGORY_ID + " = ? ",
+                new String[]{"" + id},
+                null);
         if (cursor != null && cursor.moveToFirst()) {
-            titleCategory = cursor.getString(0);
+            titleCategory = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY_TITLE));
             cursor.close();
-        } else titleCategory = "Category";
-        close();
+        }
         return titleCategory;
     }
 
-    public void insertListChannels(List<Channel> channels) {
-        open();
+    public void insertListChannels(List<ChannelItem> channels) {
+
         for (int i = 0; i < channels.size(); i++) {
-            Channel channel = channels.get(i);
+            ChannelItem channel = channels.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_CHANNEL_ID, channel.getId());
             values.put(COLUMN_CHANNEL_TITLE, channel.getName());
             values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPictureUrl());
             values.put(COLUMN_CHANNEL_CATEGORY_ID, channel.getCategory_id());
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);
-            mDatabase.insert(TABLE_NAME_CHANNELS, null, values);
+            Uri newUri = mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
+            Log.d("myLog", "Channel: " + newUri.toString());
         }
 
         QueryPreferences.setChannelLoaded(mContext, true);
@@ -203,98 +210,101 @@ public class DatabaseSource {
     public void setChannelPreferred(int channelPreferredId, int state) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_CHANNEL_IS_PREFERRED, state);
-        open();
-        int k = mDatabase.update(TABLE_NAME_CHANNELS, values, COLUMN_CHANNEL_ID + " = ?",
-                new String[]{String.valueOf(channelPreferredId)});
-        Log.i("myLog", "mDatabase.updat " + k);
-        close();
-
+        int k = mContext.getContentResolver().update(ContractClass.Channels.CONTENT_URI,
+                values,
+                COLUMN_CHANNEL_ID + " = ?",
+                new String[]{"" + channelPreferredId});
+        Log.i("myLog", "Channels.updat " + k);
     }
 
     //working with categories
-    public void insertListCategories(List<Category> categories) {
-        open();
+    public void insertListCategories(List<CategoryItem> categories) {
+
         for (int i = 0; i < categories.size(); i++) {
-            Category category = categories.get(i);
+            CategoryItem category = categories.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_CATEGORY_ID, category.getId());
             values.put(COLUMN_CATEGORY_TITLE, category.getTitle());
             values.put(COLUMN_CATEGORY_IMAGE_URL, category.getImageUrl());
-            mDatabase.insert(TABLE_NAME_CATEGORIES, null, values);
+            Uri newUri = mContext.getContentResolver().insert(ContractClass.Categories.CONTENT_URI, values);
+            Log.d("myLog", "Categoriesinsert, result Uri : " + newUri.toString());
         }
-        close();
         QueryPreferences.setCategoryLoaded(mContext, true);
     }
 
-    public List<Category> getAllCategories() {
-        List<Category> categories = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_NAME_CATEGORIES;
-        openRead();
+    public List<CategoryItem> getAllCategories() {
+        List<CategoryItem> categories = new ArrayList<>();
 
-        Cursor cursor = mDatabase.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Category category = new Category();
-                category.setId(cursor.getInt(0));
-                category.setTitle(cursor.getString(1));
-                categories.add(category);
-            } while (cursor.moveToNext());
+        Cursor cursor = mContext.getContentResolver().query(
+                ContractClass.Categories.CONTENT_URI,
+                ContractClass.Categories.DEFAULT_PROJECTION,
+                null,
+                null,
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    CategoryItem category = new CategoryItem();
+                    category.setId(cursor.getInt(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_ID)));
+                    category.setTitle(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_TITLE)));
+                    categories.add(category);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
-        close();
-
+        Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
         return categories;
     }
 
     //working with programs
-    public void updateListPrograms(List<Program> programs, String whereDate) {
-        open();
+    public void updateListPrograms(List<ProgramItem> programs, String whereDate) {
         Log.i("myLog", "update =" + programs.get(0).getDate());
-        mDatabase.delete(TABLE_NAME_PROGRAMS, COLUMN_PROGRAM_DATE + " = ?", new String[]{whereDate});
-        insertListPrograms(programs);
-        Log.i("myLog", "size =" + programs.size());
-        close();
 
+        int k = mContext.getContentResolver().delete(ContractClass.Programs.CONTENT_URI,
+                COLUMN_PROGRAM_DATE + " = ?",
+                new String[]{whereDate});
+        insertListPrograms(programs);
+        Log.i("myLog", "delete =" + k);
     }
 
-    public void insertListPrograms(List<Program> programs) {
-        open();
+    public void insertListPrograms(List<ProgramItem> programs) {
         for (int i = 0; i < programs.size(); i++) {
-            Program program = programs.get(i);
+            ProgramItem program = programs.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
             values.put(COLUMN_PROGRAM_DATE, program.getDate());
             values.put(COLUMN_PROGRAM_TIME, program.getTime());
             values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
-            mDatabase.insert(TABLE_NAME_PROGRAMS, null, values);
+            mContext.getContentResolver().insert(ContractClass.Programs.CONTENT_URI, values);
         }
         Log.i("myLog", "getDate =" + programs.get(0).getDate());
         Log.i("myLog", "size =" + programs.size());
-        close();
         QueryPreferences.setProgramLoaded(mContext, true);
     }
 
-    public synchronized List<Program> getPrograms(int channelId, String forDate) {
-        List<Program> programs = new ArrayList<>();
-        String[] tableColumns = new String[]{COLUMN_PROGRAM_DATE, COLUMN_PROGRAM_TIME, COLUMN_PROGRAM_TITLE};
-        String whereClause = COLUMN_PROGRAM_CHANNEL_ID + " = ? AND " + COLUMN_PROGRAM_DATE + " = ?";
+    public List<ProgramItem> getPrograms(int channelId, String forDate) {
+        List<ProgramItem> programs = new ArrayList<>();
         String[] whereArgs = new String[]{String.valueOf(channelId), forDate};
-        openRead();
-        Cursor cursor = mDatabase.query(TABLE_NAME_PROGRAMS, tableColumns, whereClause, whereArgs, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
-            int dateColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_DATE);
-            int timeColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TIME);
-            do {
-                Program program = new Program();
-                program.setTitle(cursor.getString(titleColIndex));
-                program.setTime(cursor.getString(timeColIndex));
-                program.setDate(cursor.getString(dateColIndex));
-                programs.add(program);
-            } while (cursor.moveToNext());
+        Cursor cursor = mContext.getContentResolver().query(ContractClass.Programs.CONTENT_URI,
+                ContractClass.Programs.DEFAULT_PROJECTION,
+                COLUMN_PROGRAM_CHANNEL_ID + " = ? AND " + COLUMN_PROGRAM_DATE + " = ?",
+                whereArgs,
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
+                int dateColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_DATE);
+                int timeColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TIME);
+                do {
+                    ProgramItem program = new ProgramItem();
+                    program.setTitle(cursor.getString(titleColIndex));
+                    program.setTime(cursor.getString(timeColIndex));
+                    program.setDate(cursor.getString(dateColIndex));
+                    programs.add(program);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
-        close();
         return programs;
     }
 }

@@ -1,6 +1,6 @@
 package com.shtainyky.tvprogram.model;
 
-public class Category {
+public class CategoryItem {
     private int id;
     private String title;
     private String image_url;

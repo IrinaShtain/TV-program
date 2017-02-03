@@ -30,7 +30,12 @@
             android:exported="false" />
         <service
             android:name=".service.LoadingMonthProgramsIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <provider
+            android:name=".database.MyContentProvider"
+            android:authorities="com.shtainyky.tvprogram"
+            android:exported="false"/>
     </application>
 
 </manifest>

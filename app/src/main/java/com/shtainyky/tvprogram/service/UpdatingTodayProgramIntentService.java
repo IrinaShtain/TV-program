@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.Program;
+import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
 import com.shtainyky.tvprogram.httpconnection.HttpManager;
@@ -19,8 +19,6 @@ import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.Calendar;
 import java.util.List;
-
-import static android.app.PendingIntent.FLAG_NO_CREATE;
 
 
 public class UpdatingTodayProgramIntentService extends IntentService {
@@ -60,7 +58,7 @@ public class UpdatingTodayProgramIntentService extends IntentService {
         Calendar calendar = Calendar.getInstance();
         long timeStamp = calendar.getTimeInMillis();
         String response = HttpManager.getData(Constants.URI_PROGRAMS + timeStamp);
-        List<Program> programs = Parse.parseJSONtoListPrograms(response);
+        List<ProgramItem> programs = Parse.parseJSONtoListPrograms(response);
         if (programs != null) {
             mSource.updateListPrograms(programs, programs.get(0).getDate());
             Log.i(TAG, " day +++++++++++++++++++" + programs.size());

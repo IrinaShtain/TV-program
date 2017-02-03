@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.Channel;
+import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -34,7 +34,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mProgressBar;
     private ListOfPreferredChannelsAdapter mAdapter;
-    private List<Channel> mChannels = new ArrayList<>();
+    private List<ChannelItem> mChannels = new ArrayList<>();
     private RecyclerView mChannelsRecyclerView;
     private Button mButtonPreferred;
     private View mView;
@@ -67,7 +67,6 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), "Preferred Button", Toast.LENGTH_SHORT).show();
                     Fragment fragment = new TVProgramFragment();
                     Bundle bundle = new Bundle();
                     bundle.putInt(ARG_PREFERRED, 1);
@@ -107,15 +106,15 @@ public class ListOfPreferredChannelsFragment extends Fragment {
 
     }
 
-    private class MyPreferredChannelsTask extends AsyncTask<Void, Void, List<Channel>> {
+    private class MyPreferredChannelsTask extends AsyncTask<Void, Void, List<ChannelItem>> {
         @Override
-        protected List<Channel> doInBackground(Void... params) {
+        protected List<ChannelItem> doInBackground(Void... params) {
             mChannels = mSource.getPreferredChannels();
             return mChannels;
         }
 
         @Override
-        protected void onPostExecute(List<Channel> channels) {
+        protected void onPostExecute(List<ChannelItem> channels) {
             mAdapter = new ListOfPreferredChannelsAdapter(channels);
             mChannelsRecyclerView.setAdapter(mAdapter);
             setupButton();
@@ -140,7 +139,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             mImageView.setOnClickListener(this);
         }
 
-        public void bindChannel(Channel channel) {
+        void bindChannel(ChannelItem channel) {
             mChannelName = channel.getName();
             mChannelId = channel.getId();
             mChannelNameTextView.setText(channel.getName());
@@ -181,9 +180,9 @@ public class ListOfPreferredChannelsFragment extends Fragment {
     }
 
     private class ListOfPreferredChannelsAdapter extends RecyclerView.Adapter<ListOfPreferredChannelsHolder> {
-        private List<Channel> mChannels;
+        private List<ChannelItem> mChannels;
 
-        public ListOfPreferredChannelsAdapter(List<Channel> channels) {
+        ListOfPreferredChannelsAdapter(List<ChannelItem> channels) {
             mChannels = channels;
         }
 
@@ -196,7 +195,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ListOfPreferredChannelsHolder holder, int position) {
-            Channel channel = mChannels.get(position);
+            ChannelItem channel = mChannels.get(position);
             holder.bindChannel(channel);
         }
 

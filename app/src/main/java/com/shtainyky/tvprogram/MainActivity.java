@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,10 +21,9 @@ import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.fragments.ListOfPreferredChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;
-import com.shtainyky.tvprogram.service.LoadingMonthProgramsIntentService;
 import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;
-import com.shtainyky.tvprogram.utils.QueryPreferences;
 import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar mToolbar;
@@ -44,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startLoadingActivity();
         } else {
             setFragment(new TVProgramFragment());
-            if (QueryPreferences.getStoredFirstTimeService(this))
-                Log.i("myLog", "startService");
-                LoadingMonthProgramsIntentService.startService(getApplicationContext());
         }
     }
 
@@ -115,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     private void showDialogTodaysUpdating() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tv_day_updating)
@@ -147,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     private void startLoadingData() {
         mSource.deleteAllTables();
         Toast.makeText(this, R.string.data_syns, Toast.LENGTH_SHORT).show();

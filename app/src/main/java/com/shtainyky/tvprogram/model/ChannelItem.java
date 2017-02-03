@@ -1,6 +1,6 @@
 package com.shtainyky.tvprogram.model;
 
-public class Channel {
+public class ChannelItem {
     private int id;
     private String name;
     private String category_name;

@@ -1,6 +1,6 @@
 package com.shtainyky.tvprogram.model;
 
-public class Program {
+public class ProgramItem {
     private int id;
     private int channel_id;
     private String date;

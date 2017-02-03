@@ -7,9 +7,9 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.model.Category;
-import com.shtainyky.tvprogram.model.Channel;
-import com.shtainyky.tvprogram.model.Program;
+import com.shtainyky.tvprogram.model.CategoryItem;
+import com.shtainyky.tvprogram.model.ChannelItem;
+import com.shtainyky.tvprogram.model.ProgramItem;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -26,15 +26,15 @@ import java.util.List;
 
 public class Parse {
 
-    public static List<Program> parseJSONtoListPrograms(String content) {
+    public static List<ProgramItem> parseJSONtoListPrograms(String content) {
         try {
-            List<Program> programs = new ArrayList<>();
+            List<ProgramItem> programs = new ArrayList<>();
             JSONArray array = new JSONArray(content);
-            Program program;
+            ProgramItem program;
             for (int i = 0; i < array.length(); i++) {
 
                 JSONObject object = array.getJSONObject(i);
-                program = new Program();
+                program = new ProgramItem();
                 program.setChannel_id(object.getInt("channel_id"));
                 program.setDate(object.getString("date"));
                 program.setTime(object.getString("time"));
@@ -52,16 +52,16 @@ public class Parse {
 
     }
 
-    public static List<Category> parseJSONtoListCategory(String content) {
+    public static List<CategoryItem> parseJSONtoListCategory(String content) {
         try {
-            List<Category> categories = new ArrayList<>();
+            List<CategoryItem> categories = new ArrayList<>();
             JSONArray array = new JSONArray(content);
-            Category category;
+            CategoryItem category;
             for (int i = 0; i < array.length(); i++) {
 
                 JSONObject object = array.getJSONObject(i);
 
-                category = new Category();
+                category = new CategoryItem();
                 category.setId(object.getInt("id"));
                 category.setTitle(object.getString("title"));
                 category.setImageUrl(object.getString("picture"));
@@ -78,17 +78,17 @@ public class Parse {
 
     }
 
-    public static List<Channel> parseJSONtoListChannels(String content) {
+    public static List<ChannelItem> parseJSONtoListChannels(String content) {
         try {
-            List<Channel> channels = new ArrayList<>();
+            List<ChannelItem> channels = new ArrayList<>();
             JSONArray array = new JSONArray(content);
-            Channel channel;
+            ChannelItem channel;
 
             for (int i = 0; i < array.length(); i++) {
 
                 JSONObject object = array.getJSONObject(i);
 
-                channel = new Channel();
+                channel = new ChannelItem();
                 channel.setId(object.getInt("id"));
                 channel.setName(object.getString("name"));
                 channel.setPictureUrl(object.getString("picture"));

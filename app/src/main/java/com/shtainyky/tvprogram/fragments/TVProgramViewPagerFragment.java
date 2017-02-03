@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.Program;
+import com.shtainyky.tvprogram.model.ProgramItem;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class TVProgramViewPagerFragment extends Fragment {
     private String forDate;
     private RecyclerView mTVProgramRecyclerView;
     private TVProgramAdapter mAdapter;
-    private List<Program> mPrograms;
+    private List<ProgramItem> mPrograms;
     private Button mGetDateButton;
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mProgress;
@@ -115,14 +115,14 @@ public class TVProgramViewPagerFragment extends Fragment {
     }
 
 
-    public class MyTVProgramTask extends AsyncTask<String, Void, List<Program>> {
+    public class MyTVProgramTask extends AsyncTask<String, Void, List<ProgramItem>> {
         @Override
         protected void onPreExecute() {
             startAnim();
         }
 
         @Override
-        protected List<Program> doInBackground(String... params) {
+        protected List<ProgramItem> doInBackground(String... params) {
             mPrograms = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
             Log.i("myLog", "MyTVProgramTask = size" + mPrograms.size());
             Log.i("myLog", "MyTVProgramTask = params[1]" + params[1]);
@@ -130,7 +130,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<Program> programs) {
+        protected void onPostExecute(List<ProgramItem> programs) {
             stopAnim();
             mAdapter = new TVProgramAdapter(programs);
             mTVProgramRecyclerView.setAdapter(mAdapter);
@@ -151,7 +151,7 @@ public class TVProgramViewPagerFragment extends Fragment {
             mDateTextView = (TextView) itemView.findViewById(R.id.date);
         }
 
-        public void bindProgram(Program program) {
+        void bindProgram(ProgramItem program) {
             mTitleTextView.setText(program.getTitle());
             mTimeTextView.setText(program.getTime());
             mDateTextView.setText(program.getDate());
@@ -159,9 +159,9 @@ public class TVProgramViewPagerFragment extends Fragment {
     }
 
     private class TVProgramAdapter extends RecyclerView.Adapter<TVProgramHolder> {
-        private List<Program> mPrograms;
+        private List<ProgramItem> mPrograms;
 
-        public TVProgramAdapter(List<Program> programs) {
+        TVProgramAdapter(List<ProgramItem> programs) {
             mPrograms = programs;
         }
 
@@ -174,7 +174,7 @@ public class TVProgramViewPagerFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(TVProgramHolder holder, int position) {
-            Program program = mPrograms.get(position);
+            ProgramItem program = mPrograms.get(position);
             holder.bindProgram(program);
         }
 

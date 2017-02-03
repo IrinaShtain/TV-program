@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.Category;
+import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -30,7 +30,7 @@ public class ListOfCategoriesFragment extends Fragment {
     private RecyclerView mCategoryRecyclerView;
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mProgress;
-    private List<Category> mCategories;
+    private List<CategoryItem> mCategories;
 
     @Nullable
     @Override
@@ -60,21 +60,21 @@ public class ListOfCategoriesFragment extends Fragment {
         mProgress.hide();
     }
 
-    private class MyProgramTask extends AsyncTask<Void, Void, List<Category>> {
+    private class MyProgramTask extends AsyncTask<Void, Void, List<CategoryItem>> {
         @Override
         protected void onPreExecute() {
             startAnim();
         }
 
         @Override
-        protected List<Category> doInBackground(Void... params) {
+        protected List<CategoryItem> doInBackground(Void... params) {
             mCategories = mSource.getAllCategories();
             Log.i("myLog", "MyProgramTask");
             return mCategories;
         }
 
         @Override
-        protected void onPostExecute(List<Category> categories) {
+        protected void onPostExecute(List<CategoryItem> categories) {
             stopAnim();
             ListOfCategoriesAdapter mAdapter = new ListOfCategoriesAdapter(categories);
             mCategoryRecyclerView.setAdapter(mAdapter);
@@ -95,7 +95,7 @@ public class ListOfCategoriesFragment extends Fragment {
             mImageView.setOnClickListener(this);
         }
 
-        public void bindCategory(Category category, int position) {
+        void bindCategory(CategoryItem category, int position) {
             mCategoryNameTextView.setText(category.getTitle());
             String imageName = Constants.CATEGORY_IMAGE + category.getId() + Constants.PNG;
             Parse.loadImageBitmapFromStorage(getContext(),
@@ -127,9 +127,9 @@ public class ListOfCategoriesFragment extends Fragment {
     }
 
     private class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolder> {
-        private List<Category> mCategories;
+        private List<CategoryItem> mCategories;
 
-        public ListOfCategoriesAdapter(List<Category> categories) {
+        ListOfCategoriesAdapter(List<CategoryItem> categories) {
             mCategories = categories;
         }
 
@@ -142,7 +142,7 @@ public class ListOfCategoriesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ListOfCategoriesHolder holder, int position) {
-            Category category = mCategories.get(position);
+            CategoryItem category = mCategories.get(position);
             holder.bindCategory(category, position);
         }
 
