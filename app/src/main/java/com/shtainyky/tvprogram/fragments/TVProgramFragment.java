@@ -23,6 +23,13 @@ public class TVProgramFragment extends Fragment {
     private List<String> list;
     private int arg;
 
+    public static TVProgramFragment newInstance(int preferredFlag) {
+        TVProgramFragment fragment = new TVProgramFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_PREFERRED, preferredFlag);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Nullable
     @Override

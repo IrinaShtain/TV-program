@@ -29,7 +29,6 @@ public class LoadingDataActivity extends AppCompatActivity {
     private final static String TAG = "myLog";
     private DatabaseSource mSource;
     private AVLoadingIndicatorView mCustomProgresBar;
-    private ProgressBar mProgress;
 
 
     @Override
@@ -38,9 +37,6 @@ public class LoadingDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loadind_data);
         setupToolbarMenu();
         mCustomProgresBar = (AVLoadingIndicatorView) findViewById(R.id.avi);
-        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgress.setProgress(5);
-
         mSource = new DatabaseSource(this);
         if (CheckInternet.isOnline(this)) {
             new MyLoadingChannelsTask().execute();
@@ -96,7 +92,6 @@ public class LoadingDataActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mProgress.setProgress(60);
             Toast.makeText(getApplicationContext(), R.string.categories_are_loaded, Toast.LENGTH_SHORT).show();
             if (QueryPreferences.areChannelsLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
@@ -132,7 +127,6 @@ public class LoadingDataActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mProgress.setProgress(30);
             Toast.makeText(getApplicationContext(), R.string.channels_are_loaded, Toast.LENGTH_SHORT).show();
             if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
                 finishLoading();
@@ -161,7 +155,6 @@ public class LoadingDataActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mProgress.setProgress(90);
             QueryPreferences.setCountLoadedDays(getApplicationContext(), 7);
             Toast.makeText(getApplicationContext(), R.string.programs_are_loaded, Toast.LENGTH_SHORT).show();
             LoadingMonthProgramsIntentService.startService(getApplicationContext(), true);

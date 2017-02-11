@@ -37,6 +37,14 @@ public class ListOfChannelsFragment extends Fragment {
     private int categoryId;
     private Bundle bundle;
 
+    public static ListOfChannelsFragment newInstance(int categoryId) {
+        ListOfChannelsFragment fragment = new ListOfChannelsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_CATEGORY_ID, categoryId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

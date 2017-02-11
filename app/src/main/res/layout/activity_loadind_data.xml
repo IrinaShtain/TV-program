@@ -36,12 +36,4 @@
         app:indicatorColor="@color/colorPrimary"
         app:indicatorName="PacmanIndicator" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:max="100" />
-
 </LinearLayout>

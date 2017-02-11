@@ -105,11 +105,7 @@ public class ListOfCategoriesFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Fragment fragment = new ListOfChannelsFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(ARG_CATEGORY_ID, mCategoryId + 1);
-            fragment.setArguments(bundle);
-
+            ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(mCategoryId+1);
             FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
             Fragment mFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
             if (mFragment == null) {

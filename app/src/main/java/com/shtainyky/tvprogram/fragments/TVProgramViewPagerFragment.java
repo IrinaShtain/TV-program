@@ -43,6 +43,15 @@ public class TVProgramViewPagerFragment extends Fragment {
 
     }
 
+    public static TVProgramViewPagerFragment newInstance(int position) {
+
+        TVProgramViewPagerFragment fragment = new TVProgramViewPagerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_POSITION, position);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
@@ -88,7 +97,6 @@ public class TVProgramViewPagerFragment extends Fragment {
             public void onClick(View v) {
                 DatePickerFragment dialog = new DatePickerFragment();
                 dialog.setTargetFragment(TVProgramViewPagerFragment.this, REQUEST_DATE);
-                requestData(channelId, forDate);
                 dialog.show(getFragmentManager(), "TVProgramViewPagerFragment");
             }
         });

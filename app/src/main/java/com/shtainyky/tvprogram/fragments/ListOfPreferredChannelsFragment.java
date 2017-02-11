@@ -67,11 +67,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new TVProgramFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(ARG_PREFERRED, 1);
-                    fragment.setArguments(bundle);
-                    setFragment(fragment);
+                    setFragment(TVProgramFragment.newInstance(1));
                 }
             });
         } else {
@@ -79,11 +75,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new ListOfChannelsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(ARG_CATEGORY_ID, 0);
-                    fragment.setArguments(bundle);
-                    setFragment(fragment);
+                    setFragment(ListOfChannelsFragment.newInstance(0));
                 }
             });
         }
