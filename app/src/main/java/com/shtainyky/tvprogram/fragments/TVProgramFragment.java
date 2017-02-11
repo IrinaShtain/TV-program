@@ -11,22 +11,18 @@ import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapter.TabPagerFragmentAdapter;
-import com.shtainyky.tvprogram.database.DatabaseSource;
-
-import java.util.List;
 
 public class TVProgramFragment extends Fragment {
     public static final String ARG_PREFERRED = "is_preferred";
     private View view;
     private TabPagerFragmentAdapter mAdapter;
-    private DatabaseSource mSource;
-    private List<String> list;
-    private int arg;
+    boolean mIsPreferred;
 
-    public static TVProgramFragment newInstance(int preferredFlag) {
+
+    public static TVProgramFragment newInstance(boolean preferredFlag) {
         TVProgramFragment fragment = new TVProgramFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_PREFERRED, preferredFlag);
+        bundle.putBoolean(ARG_PREFERRED, preferredFlag);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -35,24 +31,20 @@ public class TVProgramFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tvprograms, container, false);
-        mSource = new DatabaseSource(getContext());
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            arg = bundle.getInt(ARG_PREFERRED);
+            mIsPreferred = bundle.getBoolean(ARG_PREFERRED);
         }
-        if (arg == 0) {
-            list = mSource.getAllChannelsTitles();
-        } else {
-            list = mSource.getPreferredChannelsTitles();
-        }
-        setupTabs(list);
+
+        setupTabs(mIsPreferred);
         return view;
     }
 
-    private void setupTabs(List<String> titlesList) {
+    private void setupTabs(boolean isPreferred) {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        mAdapter = new TabPagerFragmentAdapter(getActivity().getSupportFragmentManager(), titlesList);
+        mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), isPreferred);
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }

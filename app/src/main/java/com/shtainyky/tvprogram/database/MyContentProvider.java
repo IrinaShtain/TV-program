@@ -213,6 +213,7 @@ public class MyContentProvider extends ContentProvider {
             case CHANNELS:
                 qb.setTables(ContractClass.Channels.TABLE_NAME_CHANNELS);
                 qb.setProjectionMap(mChannelsProjectionMap);
+                orderBy = ContractClass.Channels.COLUMN_CHANNEL_TITLE + " ASC ";
                 break;
             case CHANNELS_ID:
                 qb.setTables(ContractClass.Channels.TABLE_NAME_CHANNELS);

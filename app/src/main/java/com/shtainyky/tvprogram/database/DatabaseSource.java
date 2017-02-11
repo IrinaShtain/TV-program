@@ -3,8 +3,6 @@ package com.shtainyky.tvprogram.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -34,12 +32,9 @@ import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PRO
 public class DatabaseSource {
 
     private Context mContext;
-    private SQLiteDatabase mDatabase;
-    private SQLiteOpenHelper mDbHelper;
 
     public DatabaseSource(Context context) {
         mContext = context;
-        mDbHelper = new DatabaseHelper(mContext);
     }
 
     public void deleteAllTables() {
@@ -52,51 +47,6 @@ public class DatabaseSource {
 
 
     //working with channels
-    public List<String> getAllChannelsTitles() {
-        List<String> channelsTitles = new ArrayList<>();
-        if (QueryPreferences.areCategoriesLoaded(mContext)) {
-            Cursor c = mContext.getContentResolver().query(
-                    ContractClass.Channels.CONTENT_URI,
-                    ContractClass.Channels.DEFAULT_PROJECTION,
-                    null,
-                    null,
-                    null);
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    do {
-                        String firstName = c.getString(c.getColumnIndex(COLUMN_CHANNEL_TITLE));
-                        channelsTitles.add(firstName);
-                    } while (c.moveToNext());
-                }
-                c.close();
-            }
-        }
-        Log.d("myLog", "getAllChannelsTitles");
-        return channelsTitles;
-    }
-
-    public List<String> getPreferredChannelsTitles() {
-        List<String> channelsTitles = new ArrayList<>();
-        if (QueryPreferences.areCategoriesLoaded(mContext)) {
-            Cursor c = mContext.getContentResolver().query(
-                    ContractClass.Channels.CONTENT_URI,
-                    ContractClass.Channels.DEFAULT_PROJECTION,
-                    COLUMN_CHANNEL_IS_PREFERRED + "=?",
-                    new String[]{"1"},
-                    null);
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    do {
-                        channelsTitles.add(c.getString(c.getColumnIndex(COLUMN_CHANNEL_TITLE)));
-                    } while (c.moveToNext());
-                }
-                c.close();
-            }
-        }
-        Log.d("myLog", "getPreferredChannelsTitles");
-        return channelsTitles;
-    }
-
     public List<ChannelItem> getAllChannel() {
         List<ChannelItem> channels = new ArrayList<>();
         Cursor cursor = mContext.getContentResolver().query(
@@ -118,7 +68,7 @@ public class DatabaseSource {
             }
             cursor.close();
         }
-        Log.d("myLog", "getAllChannel");
+        Log.d("myLog", "getAllChannel" + channels.get(0).getName());
         return channels;
 
     }
@@ -163,7 +113,8 @@ public class DatabaseSource {
                     ChannelItem channel = new ChannelItem();
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
-                    channel.setCategory_name(getCategoryNameForChannel(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
+                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
+                    channel.setCategory_name(categoryName);
                     channels.add(channel);
                 } while (cursor.moveToNext());
             }
@@ -175,7 +126,6 @@ public class DatabaseSource {
 
     private String getCategoryNameForChannel(int id) {
         Log.d("myLog", "getCategoryNameForChannel" + id);
-//
         String titleCategory = "category";
         Cursor cursor = mContext.getContentResolver().query(
                 ContractClass.Categories.CONTENT_URI,
@@ -196,7 +146,7 @@ public class DatabaseSource {
             ChannelItem channel = channels.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_CHANNEL_ID, channel.getId());
-            values.put(COLUMN_CHANNEL_TITLE, channel.getName());
+            values.put(COLUMN_CHANNEL_TITLE, channel.getName().trim());
             values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPictureUrl());
             values.put(COLUMN_CHANNEL_CATEGORY_ID, channel.getCategory_id());
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);

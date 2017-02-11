@@ -1,35 +1,48 @@
 package com.shtainyky.tvprogram.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment;
+import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
 
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
-    private List<String> mChannels;
+    private Context mContext;
+    private List<ChannelItem> channelItemList;
+    private DatabaseSource mSource;
 
-    public TabPagerFragmentAdapter(FragmentManager fm, List<String> channels) {
+    public TabPagerFragmentAdapter(Context context, FragmentManager fm, boolean isPreferred) {
         super(fm);
-        mChannels = channels;
+        mContext = context;
+        mSource = new DatabaseSource(mContext);
+        if (isPreferred) {
+            channelItemList = mSource.getPreferredChannels();
+        } else {
+            channelItemList = mSource.getAllChannel();
+        }
+
 
     }
 
     @Override
     public Fragment getItem(int position) {
-        return TVProgramViewPagerFragment.newInstance(position+1);
+        int channelId = channelItemList.get(position).getId();
+        return TVProgramViewPagerFragment.newInstance(channelId);
     }
 
     @Override
     public int getCount() {
-        return mChannels.size();
+        return channelItemList.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mChannels.get(position);
+        return channelItemList.get(position).getName();
     }
 
 }

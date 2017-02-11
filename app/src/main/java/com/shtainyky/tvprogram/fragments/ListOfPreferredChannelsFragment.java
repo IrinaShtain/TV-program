@@ -67,7 +67,7 @@ public class ListOfPreferredChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setFragment(TVProgramFragment.newInstance(1));
+                    setFragment(TVProgramFragment.newInstance(true));
                 }
             });
         } else {
