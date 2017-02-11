@@ -56,11 +56,6 @@ public class ListOfChannelsFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        requestData(categoryId);
-        super.onStart();
-    }
 
     public void requestData(int categoryId) {
         new MyChannelsTask().execute(categoryId);
