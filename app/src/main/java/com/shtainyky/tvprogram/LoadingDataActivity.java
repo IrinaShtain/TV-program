@@ -73,16 +73,6 @@ public class LoadingDataActivity extends AppCompatActivity {
             //loading categories
             String contentCategories = HttpManager.getData(Constants.URI_CATEGORIES);
             List<CategoryItem> categories = Parse.parseJSONtoListCategory(contentCategories);
-            if (categories != null) {
-                for (int i = 0; i < categories.size(); i++) {
-                    String url = categories.get(i).getImageUrl();
-                    String imageName = Constants.CATEGORY_IMAGE
-                            + categories.get(i).getId()
-                            + Constants.PNG;
-                    Bitmap bitmap = Parse.loadImageFromServer(url);
-                    Parse.saveImageToStorage(getApplicationContext(), bitmap, imageName);
-                }
-            }
             mSource.insertListCategories(categories);
             QueryPreferences.setCategoryLoaded(getApplicationContext(), true);
             Log.i(TAG, "CATEGORIESdoInBackgroundEnd");
@@ -107,16 +97,6 @@ public class LoadingDataActivity extends AppCompatActivity {
             //loading channels
             String contentChannels = HttpManager.getData(Constants.URI_CHANNELS);
             List<ChannelItem> channels = Parse.parseJSONtoListChannels(contentChannels);
-            if (channels != null) {
-                for (int i = 0; i < channels.size(); i++) {
-                    String url = channels.get(i).getPictureUrl();
-                    String imageName = Constants.CHANNEL_IMAGE
-                            + channels.get(i).getId()
-                            + Constants.PNG;
-                    Bitmap bitmap = Parse.loadImageFromServer(url);
-                    Parse.saveImageToStorage(getApplicationContext(), bitmap, imageName);
-                }
-            }
             mSource.insertListChannels(channels);
             QueryPreferences.setChannelLoaded(getApplicationContext(), true);
             Log.i(TAG, "MyLoadingChannelsTaskdoInBackgroundEnd");

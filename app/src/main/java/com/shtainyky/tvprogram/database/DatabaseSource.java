@@ -60,6 +60,7 @@ public class DatabaseSource {
                 do {
                     ChannelItem channel = new ChannelItem();
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
                     String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
                     channel.setCategory_name(categoryName);
@@ -87,6 +88,7 @@ public class DatabaseSource {
                 do {
                     ChannelItem channel = new ChannelItem();
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
                     String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
                     channel.setCategory_name(categoryName);
@@ -150,8 +152,7 @@ public class DatabaseSource {
             values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPictureUrl());
             values.put(COLUMN_CHANNEL_CATEGORY_ID, channel.getCategory_id());
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);
-            Uri newUri = mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
-            Log.d("myLog", "Channel: " + newUri.toString());
+            mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
         }
 
         QueryPreferences.setChannelLoaded(mContext, true);

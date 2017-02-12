@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.listofcategoriespacage.ListOfCategoriesFragment;
-import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
+import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.fragments.ListOfPreferredChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;
 import com.shtainyky.tvprogram.listofcategoriespacage.CategoryListener;

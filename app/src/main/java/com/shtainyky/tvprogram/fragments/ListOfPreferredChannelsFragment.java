@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.Constants;
@@ -26,9 +27,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.shtainyky.tvprogram.fragments.ListOfChannelsFragment.ARG_CATEGORY_ID;
-import static com.shtainyky.tvprogram.fragments.TVProgramFragment.ARG_PREFERRED;
 
 public class ListOfPreferredChannelsFragment extends Fragment {
     private DatabaseSource mSource;
