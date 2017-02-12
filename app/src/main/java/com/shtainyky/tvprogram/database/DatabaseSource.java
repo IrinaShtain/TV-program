@@ -62,6 +62,7 @@ public class DatabaseSource {
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
                     channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
                     String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
                     channel.setCategory_name(categoryName);
                     channels.add(channel);
@@ -90,6 +91,7 @@ public class DatabaseSource {
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
                     channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
                     String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
                     channel.setCategory_name(categoryName);
                     channels.add(channel);
@@ -115,6 +117,8 @@ public class DatabaseSource {
                     ChannelItem channel = new ChannelItem();
                     channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
+                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
                     String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
                     channel.setCategory_name(categoryName);
                     channels.add(channel);

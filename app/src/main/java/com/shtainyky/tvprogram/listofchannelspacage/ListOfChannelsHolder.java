@@ -2,8 +2,11 @@ package com.shtainyky.tvprogram.listofchannelspacage;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.LoginFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,12 +17,12 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.CheckInternet;
-import com.shtainyky.tvprogram.utils.Constants;
 
 class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView mChannelNameTextView;
     private TextView mChannelCategoryTextView;
     private ImageView mImageView;
+    private ImageView mImageViewPreferred;
     private String mChannelName;
     private int mChannelId;
     private int mChannelPreferred;
@@ -36,6 +39,8 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
         mChannelCategoryTextView.setOnClickListener(this);
         mImageView = (ImageView) itemView.findViewById(R.id.channel_logo);
         mImageView.setOnClickListener(this);
+        mImageViewPreferred = (ImageView) itemView.findViewById(R.id.channel_preferred);
+        mImageViewPreferred.setOnClickListener(this);
     }
 
     void bindChannel(ChannelItem channel) {
@@ -44,6 +49,12 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
         mChannelPreferred = channel.getIs_preferred();
         mChannelNameTextView.setText(channel.getName());
         mChannelCategoryTextView.setText(String.valueOf(channel.getCategory_name()));
+
+        if (mChannelPreferred == 1) {
+            setChannelPreferred(R.drawable.ic_preferred_channel);
+        } else {
+            setChannelPreferred(R.drawable.ic_no);
+        }
         if (!CheckInternet.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_channelImage, Toast.LENGTH_SHORT).show();
         Parse.loadImageFromServerWithPicasso(mContext, channel.getPictureUrl(), mImageView);
@@ -75,11 +86,21 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
                                     Toast.makeText(mContext,
                                             mContext.getResources().getString(R.string.channel_will_be_preferred, mChannelName),
                                             Toast.LENGTH_LONG).show();
+                                    mChannelPreferred = 1;
+                                    setChannelPreferred(R.drawable.ic_preferred_channel);
                                 }
-
                             }
                         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void setChannelPreferred(int drawable) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //>= API 21
+            mImageViewPreferred.setImageDrawable(mContext.getResources().getDrawable(drawable, mContext.getTheme()));
+        } else {
+            mImageViewPreferred.setImageDrawable(mContext.getResources().getDrawable(drawable));
+        }
     }
 }
