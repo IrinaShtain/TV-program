@@ -39,6 +39,9 @@
     <string name="delete_channel_is_preferred">The channel %1$s will be deleted from list of preferred channels</string>
     <string name="selecting_title">Selecting preferred channels</string>
 
+    <!-- ListOfCategoriesFragment -->
+    <string name="turn_on_Internet_for_categoryImage">Please, turn on Internet for loading category\'s image.</string>
+
 
     <!-- ListOfChannelsFragment -->
     <string name="question_add_preferred">Would you like to add channel %1$s in list of preferred channels?</string>

@@ -17,15 +17,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
+import com.shtainyky.tvprogram.listofcategoriespacage.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.fragments.ListOfPreferredChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;
+import com.shtainyky.tvprogram.listofcategoriespacage.CategoryListener;
 import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;
 import com.shtainyky.tvprogram.utils.CheckInternet;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        CategoryListener {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private DatabaseSource mSource;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.item_list_categories:
                 closeDrawer();
-                setFragment(new ListOfCategoriesFragment());
+                setFragment(ListOfCategoriesFragment.newInstance());
                 break;
             case R.id.item_list_channels:
                 closeDrawer();
@@ -166,10 +168,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mFragment == null) {
             mFragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
         } else {
             mFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -199,4 +203,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    @Override
+    public void setChannelsForCategoryId(int categoryId) {
+        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId + 1);
+        setFragment(fragment);
+    }
 }

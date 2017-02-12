@@ -176,8 +176,7 @@ public class DatabaseSource {
             values.put(COLUMN_CATEGORY_ID, category.getId());
             values.put(COLUMN_CATEGORY_TITLE, category.getTitle());
             values.put(COLUMN_CATEGORY_IMAGE_URL, category.getImageUrl());
-            Uri newUri = mContext.getContentResolver().insert(ContractClass.Categories.CONTENT_URI, values);
-            Log.d("myLog", "Categoriesinsert, result Uri : " + newUri.toString());
+            mContext.getContentResolver().insert(ContractClass.Categories.CONTENT_URI, values);
         }
         QueryPreferences.setCategoryLoaded(mContext, true);
     }
@@ -197,6 +196,7 @@ public class DatabaseSource {
                     CategoryItem category = new CategoryItem();
                     category.setId(cursor.getInt(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_ID)));
                     category.setTitle(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_TITLE)));
+                    category.setImageUrl(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL)));
                     categories.add(category);
                 } while (cursor.moveToNext());
             }
