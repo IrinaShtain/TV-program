@@ -11,11 +11,11 @@ import com.shtainyky.tvprogram.model.CategoryItem;
 
 import java.util.List;
 
-public class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolder> {
+class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolder> {
     private List<CategoryItem> mCategories;
     private Context mContext;
 
-    public ListOfCategoriesAdapter(Context context, List<CategoryItem> categories) {
+    ListOfCategoriesAdapter(Context context, List<CategoryItem> categories) {
         mContext = context;
         mCategories = categories;
     }
