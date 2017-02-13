@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.fragments;
+package com.shtainyky.tvprogram.showprogrampacage;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.adapter.TabPagerFragmentAdapter;
+import com.shtainyky.tvprogram.showprogrampacage.adapters.TabPagerFragmentAdapter;
 
 public class TVProgramFragment extends Fragment {
     public static final String ARG_PREFERRED = "is_preferred";
     private View view;
-    private TabPagerFragmentAdapter mAdapter;
     boolean mIsPreferred;
 
 
@@ -44,7 +43,7 @@ public class TVProgramFragment extends Fragment {
     private void setupTabs(boolean isPreferred) {
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-        mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), isPreferred);
+        TabPagerFragmentAdapter mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), isPreferred);
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }

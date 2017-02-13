@@ -1,8 +1,7 @@
-package com.shtainyky.tvprogram.fragments;
+package com.shtainyky.tvprogram.showprogrampacage;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.showprogrampacage.adapters.TVProgramAdapter;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ public class TVProgramViewPagerFragment extends Fragment {
     private int channelId;
     private String forDate;
     private RecyclerView mTVProgramRecyclerView;
-    private TVProgramAdapter mAdapter;
     private List<ProgramItem> mPrograms;
     private Button mGetDateButton;
     private DatabaseSource mSource;
@@ -68,7 +66,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             channelId = bundle.getInt(ARG_POSITION);
-            requestData(channelId, forDate);
+            showProgram(forDate);
         }
         return view;
     }
@@ -83,7 +81,7 @@ public class TVProgramViewPagerFragment extends Fragment {
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
             setupUI();
-            requestData(channelId, String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
+            showProgram(String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
             Log.i("myLog", forDate);
         }
     }
@@ -110,8 +108,12 @@ public class TVProgramViewPagerFragment extends Fragment {
                 (getActivity()));
     }
 
-    private void requestData(int ChannelID, String forDate) {
-        new MyTVProgramTask().execute(String.valueOf(ChannelID), forDate);
+    private void showProgram(String forDate) {
+        startAnim();
+        mPrograms = mSource.getPrograms(channelId, forDate);
+        stopAnim();
+        TVProgramAdapter mAdapter = new TVProgramAdapter(getContext(), mPrograms);
+        mTVProgramRecyclerView.setAdapter(mAdapter);
     }
 
     void startAnim() {
@@ -122,73 +124,4 @@ public class TVProgramViewPagerFragment extends Fragment {
         mProgress.hide();
     }
 
-
-    public class MyTVProgramTask extends AsyncTask<String, Void, List<ProgramItem>> {
-        @Override
-        protected void onPreExecute() {
-            startAnim();
-        }
-
-        @Override
-        protected List<ProgramItem> doInBackground(String... params) {
-            mPrograms = mSource.getPrograms(Integer.parseInt(params[0]), params[1]);
-            Log.i("myLog", "MyTVProgramTask = size" + mPrograms.size());
-            Log.i("myLog", "MyTVProgramTask = params[1]" + params[1]);
-            return mPrograms;
-        }
-
-        @Override
-        protected void onPostExecute(List<ProgramItem> programs) {
-            stopAnim();
-            mAdapter = new TVProgramAdapter(programs);
-            mTVProgramRecyclerView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
-
-    private class TVProgramHolder extends RecyclerView.ViewHolder {
-        TextView mTitleTextView;
-        TextView mTimeTextView;
-        TextView mDateTextView;
-
-        TVProgramHolder(View itemView) {
-            super(itemView);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.title);
-            mTimeTextView = (TextView) itemView.findViewById(R.id.time);
-            mDateTextView = (TextView) itemView.findViewById(R.id.date);
-        }
-
-        void bindProgram(ProgramItem program) {
-            mTitleTextView.setText(program.getTitle());
-            mTimeTextView.setText(program.getTime());
-            mDateTextView.setText(program.getDate());
-        }
-    }
-
-    private class TVProgramAdapter extends RecyclerView.Adapter<TVProgramHolder> {
-        private List<ProgramItem> mPrograms;
-
-        TVProgramAdapter(List<ProgramItem> programs) {
-            mPrograms = programs;
-        }
-
-        @Override
-        public TVProgramHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.item_program, parent, false);
-            return new TVProgramHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(TVProgramHolder holder, int position) {
-            ProgramItem program = mPrograms.get(position);
-            holder.bindProgram(program);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mPrograms.size();
-        }
-    }
 }

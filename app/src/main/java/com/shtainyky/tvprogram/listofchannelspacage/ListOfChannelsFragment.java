@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ListOfChannelsFragment extends Fragment {
     public static final String ARG_CATEGORY_ID = "categoryId";
-    public static final String ARG_IS_PREFERRED = "is_prefereed";
+    public static final String ARG_IS_PREFERRED = "is_preferred";
     public static final int FLAG_PREFERRED = 1;
     public static final int FLAG_NOT_PREFERRED = 0;
 
@@ -90,7 +90,7 @@ public class ListOfChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCategoryListener.setChannelsForCategoryId(0, true);
+                    mCategoryListener.setChannelsForCategoryId(0, false);
                 }
             });
         }
