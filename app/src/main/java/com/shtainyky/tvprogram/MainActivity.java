@@ -17,17 +17,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
 import com.shtainyky.tvprogram.listofcategoriespacage.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
-import com.shtainyky.tvprogram.fragments.ListOfPreferredChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;
-import com.shtainyky.tvprogram.listofcategoriespacage.CategoryListener;
+import com.shtainyky.tvprogram.listofchannelspacage.PreferredChannelListener;
 import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;
 import com.shtainyky.tvprogram.utils.CheckInternet;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        CategoryListener {
+        ChannelListener,
+        PreferredChannelListener{
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private DatabaseSource mSource;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.item_tv_program:
                 closeDrawer();
-                setFragment(new TVProgramFragment());
+                setFragment(TVProgramFragment.newInstance(false));
                 break;
             case R.id.item_list_categories:
                 closeDrawer();
@@ -70,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.item_list_channels:
                 closeDrawer();
-                setFragment(new ListOfChannelsFragment());
+                setFragment(ListOfChannelsFragment.newInstance(0, false));
                 break;
             case R.id.item_list_preferred_channels:
                 closeDrawer();
-                setFragment(new ListOfPreferredChannelsFragment());
+                setFragment(ListOfChannelsFragment.newInstance(0, true));
                 break;
             case R.id.item_manual_sync:
                 showDialogForManualSyns();
@@ -204,8 +205,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
-    public void setChannelsForCategoryId(int categoryId) {
-        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId + 1);
+    public void setChannelsForCategoryId(int categoryId, boolean isPreferred) {
+        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
         setFragment(fragment);
     }
+
+
+
+    @Override
+    public void showPreferredChannels() {
+        TVProgramFragment fragment = TVProgramFragment.newInstance(true);
+        setFragment(fragment);
+    }
+
+
 }

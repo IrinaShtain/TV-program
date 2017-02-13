@@ -17,32 +17,32 @@ class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnC
     private ImageView mImageView;
     private int mCategoryId;
     private Context mContext;
-    private CategoryListener mCategoryListener;
+    private ChannelListener mChannelListener;
 
     ListOfCategoriesHolder(Context context, View itemView) {
         super(itemView);
         mContext = context;
-        if (!(mContext instanceof CategoryListener))
-            throw new AssertionError("Your class must implement CategoryListener");
-        mCategoryListener = (CategoryListener) mContext;
+        if (!(mContext instanceof ChannelListener))
+            throw new AssertionError("Your class must implement ChannelListener");
+        mChannelListener = (ChannelListener) mContext;
         mCategoryNameTextView = (TextView) itemView.findViewById(R.id.category_name);
         mCategoryNameTextView.setOnClickListener(this);
         mImageView = (ImageView) itemView.findViewById(R.id.category_logo);
         mImageView.setOnClickListener(this);
     }
 
-    void bindCategory(CategoryItem category, int position) {
+    void bindCategory(CategoryItem category) {
         mCategoryNameTextView.setText(category.getTitle());
         if (!CheckInternet.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_categoryImage, Toast.LENGTH_SHORT).show();
         Parse.loadImageFromServerWithPicasso(mContext, category.getImageUrl(), mImageView);
-        mCategoryId = position;
+        mCategoryId = category.getId();
     }
 
     @Override
     public void onClick(View v) {
-        if (mCategoryListener != null) {
-            mCategoryListener.setChannelsForCategoryId(mCategoryId);
+        if (mChannelListener != null) {
+            mChannelListener.setChannelsForCategoryId(mCategoryId, false);
         }
 
     }

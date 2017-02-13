@@ -30,7 +30,7 @@ class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolde
     @Override
     public void onBindViewHolder(ListOfCategoriesHolder holder, int position) {
         CategoryItem category = mCategories.get(position);
-        holder.bindCategory(category, position);
+        holder.bindCategory(category);
     }
 
     @Override

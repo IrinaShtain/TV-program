@@ -14,17 +14,19 @@ import java.util.List;
 class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsHolder> {
     private List<ChannelItem> mChannels;
     private Context mContext;
+    private int mFromFlag;
 
-    ListOfChannelsAdapter(Context context, List<ChannelItem> channels) {
+    ListOfChannelsAdapter(Context context, List<ChannelItem> channels, int fromFlag) {
         mContext = context;
         mChannels = channels;
+        mFromFlag = fromFlag;
     }
 
     @Override
     public ListOfChannelsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.item_channel, parent, false);
-        return new ListOfChannelsHolder(mContext, view);
+        return new ListOfChannelsHolder(mContext, view, mFromFlag);
     }
 
     @Override

@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.LoginFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +12,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.parser.Parse;
 import com.shtainyky.tvprogram.utils.CheckInternet;
@@ -26,11 +25,14 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
     private String mChannelName;
     private int mChannelId;
     private int mChannelPreferred;
+    private int mFromFlag;
     private Context mContext;
     private DatabaseSource mSource;
+    private ChannelListener mChannelListener;
 
-    ListOfChannelsHolder(Context context, View itemView) {
+    ListOfChannelsHolder(Context context, View itemView, int fromFlag) {
         super(itemView);
+        mFromFlag = fromFlag;
         mContext = context;
         mSource = new DatabaseSource(mContext);
         mChannelNameTextView = (TextView) itemView.findViewById(R.id.channel_name);
@@ -62,9 +64,16 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View v) {
+        String message;
+        boolean isPreferred = mChannelPreferred == 1;
+        if (!isPreferred)
+            message = mContext.getResources().getString(R.string.question_add_preferred, mChannelName);
+        else {
+            message = mContext.getResources().getString(R.string.question_delete_preferred, mChannelName);
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(R.string.selecting_title)
-                .setMessage(mContext.getResources().getString(R.string.question_add_preferred, mChannelName))
+                .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(mContext.getResources().getString(R.string.answer_no),
                         new DialogInterface.OnClickListener() {
@@ -78,9 +87,18 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (mChannelPreferred == 1) {
+                                    mSource.setChannelPreferred(mChannelId, 0);
                                     Toast.makeText(mContext,
-                                            mContext.getResources().getString(R.string.channel_is_preferred, mChannelName),
+                                            mContext.getResources().getString(R.string.delete_channel_is_preferred, mChannelName),
                                             Toast.LENGTH_LONG).show();
+                                    mChannelPreferred = 0;
+                                    setChannelPreferred(R.drawable.ic_no);
+                                    if (!(mContext instanceof ChannelListener))
+                                        throw new AssertionError("Your class must implement ChannelListener");
+                                    mChannelListener = (ChannelListener) mContext;
+                                    if (mFromFlag == ListOfChannelsFragment.FLAG_PREFERRED)
+                                        mChannelListener.setChannelsForCategoryId(0, true);
+
                                 } else {
                                     mSource.setChannelPreferred(mChannelId, 1);
                                     Toast.makeText(mContext,

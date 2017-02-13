@@ -32,22 +32,21 @@
     <string name="programs_are_loaded">Programs are loaded</string>
     <string name="please">Please, wait for loading data</string>
 
-    <!-- ListOfPreferredChannelsFragment -->
-    <string name="show_preferred">Show TV Program for preferred channels</string>
-    <string name="show_nothing">No selected channels\n Select?</string>
-    <string name="question_delete_preferred">Would you like to delete channel %1$s from list of preferred channels?</string>
-    <string name="delete_channel_is_preferred">The channel %1$s will be deleted from list of preferred channels</string>
-    <string name="selecting_title">Selecting preferred channels</string>
 
     <!-- ListOfCategoriesFragment -->
     <string name="turn_on_Internet_for_categoryImage">Please, turn on Internet for loading category\'s image</string>
 
-
+    <!-- ListOfPreferredChannelsFragment -->
     <!-- ListOfChannelsFragment -->
     <string name="question_add_preferred">Would you like to add channel %1$s in list of preferred channels?</string>
     <string name="channel_is_preferred">The channel %1$s was already added into list of preferred channels</string>
-    <string name="channel_will_be_preferred">The channel %1$s will be added into list of preferred channels</string>
+    <string name="channel_will_be_preferred">The channel %1$s is added into list of preferred channels</string>
     <string name="turn_on_Internet_for_channelImage">Please, turn on Internet for loading channel\'s image</string>
+    <string name="show_preferred">Show TV Program for preferred channels</string>
+    <string name="show_nothing">No selected channels\n Select?</string>
+    <string name="question_delete_preferred">Would you like to delete channel %1$s from list of preferred channels?</string>
+    <string name="delete_channel_is_preferred">The channel %1$s is deleted from list of preferred channels</string>
+    <string name="selecting_title">Selecting preferred channels</string>
 
     <!-- ItemCategoryLayout -->
     <string name="category_name">Category name</string>
