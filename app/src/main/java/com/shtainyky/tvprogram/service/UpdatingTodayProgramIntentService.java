@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.shtainyky.tvprogram.R;
@@ -56,16 +57,14 @@ public class UpdatingTodayProgramIntentService extends IntentService {
         Log.i(TAG, "Received an intent: " + intent);
         if (!Utils.isOnline(getApplicationContext())) return;
         final DatabaseSource source = new DatabaseSource(getApplicationContext());
-        DatabaseSource mSource = new DatabaseSource(getApplicationContext());
         Calendar calendar = Calendar.getInstance();
         long timeStamp = calendar.getTimeInMillis();
         Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
         callPrograms.enqueue(new Callback<List<ProgramItem>>() {
             @Override
             public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
-                source.insertListPrograms(response.body());
-                QueryPreferences.setCountLoadedDays(getApplicationContext(), 7);
-                if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
+                source.updateListPrograms(response.body(), String.valueOf(DateFormat.format("dd/MM/yyyy", Calendar.getInstance())));
+                NotificationAboutLoading.sendNotification(getApplicationContext(), getString(R.string.data_updated), 1);
                 Log.i(TAG, "ProgramItemononHandleIntentResponse");
             }
 
@@ -74,7 +73,7 @@ public class UpdatingTodayProgramIntentService extends IntentService {
                 Log.i(TAG, "ProgramItemonFailure");
             }
         });
-        NotificationAboutLoading.sendNotification(getApplicationContext(), getString(R.string.data_updated), 1);
+
 
     }
 }

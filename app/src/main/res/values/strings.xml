@@ -14,6 +14,7 @@
     <!-- MainActivity -->
     <string name="question_manual">Manual database synchronization with server takes some time. Start synchronization?</string>
     <string name="question_today_updating">Do you want to get automatically synchronize data four times a day? </string>
+    <string name="question_today_updating_is_on">Data are automatically synchronize four times a day. Do you want to cancel it? </string>
     <string name="answer_no">No</string>
     <string name="answer_yes">Yes</string>
     <string name="cancel">Cancel</string>

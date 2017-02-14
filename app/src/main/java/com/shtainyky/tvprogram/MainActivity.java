@@ -115,32 +115,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showDialogTodaysUpdating() {
+        String message;
+        final boolean wasOn;
+        if (!QueryPreferences.getShouldUpdateDayProgram(this))
+        {
+            message = getResources().getString(R.string.question_today_updating);
+            wasOn = false;
+        }
+        else
+        {
+            message = getResources().getString(R.string.question_today_updating_is_on);
+            wasOn = true;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tv_day_updating)
-                .setMessage(getResources().getString(R.string.question_today_updating))
+                .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(getResources().getString(R.string.answer_no),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), R.string.cancel, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),
+                                        R.string.cancel,
+                                        Toast.LENGTH_LONG).show();
                             }
                         })
-                .setNeutralButton("Cancel previous", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), false);
-                        UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-                        Toast.makeText(getApplicationContext(), R.string.data_update_not_four_times, Toast.LENGTH_SHORT).show();
-                    }
-                })
+
                 .setPositiveButton(getResources().getString(R.string.answer_yes),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), true);
-                                UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-                                Toast.makeText(getApplicationContext(), R.string.data_update_four_times, Toast.LENGTH_SHORT).show();
+                                if (!wasOn) {
+                                    QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), true);
+                                    UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
+                                    Toast.makeText(getApplicationContext(),
+                                            R.string.data_update_four_times,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                                else
+                                {
+                                    QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), false);
+                                    UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
+                                    Toast.makeText(getApplicationContext(),
+                                            R.string.data_update_not_four_times,
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
         AlertDialog alert = builder.create();
