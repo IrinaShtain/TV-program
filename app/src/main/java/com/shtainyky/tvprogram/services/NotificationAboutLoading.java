@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.service;
+package com.shtainyky.tvprogram.services;
 
 import android.app.Notification;
 import android.app.PendingIntent;

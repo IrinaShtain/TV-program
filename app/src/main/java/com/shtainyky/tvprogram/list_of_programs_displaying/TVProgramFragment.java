@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.showprogrampacage;
+package com.shtainyky.tvprogram.list_of_programs_displaying;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.showprogrampacage.adapters.TabPagerFragmentAdapter;
+import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TabPagerFragmentAdapter;
 
 public class TVProgramFragment extends Fragment {
     public static final String ARG_PREFERRED = "is_preferred";

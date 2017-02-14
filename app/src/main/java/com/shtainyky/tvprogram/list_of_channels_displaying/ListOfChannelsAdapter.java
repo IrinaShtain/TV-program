@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.listofchannelspacage;
+package com.shtainyky.tvprogram.list_of_channels_displaying;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

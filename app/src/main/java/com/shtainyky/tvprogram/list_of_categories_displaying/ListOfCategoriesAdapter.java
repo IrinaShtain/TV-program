@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.listofcategoriespacage;
+package com.shtainyky.tvprogram.list_of_categories_displaying;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

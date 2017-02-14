@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.showprogrampacage;
+package com.shtainyky.tvprogram.list_of_programs_displaying;
 
 import android.app.Activity;
 import android.app.Dialog;

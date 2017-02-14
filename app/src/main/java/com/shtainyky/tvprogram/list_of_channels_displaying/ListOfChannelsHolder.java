@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.listofchannelspacage;
+package com.shtainyky.tvprogram.list_of_channels_displaying;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
+import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.utils.Utils;
 

@@ -17,13 +17,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
-import com.shtainyky.tvprogram.listofcategoriespacage.ListOfCategoriesFragment;
-import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
+import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
+import com.shtainyky.tvprogram.list_of_categories_displaying.ListOfCategoriesFragment;
+import com.shtainyky.tvprogram.list_of_channels_displaying.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.loading_data.LoadingDataActivity;
-import com.shtainyky.tvprogram.showprogrampacage.TVProgramFragment;
-import com.shtainyky.tvprogram.listofchannelspacage.PreferredChannelListener;
-import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;
+import com.shtainyky.tvprogram.list_of_programs_displaying.TVProgramFragment;
+import com.shtainyky.tvprogram.list_of_channels_displaying.PreferredChannelListener;
+import com.shtainyky.tvprogram.services.UpdatingTodayProgramIntentService;
 import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 

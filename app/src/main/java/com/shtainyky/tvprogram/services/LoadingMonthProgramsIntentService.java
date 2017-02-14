@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.service;
+package com.shtainyky.tvprogram.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;

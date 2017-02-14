@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.showprogrampacage;
+package com.shtainyky.tvprogram.list_of_programs_displaying;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import android.widget.Button;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.showprogrampacage.adapters.TVProgramAdapter;
+import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TVProgramAdapter;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;

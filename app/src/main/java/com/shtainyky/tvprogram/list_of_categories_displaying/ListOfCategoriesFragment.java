@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.listofcategoriespacage;
+package com.shtainyky.tvprogram.list_of_categories_displaying;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

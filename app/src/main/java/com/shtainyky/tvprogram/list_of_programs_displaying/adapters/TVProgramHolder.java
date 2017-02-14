@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.showprogrampacage.adapters;
+package com.shtainyky.tvprogram.list_of_programs_displaying.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

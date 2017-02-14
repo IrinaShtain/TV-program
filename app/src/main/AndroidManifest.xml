@@ -26,10 +26,10 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".service.UpdatingTodayProgramIntentService"
+            android:name=".services.UpdatingTodayProgramIntentService"
             android:exported="false" />
         <service
-            android:name=".service.LoadingMonthProgramsIntentService"
+            android:name=".services.LoadingMonthProgramsIntentService"
             android:exported="false" />
 
         <provider
