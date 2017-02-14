@@ -11,10 +11,8 @@ import android.util.Log;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.utils.Constants;
 import com.shtainyky.tvprogram.httpconnection.HttpManager;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.Calendar;
@@ -56,7 +54,7 @@ public class UpdatingTodayProgramIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "Received an intent: " + intent);
-        if (!CheckInternet.isOnline(getApplicationContext())) return;
+        if (!Utils.isOnline(getApplicationContext())) return;
         final DatabaseSource source = new DatabaseSource(getApplicationContext());
         DatabaseSource mSource = new DatabaseSource(getApplicationContext());
         Calendar calendar = Calendar.getInstance();

@@ -11,11 +11,9 @@ import android.util.Log;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.utils.Constants;
 import com.shtainyky.tvprogram.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -55,7 +53,7 @@ public class LoadingMonthProgramsIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i("myLog", "will startService");
-        if (!CheckInternet.isOnline(getApplicationContext())) return;
+        if (!Utils.isOnline(getApplicationContext())) return;
         loadPrograms();
         NotificationAboutLoading.sendNotification(getApplicationContext(),
                 getResources().getString(R.string.data_are_loaded_for_period,

@@ -23,7 +23,7 @@ import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.showprogrampacage.TVProgramFragment;
 import com.shtainyky.tvprogram.listofchannelspacage.PreferredChannelListener;
 import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (CheckInternet.isOnline(getApplicationContext())) {
+                                if (Utils.isOnline(getApplicationContext())) {
                                     startLoadingData();
                                 } else {
                                     Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_LONG).show();

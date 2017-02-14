@@ -12,8 +12,7 @@ import com.shtainyky.tvprogram.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.service.LoadingMonthProgramsIntentService;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.Calendar;
@@ -34,7 +33,7 @@ public class LoadingDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loadind_data);
         setupToolbarMenu();
         mSource = new DatabaseSource(this);
-        if (CheckInternet.isOnline(this)) {
+        if (Utils.isOnline(this)) {
             loadChannels();
             loadCategories();
             loadPrograms();
@@ -103,26 +102,24 @@ public class LoadingDataActivity extends AppCompatActivity {
     }
 
     private void loadPrograms() {
-        for (int i = 0; i < 1; i++) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, i);
-            long timeStamp = calendar.getTimeInMillis();
-            Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
-            callPrograms.enqueue(new Callback<List<ProgramItem>>() {
-                @Override
-                public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
-                    mSource.insertListPrograms(response.body());
-                    QueryPreferences.setCountLoadedDays(getApplicationContext(), 7);
-                    if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
-                        finishLoading();
-                    Log.i(TAG, "ProgramItemonResponse");
-                }
+        Calendar calendar = Calendar.getInstance();
+        long timeStamp = calendar.getTimeInMillis();
+        Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+        callPrograms.enqueue(new Callback<List<ProgramItem>>() {
+            @Override
+            public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+                mSource.insertListPrograms(response.body());
+                QueryPreferences.setCountLoadedDays(getApplicationContext(), 1);
+                if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
+                    finishLoading();
+                Log.i(TAG, "ProgramItemonResponse");
+            }
 
-                @Override
-                public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
-                    Log.i(TAG, "ProgramItemonFailure");
-                }
-            });
-        }
+            @Override
+            public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
+                Log.i(TAG, "ProgramItemonFailure");
+            }
+        });
+
     }
 }

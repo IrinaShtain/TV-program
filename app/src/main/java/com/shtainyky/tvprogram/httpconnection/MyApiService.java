@@ -10,7 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-interface MyApiService {
+public interface MyApiService {
 
     @GET("chanels")
     Call<List<ChannelItem>> getChannelsList();

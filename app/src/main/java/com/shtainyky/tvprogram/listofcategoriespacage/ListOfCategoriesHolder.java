@@ -9,8 +9,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.CategoryItem;
-import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 
 class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView mCategoryNameTextView;
@@ -33,9 +32,9 @@ class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnC
 
     void bindCategory(CategoryItem category) {
         mCategoryNameTextView.setText(category.getTitle());
-        if (!CheckInternet.isOnline(mContext))
+        if (!Utils.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_categoryImage, Toast.LENGTH_SHORT).show();
-        Parse.loadImageFromServerWithPicasso(mContext, category.getImageUrl(), mImageView);
+        Utils.loadImageFromServerWithPicasso(mContext, category.getImageUrl(), mImageView);
         mCategoryId = category.getId();
     }
 

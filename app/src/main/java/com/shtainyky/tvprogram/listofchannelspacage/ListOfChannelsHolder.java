@@ -14,8 +14,7 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
 import com.shtainyky.tvprogram.model.ChannelItem;
-import com.shtainyky.tvprogram.parser.Parse;
-import com.shtainyky.tvprogram.utils.CheckInternet;
+import com.shtainyky.tvprogram.utils.Utils;
 
 class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView mChannelNameTextView;
@@ -57,9 +56,9 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
         } else {
             setChannelPreferred(R.drawable.ic_no);
         }
-        if (!CheckInternet.isOnline(mContext))
+        if (!Utils.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_channelImage, Toast.LENGTH_SHORT).show();
-        Parse.loadImageFromServerWithPicasso(mContext, channel.getPictureUrl(), mImageView);
+        Utils.loadImageFromServerWithPicasso(mContext, channel.getPictureUrl(), mImageView);
     }
 
     @Override
