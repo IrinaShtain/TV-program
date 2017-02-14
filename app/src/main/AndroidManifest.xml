@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoadingDataActivity"
+            android:name=".loading_data.LoadingDataActivity"
             android:screenOrientation="portrait" />
 
         <service
@@ -35,7 +35,11 @@
         <provider
             android:name=".database.MyContentProvider"
             android:authorities="com.shtainyky.tvprogram"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <service
+            android:name=".loading_data.LoadingDataIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

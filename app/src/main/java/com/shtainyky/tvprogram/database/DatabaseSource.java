@@ -40,7 +40,7 @@ public class DatabaseSource {
     public void deleteAllTables() {
         mContext.getContentResolver().delete(ContractClass.Channels.CONTENT_URI, null, null);
         mContext.getContentResolver().delete(ContractClass.Categories.CONTENT_URI, null, null);
-        mContext.getContentResolver().delete(ContractClass.Channels.CONTENT_URI, null, null);
+        mContext.getContentResolver().delete(ContractClass.Programs.CONTENT_URI, null, null);
 
         Toast.makeText(mContext, R.string.delete_data_db, Toast.LENGTH_SHORT).show();
     }

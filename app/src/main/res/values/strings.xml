@@ -28,9 +28,6 @@
     <!-- LoadingDataActivity -->
     <string name="loading_data">Loading data…</string>
     <string name="data_are_loaded">Data are loaded.\nThank you for waiting</string>
-    <string name="categories_are_loaded">Categories are loaded</string>
-    <string name="channels_are_loaded">Channels are loaded</string>
-    <string name="programs_are_loaded">Programs are loaded</string>
     <string name="please">Please, wait for loading data</string>
 
 

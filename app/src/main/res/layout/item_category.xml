@@ -11,6 +11,7 @@
 
     <ImageView
         android:id="@+id/category_logo"
+        android:layout_margin="2dp"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/channel_logo" />

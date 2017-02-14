@@ -20,6 +20,7 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.listofcategoriespacage.ChannelListener;
 import com.shtainyky.tvprogram.listofcategoriespacage.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.listofchannelspacage.ListOfChannelsFragment;
+import com.shtainyky.tvprogram.loading_data.LoadingDataActivity;
 import com.shtainyky.tvprogram.showprogrampacage.TVProgramFragment;
 import com.shtainyky.tvprogram.listofchannelspacage.PreferredChannelListener;
 import com.shtainyky.tvprogram.service.UpdatingTodayProgramIntentService;

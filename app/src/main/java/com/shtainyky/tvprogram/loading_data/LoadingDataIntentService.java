@@ -1,19 +1,18 @@
-package com.shtainyky.tvprogram;
+package com.shtainyky.tvprogram.loading_data;
 
+import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
+import com.shtainyky.tvprogram.utils.Utils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,18 +21,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoadingDataActivity extends AppCompatActivity {
+
+public class LoadingDataIntentService extends IntentService {
     private final static String TAG = "myLog";
     private DatabaseSource mSource;
 
+    public LoadingDataIntentService() {
+        super("LoadingDataIntentService");
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loadind_data);
-        setupToolbarMenu();
-        mSource = new DatabaseSource(this);
+    protected void onHandleIntent(Intent intent) {
         if (Utils.isOnline(this)) {
+            Log.i(TAG, "LoadingDataIntentService");
+            mSource = new DatabaseSource(getApplicationContext());
             loadChannels();
             loadCategories();
             loadPrograms();
@@ -45,24 +46,6 @@ public class LoadingDataActivity extends AppCompatActivity {
         }
     }
 
-    private void setupToolbarMenu() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(R.string.loading_data);
-    }
-
-    private void finishLoading() {
-        Toast.makeText(getApplicationContext(), R.string.data_are_loaded, Toast.LENGTH_SHORT).show();
-        QueryPreferences.setStoredFirstInstallation(getApplicationContext(), false);
-
-//        Intent intents = new Intent(getApplicationContext(), LoadingMonthProgramsIntentService.class);
-//        startService(intents);
-
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-
-        finish();
-    }
-
     private void loadChannels() {
         Call<List<ChannelItem>> callChannels = HttpManager.getApiService().getChannelsList();
         callChannels.enqueue(new Callback<List<ChannelItem>>() {
@@ -71,7 +54,7 @@ public class LoadingDataActivity extends AppCompatActivity {
                 mSource.insertListChannels(response.body());
                 QueryPreferences.setChannelLoaded(getApplicationContext(), true);
                 if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
-                    finishLoading();
+                    sendResult();
                 Log.i(TAG, "ChannelsOnResponse");
             }
 
@@ -90,7 +73,7 @@ public class LoadingDataActivity extends AppCompatActivity {
                 mSource.insertListCategories(response.body());
                 QueryPreferences.setCategoryLoaded(getApplicationContext(), true);
                 if (QueryPreferences.areProgramLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
-                    finishLoading();
+                    sendResult();
                 Log.i(TAG, "CATEGORIESonResponse");
             }
 
@@ -111,7 +94,7 @@ public class LoadingDataActivity extends AppCompatActivity {
                 mSource.insertListPrograms(response.body());
                 QueryPreferences.setCountLoadedDays(getApplicationContext(), 1);
                 if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
-                    finishLoading();
+                    sendResult();
                 Log.i(TAG, "ProgramItemonResponse");
             }
 
@@ -122,4 +105,13 @@ public class LoadingDataActivity extends AppCompatActivity {
         });
 
     }
+
+    private void sendResult() {
+        Intent intent = new Intent(LoadingDataActivity.BROADCAST_ACTION);
+        intent.putExtra(LoadingDataActivity.PARAM_STATUS, LoadingDataActivity.STATUS_FINISH);
+        Log.i(TAG, "MyIntentServicesendResult");
+        sendBroadcast(intent);
+    }
+
+
 }
