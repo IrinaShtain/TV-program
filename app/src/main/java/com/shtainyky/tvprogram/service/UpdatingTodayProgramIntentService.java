@@ -20,6 +20,10 @@ import com.shtainyky.tvprogram.utils.QueryPreferences;
 import java.util.Calendar;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class UpdatingTodayProgramIntentService extends IntentService {
     public static final String TAG = "myLog";
@@ -53,16 +57,25 @@ public class UpdatingTodayProgramIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "Received an intent: " + intent);
         if (!CheckInternet.isOnline(getApplicationContext())) return;
-
+        final DatabaseSource source = new DatabaseSource(getApplicationContext());
         DatabaseSource mSource = new DatabaseSource(getApplicationContext());
         Calendar calendar = Calendar.getInstance();
         long timeStamp = calendar.getTimeInMillis();
-        String response = HttpManager.getData(Constants.URI_PROGRAMS + timeStamp);
-        List<ProgramItem> programs = Parse.parseJSONtoListPrograms(response);
-        if (programs != null) {
-            mSource.updateListPrograms(programs, programs.get(0).getDate());
-            Log.i(TAG, " day +++++++++++++++++++" + programs.size());
-        }
+        Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+        callPrograms.enqueue(new Callback<List<ProgramItem>>() {
+            @Override
+            public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+                source.insertListPrograms(response.body());
+                QueryPreferences.setCountLoadedDays(getApplicationContext(), 7);
+                if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
+                Log.i(TAG, "ProgramItemononHandleIntentResponse");
+            }
+
+            @Override
+            public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
+                Log.i(TAG, "ProgramItemonFailure");
+            }
+        });
         NotificationAboutLoading.sendNotification(getApplicationContext(), getString(R.string.data_updated), 1);
 
     }

@@ -131,7 +131,6 @@ public class DatabaseSource {
     }
 
     private String getCategoryNameForChannel(int id) {
-        Log.d("myLog", "getCategoryNameForChannel" + id);
         String titleCategory = "category";
         Cursor cursor = mContext.getContentResolver().query(
                 ContractClass.Categories.CONTENT_URI,
@@ -229,7 +228,7 @@ public class DatabaseSource {
             values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
             values.put(COLUMN_PROGRAM_DATE, program.getDate());
             values.put(COLUMN_PROGRAM_TIME, program.getTime());
-            values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannel_id());
+            values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getId());
             mContext.getContentResolver().insert(ContractClass.Programs.CONTENT_URI, values);
         }
         Log.i("myLog", "getDate =" + programs.get(0).getDate());

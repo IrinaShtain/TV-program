@@ -20,6 +20,10 @@ import com.shtainyky.tvprogram.utils.CheckInternet;
 import java.util.Calendar;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class LoadingMonthProgramsIntentService extends IntentService {
 
@@ -50,25 +54,39 @@ public class LoadingMonthProgramsIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-            Log.i("myLog", "will startService");
-            if (!CheckInternet.isOnline(getApplicationContext())) return;
-            for (int i = 1; i < 31; i++) {
-                Calendar calendar = Calendar.getInstance();
-                DatabaseSource mSource = new DatabaseSource(getApplicationContext());
-                calendar.add(Calendar.DAY_OF_YEAR, i);
-                long timeStamp = calendar.getTimeInMillis();
-                String response = HttpManager.getData(Constants.URI_PROGRAMS + timeStamp);
-                List<ProgramItem> programs = Parse.parseJSONtoListPrograms(response);
-                mSource.insertListPrograms(programs);
-                QueryPreferences.setCountLoadedDays(getApplicationContext(), i);
-            }
+        Log.i("myLog", "will startService");
+        if (!CheckInternet.isOnline(getApplicationContext())) return;
+        loadPrograms();
+        NotificationAboutLoading.sendNotification(getApplicationContext(),
+                getResources().getString(R.string.data_are_loaded_for_period,
+                        String.valueOf(30)), 0);
+        Log.i("myLog", "HttpManager worked");
+    }
 
-            NotificationAboutLoading.sendNotification(getApplicationContext(),
-                    getResources().getString(R.string.data_are_loaded_for_period,
-                            String.valueOf(30)),0);
-            Log.i("myLog", "HttpManager worked");
+    private void loadPrograms() {
+        final DatabaseSource source = new DatabaseSource(getApplicationContext());
+        for (int i = 1; i < 31; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, i);
+            long timeStamp = calendar.getTimeInMillis();
+            Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+            final int finalI = i;
+            callPrograms.enqueue(new Callback<List<ProgramItem>>() {
+                @Override
+                public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+                    source.insertListPrograms(response.body());
+                    QueryPreferences.setCountLoadedDays(getApplicationContext(), finalI);
+
+                    Log.i("myLog", "ProgramItemonResponse Service");
+                }
+
+                @Override
+                public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
+                    Log.i("myLog", "ProgramItemonFailureService");
+                }
+            });
         }
-
+    }
 
 
 }

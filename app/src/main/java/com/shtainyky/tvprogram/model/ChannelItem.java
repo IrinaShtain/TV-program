@@ -3,8 +3,10 @@ package com.shtainyky.tvprogram.model;
 public class ChannelItem {
     private int id;
     private String name;
+    private String picture;
+    private int category_id;
+
     private String category_name;
-    private String picture_ulr;
     private int is_preferred;
 
     public String getCategory_name() {
@@ -14,8 +16,6 @@ public class ChannelItem {
     public void setCategory_name(String category_name) {
         this.category_name = category_name;
     }
-
-    private int category_id;
 
     public int getId() {
         return id;
@@ -42,11 +42,11 @@ public class ChannelItem {
     }
 
     public String getPictureUrl() {
-        return picture_ulr;
+        return picture;
     }
 
     public void setPictureUrl(String picture_ulr) {
-        this.picture_ulr = picture_ulr;
+        this.picture = picture_ulr;
     }
 
     public int getCategory_id() {

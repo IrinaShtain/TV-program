@@ -1,26 +1,17 @@
 package com.shtainyky.tvprogram.model;
 
 public class ProgramItem {
-    private int id;
     private int channel_id;
     private String date;
     private String time;
     private String title;
 
     public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getChannel_id() {
         return channel_id;
     }
 
-    public void setChannel_id(int channel_id) {
-        this.channel_id = channel_id;
+    public void setId(int id) {
+        this.channel_id = id;
     }
 
     public String getDate() {
