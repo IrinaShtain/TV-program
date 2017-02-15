@@ -15,6 +15,8 @@ import com.shtainyky.tvprogram.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 import com.shtainyky.tvprogram.utils.Utils;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -62,27 +64,31 @@ public class LoadingMonthProgramsIntentService extends IntentService {
     }
 
     private void loadPrograms() {
-        final DatabaseSource source = new DatabaseSource(getApplicationContext());
+        Log.i("myLog", "loadPrograms begin");
+        DatabaseSource source = new DatabaseSource(getApplicationContext());
+        List<ProgramItem> programs = new ArrayList<>();
         for (int i = 1; i < 31; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, i);
             long timeStamp = calendar.getTimeInMillis();
             Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
-            final int finalI = i;
-            callPrograms.enqueue(new Callback<List<ProgramItem>>() {
-                @Override
-                public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
-                    source.insertListPrograms(response.body());
-                    QueryPreferences.setCountLoadedDays(getApplicationContext(), finalI);
 
-                    Log.i("myLog", "ProgramItemonResponse Service");
+            try {
+                Response<List<ProgramItem>> response = callPrograms.execute();
+                programs.addAll(response.body());
+                if (i % 10 == 0) {
+                    Log.i("myLog", "ProgramItemonResponse Service %10" + i);
+                    Log.i("myLog", "ProgramItemonResponse Serviceprograms.size() = " + programs.size());
+                    source.insertListPrograms(programs);
+                    QueryPreferences.setCountLoadedDays(getApplicationContext(), i);
+                    programs.clear();
+                    Log.i("myLog", "ProgramItemonResponse Service programs.size() = " + programs.size());
                 }
-
-                @Override
-                public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
-                    Log.i("myLog", "ProgramItemonFailureService");
-                }
-            });
+                Log.i("myLog", "ProgramItemonResponse Service" + i);
+            } catch (IOException e) {
+                Log.i("myLog", "IOException Service" + i);
+                e.printStackTrace();
+            }
         }
     }
 

@@ -231,7 +231,6 @@ public class DatabaseSource {
             values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getId());
             mContext.getContentResolver().insert(ContractClass.Programs.CONTENT_URI, values);
         }
-        Log.i("myLog", "getDate =" + programs.get(0).getDate());
         Log.i("myLog", "size =" + programs.size());
         QueryPreferences.setProgramLoaded(mContext, true);
     }

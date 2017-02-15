@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.MainActivity;
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.services.LoadingMonthProgramsIntentService;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 import com.shtainyky.tvprogram.utils.Utils;
 
@@ -71,6 +72,7 @@ public class LoadingDataActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), R.string.data_are_loaded, Toast.LENGTH_SHORT).show();
         QueryPreferences.setStoredFirstInstallation(getApplicationContext(), false);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        LoadingMonthProgramsIntentService.startService(this, true);
         startActivity(intent);
         finish();
     }

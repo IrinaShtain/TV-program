@@ -81,7 +81,6 @@ public class ListOfChannelsFragment extends Fragment {
             mButtonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), "mChannels.size() = " + mChannels.size(), Toast.LENGTH_SHORT).show();
                     mPreferredChannelListener.showPreferredChannels();
                 }
             });
