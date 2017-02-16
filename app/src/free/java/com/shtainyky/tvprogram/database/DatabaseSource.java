@@ -3,7 +3,6 @@ package com.shtainyky.tvprogram.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +10,7 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.utils.DatabaseSourceInterface;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PRO
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TIME;
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TITLE;
 
-public class DatabaseSource {
+public class DatabaseSource implements DatabaseSourceInterface {
 
     private Context mContext;
 
@@ -37,6 +37,7 @@ public class DatabaseSource {
         mContext = context;
     }
 
+    @Override
     public void deleteAllTables() {
         mContext.getContentResolver().delete(ContractClass.Channels.CONTENT_URI, null, null);
         mContext.getContentResolver().delete(ContractClass.Categories.CONTENT_URI, null, null);
@@ -47,6 +48,7 @@ public class DatabaseSource {
 
 
     //working with channels
+    @Override
     public List<ChannelItem> getAllChannel() {
         List<ChannelItem> channels = new ArrayList<>();
         Cursor cursor = mContext.getContentResolver().query(
@@ -75,6 +77,7 @@ public class DatabaseSource {
 
     }
 
+    @Override
     public List<ChannelItem> getChannelsForCategory(Integer categoryId) {
         List<ChannelItem> channels = new ArrayList<>();
         Log.d("myLog", "getChannelsForCategory" + categoryId);
@@ -103,6 +106,7 @@ public class DatabaseSource {
         return channels;
     }
 
+    @Override
     public List<ChannelItem> getPreferredChannels() {
         List<ChannelItem> channels = new ArrayList<>();
         Cursor cursor = mContext.getContentResolver().query(
@@ -130,7 +134,8 @@ public class DatabaseSource {
         return channels;
     }
 
-    private String getCategoryNameForChannel(int id) {
+    @Override
+    public String getCategoryNameForChannel(int id) {
         String titleCategory = "category";
         Cursor cursor = mContext.getContentResolver().query(
                 ContractClass.Categories.CONTENT_URI,
@@ -145,6 +150,7 @@ public class DatabaseSource {
         return titleCategory;
     }
 
+    @Override
     public void insertListChannels(List<ChannelItem> channels) {
 
         for (int i = 0; i < channels.size(); i++) {
@@ -161,6 +167,7 @@ public class DatabaseSource {
         QueryPreferences.setChannelLoaded(mContext, true);
     }
 
+    @Override
     public void setChannelPreferred(int channelPreferredId, int state) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_CHANNEL_IS_PREFERRED, state);
@@ -172,6 +179,7 @@ public class DatabaseSource {
     }
 
     //working with categories
+    @Override
     public void insertListCategories(List<CategoryItem> categories) {
 
         for (int i = 0; i < categories.size(); i++) {
@@ -185,6 +193,7 @@ public class DatabaseSource {
         QueryPreferences.setCategoryLoaded(mContext, true);
     }
 
+    @Override
     public List<CategoryItem> getAllCategories() {
         List<CategoryItem> categories = new ArrayList<>();
 
@@ -211,6 +220,7 @@ public class DatabaseSource {
     }
 
     //working with programs
+    @Override
     public void updateListPrograms(List<ProgramItem> programs, String whereDate) {
         Log.i("myLog", "update =" + programs.get(0).getDate());
 
@@ -221,6 +231,7 @@ public class DatabaseSource {
         Log.i("myLog", "delete =" + k);
     }
 
+    @Override
     public void insertListPrograms(List<ProgramItem> programs) {
         for (int i = 0; i < programs.size(); i++) {
             ProgramItem program = programs.get(i);
@@ -235,6 +246,7 @@ public class DatabaseSource {
         QueryPreferences.setProgramLoaded(mContext, true);
     }
 
+    @Override
     public List<ProgramItem> getPrograms(int channelId, String forDate) {
         List<ProgramItem> programs = new ArrayList<>();
         String[] whereArgs = new String[]{String.valueOf(channelId), forDate};
