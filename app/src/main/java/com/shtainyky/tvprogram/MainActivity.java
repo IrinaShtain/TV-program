@@ -222,6 +222,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupToolbarMenu() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.app_name);
+        if (Constants.Type.FREE == Constants.type)
+        {
+            mToolbar.setSubtitle("Free Version");
+        }
+        else {
+            mToolbar.setSubtitle("Paid Version");
+        }
     }
 
 
