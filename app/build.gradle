@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        theReleaseKey {
+            keyAlias 'the.release.key'
+            keyPassword '123456'
+            storeFile file('C:/Users/Bell/my_release/release_key_version_001.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
@@ -15,6 +23,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".release"
+            signingConfig signingConfigs.theReleaseKey
+
+        }
+        jnidebug {
+            initWith debug
+            jniDebuggable true
+            applicationIdSuffix ".jnidebug"
+
+        }
+    }
+    productFlavors {
+        free {
+            applicationIdSuffix "com.shtainyky.tvprogram.free"
+        }
+        paid {
+            applicationIdSuffix "com.shtainyky.tvprogram.paid"
         }
     }
 }
@@ -34,5 +59,4 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.wang.avi:library:2.1.3'
-
 }
