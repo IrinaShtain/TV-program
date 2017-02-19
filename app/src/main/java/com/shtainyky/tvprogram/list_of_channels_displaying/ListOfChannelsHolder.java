@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
         mChannelPreferred = channel.getIs_preferred();
         mChannelNameTextView.setText(channel.getName());
         mChannelCategoryTextView.setText(String.valueOf(channel.getCategory_name()));
-
+        Log.i("myLog", "mChannelPreferred =" + mChannelPreferred);
         if (mChannelPreferred == 1) {
             setChannelPreferred(R.drawable.ic_preferred_channel);
         } else {
@@ -58,13 +59,14 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
         }
         if (!Utils.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_channelImage, Toast.LENGTH_SHORT).show();
-        Utils.loadImageFromServerWithPicasso(mContext, channel.getPictureUrl(), mImageView);
+        Utils.loadImageFromServerWithPicasso(mContext, channel.getPicture(), mImageView);
     }
 
     @Override
     public void onClick(View v) {
         String message;
         boolean isPreferred = mChannelPreferred == 1;
+        Log.i("myLog", "isPreferred =" + isPreferred);
         if (!isPreferred)
             message = mContext.getResources().getString(R.string.question_add_preferred, mChannelName);
         else {

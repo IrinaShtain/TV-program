@@ -41,7 +41,8 @@ public class ChannelItem {
         this.name = name;
     }
 
-    public String getPictureUrl() {
+    public String getPicture()
+    {
         return picture;
     }
 

@@ -51,9 +51,13 @@ public class LoadingDataIntentService extends IntentService {
         callChannels.enqueue(new Callback<List<ChannelItem>>() {
             @Override
             public void onResponse(Call<List<ChannelItem>> call, Response<List<ChannelItem>> response) {
+                if (response.body() == null) {
+                    showMessageToUser();
+                    return;
+                }
                 mSource.insertListChannels(response.body());
-                QueryPreferences.setChannelLoaded(getApplicationContext(), true);
-                if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areProgramLoaded(getApplicationContext()))
+                if (QueryPreferences.areCategoriesLoaded(getApplicationContext())
+                        && QueryPreferences.areProgramLoaded(getApplicationContext()))
                     sendResult();
                 Log.i(TAG, "ChannelsOnResponse");
             }
@@ -70,9 +74,13 @@ public class LoadingDataIntentService extends IntentService {
         callCategories.enqueue(new Callback<List<CategoryItem>>() {
             @Override
             public void onResponse(Call<List<CategoryItem>> call, Response<List<CategoryItem>> response) {
+                if (response.body() == null) {
+                    showMessageToUser();
+                    return;
+                }
                 mSource.insertListCategories(response.body());
-                QueryPreferences.setCategoryLoaded(getApplicationContext(), true);
-                if (QueryPreferences.areProgramLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
+                if (QueryPreferences.areProgramLoaded(getApplicationContext())
+                        && QueryPreferences.areChannelsLoaded(getApplicationContext()))
                     sendResult();
                 Log.i(TAG, "CATEGORIESonResponse");
             }
@@ -91,9 +99,14 @@ public class LoadingDataIntentService extends IntentService {
         callPrograms.enqueue(new Callback<List<ProgramItem>>() {
             @Override
             public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+                if (response.body() == null) {
+                    showMessageToUser();
+                    return;
+                }
                 mSource.insertListPrograms(response.body());
                 QueryPreferences.setCountLoadedDays(getApplicationContext(), 1);
-                if (QueryPreferences.areCategoriesLoaded(getApplicationContext()) && QueryPreferences.areChannelsLoaded(getApplicationContext()))
+                if (QueryPreferences.areCategoriesLoaded(getApplicationContext())
+                        && QueryPreferences.areChannelsLoaded(getApplicationContext()))
                     sendResult();
                 Log.i(TAG, "ProgramItemonResponse");
             }
@@ -104,6 +117,10 @@ public class LoadingDataIntentService extends IntentService {
             }
         });
 
+    }
+
+    private void showMessageToUser() {
+        Toast.makeText(this, "Server is not available now. Please, try again later", Toast.LENGTH_SHORT).show();
     }
 
     private void sendResult() {

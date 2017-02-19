@@ -21,7 +21,7 @@ import static com.shtainyky.tvprogram.database.ContractClass.Channels.PATH_CHANN
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.PATH_PROGRAMS;
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.PATH_PROGRAMS_ID;
 
-public class MyContentProvider extends ContentProvider {
+public class MyDatabase_Provider extends ContentProvider {
     DatabaseHelper mDBHelper;
     private static HashMap mProgramsProjectionMap;
     private static HashMap mChannelsProjectionMap;
@@ -71,7 +71,7 @@ public class MyContentProvider extends ContentProvider {
         Log.d("myLog", "mUriMatcher, result Uri : " + mUriMatcher.toString());
     }
 
-    public MyContentProvider() {
+    public MyDatabase_Provider() {
     }
 
     @Override

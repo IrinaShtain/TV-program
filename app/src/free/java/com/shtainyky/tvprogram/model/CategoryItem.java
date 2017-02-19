@@ -21,11 +21,11 @@ public class CategoryItem {
         this.title = title;
     }
 
-    public String getImageUrl() {
+    public String getImage_url() {
         return picture;
     }
 
-    public void setImageUrl(String image_url) {
+    public void setImage_url(String image_url) {
         this.picture = image_url;
     }
 }

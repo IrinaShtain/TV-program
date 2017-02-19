@@ -34,7 +34,7 @@ class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnC
         mCategoryNameTextView.setText(category.getTitle());
         if (!Utils.isOnline(mContext))
             Toast.makeText(mContext, R.string.turn_on_Internet_for_categoryImage, Toast.LENGTH_SHORT).show();
-        Utils.loadImageFromServerWithPicasso(mContext, category.getImageUrl(), mImageView);
+        Utils.loadImageFromServerWithPicasso(mContext, category.getImage_url(), mImageView);
         mCategoryId = category.getId();
     }
 

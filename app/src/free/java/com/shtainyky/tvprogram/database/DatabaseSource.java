@@ -158,12 +158,11 @@ public class DatabaseSource implements DatabaseSourceInterface {
             ContentValues values = new ContentValues();
             values.put(COLUMN_CHANNEL_ID, channel.getId());
             values.put(COLUMN_CHANNEL_TITLE, channel.getName().trim());
-            values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPictureUrl());
+            values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPicture());
             values.put(COLUMN_CHANNEL_CATEGORY_ID, channel.getCategory_id());
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);
             mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
         }
-
         QueryPreferences.setChannelLoaded(mContext, true);
     }
 
@@ -187,7 +186,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             ContentValues values = new ContentValues();
             values.put(COLUMN_CATEGORY_ID, category.getId());
             values.put(COLUMN_CATEGORY_TITLE, category.getTitle());
-            values.put(COLUMN_CATEGORY_IMAGE_URL, category.getImageUrl());
+            values.put(COLUMN_CATEGORY_IMAGE_URL, category.getImage_url());
             mContext.getContentResolver().insert(ContractClass.Categories.CONTENT_URI, values);
         }
         QueryPreferences.setCategoryLoaded(mContext, true);
@@ -209,7 +208,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
                     CategoryItem category = new CategoryItem();
                     category.setId(cursor.getInt(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_ID)));
                     category.setTitle(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_TITLE)));
-                    category.setImageUrl(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL)));
+                    category.setImage_url(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL)));
                     categories.add(category);
                 } while (cursor.moveToNext());
             }
