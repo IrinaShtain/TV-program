@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
+// TODO: 20.02.17 avoid My prefix, make no sense
 public interface MyApiService {
 
     @GET("chanels")
@@ -18,6 +19,6 @@ public interface MyApiService {
     @GET("categories")
     Call<List<CategoryItem>> getCategoriesList();
 
-    @GET("programs/{programs}")
-    Call<List<ProgramItem>> getProgramsList(@Path("programs") long timeStamp);
+    @GET("programs/{timestamp}")
+    Call<List<ProgramItem>> getProgramsList(@Path("timestamp") long timeStamp);
 }
