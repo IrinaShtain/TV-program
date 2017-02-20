@@ -12,10 +12,17 @@ import android.view.ViewGroup;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TabPagerFragmentAdapter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TVProgramFragment extends Fragment {
     public static final String ARG_PREFERRED = "is_preferred";
-    private View view;
     boolean mIsPreferred;
+
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
 
 
     public static TVProgramFragment newInstance(boolean preferredFlag) {
@@ -29,8 +36,8 @@ public class TVProgramFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_tvprograms, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_tvprograms, container, false);
+        ButterKnife.bind(this, view);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mIsPreferred = bundle.getBoolean(ARG_PREFERRED);
@@ -41,11 +48,9 @@ public class TVProgramFragment extends Fragment {
     }
 
     private void setupTabs(boolean isPreferred) {
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         TabPagerFragmentAdapter mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), isPreferred);
-        viewPager.setAdapter(mAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        mViewPager.setAdapter(mAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
 }

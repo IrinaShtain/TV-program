@@ -19,9 +19,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DatePickerFragment extends DialogFragment {
     public static final String EXTRA_DATE = "EXTRA_DATE";
-    private DatePicker mDatePicker;
+    @BindView(R.id.dialog_date_picker)
+    DatePicker mDatePicker;
 
     @NonNull
     @Override
@@ -30,10 +34,9 @@ public class DatePickerFragment extends DialogFragment {
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        View v = LayoutInflater.from(getActivity())
+        View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_date, null);
-        mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_picker);
-
+        ButterKnife.bind(this,view);
         mDatePicker.init(mYear, mMonth, mDay, null);
         mDatePicker.setMinDate(calendar.getTimeInMillis());
 
@@ -41,7 +44,7 @@ public class DatePickerFragment extends DialogFragment {
         mDatePicker.setMaxDate(calendar.getTimeInMillis());
 
         return new AlertDialog.Builder(getActivity())
-                .setView(v)
+                .setView(view)
                 .setTitle(R.string.select_date)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

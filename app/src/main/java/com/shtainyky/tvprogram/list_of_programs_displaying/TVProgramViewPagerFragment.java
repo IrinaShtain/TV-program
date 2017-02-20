@@ -25,21 +25,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TVProgramViewPagerFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     public static final String ARG_POSITION = "position";
-    private int channelId;
-    private String forDate;
-    private RecyclerView mTVProgramRecyclerView;
-    private List<ProgramItem> mPrograms;
-    private Button mGetDateButton;
+
+    private int mChannelId;
+    private String mForDate;
     private DatabaseSource mSource;
-    private AVLoadingIndicatorView mProgress;
-    private View view;
+    private List<ProgramItem> mPrograms;
 
-    public TVProgramViewPagerFragment() {
+    @BindView(R.id.tvprogram_recycler_view)
+    RecyclerView mTVProgramRecyclerView;
 
-    }
+    @BindView(R.id.buttonDate)
+    Button mGetDateButton;
+
+    @BindView(R.id.progress)
+    AVLoadingIndicatorView mProgress;
+
+    public TVProgramViewPagerFragment() {}
 
     public static TVProgramViewPagerFragment newInstance(int position) {
 
@@ -54,19 +61,18 @@ public class TVProgramViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
+        View view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
+        ButterKnife.bind(this, view);
         mPrograms = new ArrayList<>();
         mSource = new DatabaseSource(getContext());
-        mProgress = (AVLoadingIndicatorView) view.findViewById(R.id.progress);
-        mGetDateButton = (Button) view.findViewById(R.id.buttonDate);
 
         setupButtonDate();
         setupUI();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            channelId = bundle.getInt(ARG_POSITION);
-            showProgram(forDate);
+            mChannelId = bundle.getInt(ARG_POSITION);
+            showProgram(mForDate);
         }
         return view;
     }
@@ -82,14 +88,13 @@ public class TVProgramViewPagerFragment extends Fragment {
             mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
             setupUI();
             showProgram(String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
-            Log.i("myLog", forDate);
+            Log.i("myLog", mForDate);
         }
     }
 
 
     public void setupButtonDate() {
         mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", Calendar.getInstance()));
-
         mGetDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,16 +106,14 @@ public class TVProgramViewPagerFragment extends Fragment {
     }
 
     public void setupUI() {
-        forDate = String.valueOf(mGetDateButton.getText());
-        mTVProgramRecyclerView = (RecyclerView) view
-                .findViewById(R.id.tvprogram_recycler_view);
+        mForDate = String.valueOf(mGetDateButton.getText());
         mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
     }
 
     private void showProgram(String forDate) {
         startAnim();
-        mPrograms = mSource.getPrograms(channelId, forDate);
+        mPrograms = mSource.getPrograms(mChannelId, forDate);
         stopAnim();
         TVProgramAdapter mAdapter = new TVProgramAdapter(getContext(), mPrograms);
         mTVProgramRecyclerView.setAdapter(mAdapter);

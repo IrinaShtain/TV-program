@@ -7,16 +7,20 @@ import android.widget.TextView;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.ProgramItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 class TVProgramHolder extends RecyclerView.ViewHolder {
-    private TextView mTitleTextView;
-    private TextView mTimeTextView;
-    private TextView mDateTextView;
+    @BindView(R.id.title)
+    TextView mTitleTextView;
+    @BindView(R.id.time)
+    TextView mTimeTextView;
+    @BindView(R.id.date)
+    TextView mDateTextView;
 
     TVProgramHolder(View itemView) {
         super(itemView);
-        mTitleTextView = (TextView) itemView.findViewById(R.id.title);
-        mTimeTextView = (TextView) itemView.findViewById(R.id.time);
-        mDateTextView = (TextView) itemView.findViewById(R.id.date);
+        ButterKnife.bind(this, itemView);
     }
 
     void bindProgram(ProgramItem program) {

@@ -12,20 +12,16 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 import java.util.List;
 
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
-    private Context mContext;
     private List<ChannelItem> channelItemList;
-    private DatabaseSource mSource;
 
     public TabPagerFragmentAdapter(Context context, FragmentManager fm, boolean isPreferred) {
         super(fm);
-        mContext = context;
-        mSource = new DatabaseSource(mContext);
+        DatabaseSource mSource = new DatabaseSource(context);
         if (isPreferred) {
             channelItemList = mSource.getPreferredChannels();
         } else {
             channelItemList = mSource.getAllChannel();
         }
-
 
     }
 
