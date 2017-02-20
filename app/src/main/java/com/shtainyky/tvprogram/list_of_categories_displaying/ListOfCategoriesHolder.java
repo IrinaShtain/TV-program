@@ -38,13 +38,14 @@ class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnC
         mCategoryNameTextView.setText(category.getTitle());
         // TODO: 20.02.17 don't handle any actions here, you can simply display data
 //        and let know about user actions
-        if (!Utils.isOnline(mContext))
+        if (!Utils.isOnline(mContext)) // you do not need to care about internet here
             Toast.makeText(mContext, R.string.turn_on_Internet_for_categoryImage, Toast.LENGTH_SHORT).show();
         Utils.loadImageFromServerWithPicasso(mContext, category.getImage_url(), mImageView);
         mCategoryId = category.getId();
     }
 
     @Override
+    // TODO: 20.02.17 use ButterKnife
     public void onClick(View v) {
         if (mChannelListener != null) {
             mChannelListener.setChannelsForCategoryId(mCategoryId, false);

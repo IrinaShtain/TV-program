@@ -11,12 +11,16 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
 
+// основна робота адаптера в тому щоб відобразити дані які в нього прийшли і "дати знати" про то що
+// користувач взаємодіє з цими даними. Сам адаптер не вирішує нічого, не завантажує нічого,
+// не обробляє нічого. Виконує тільки свої дії, дії АДАПТЕРА
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     private List<ChannelItem> channelItemList;
 
     public TabPagerFragmentAdapter(Context context, FragmentManager fm, boolean isPreferred) {
         super(fm);
         DatabaseSource mSource = new DatabaseSource(context);
+        // TODO: 20.02.17 do not get any data here, send channelItem list as input parameter
         if (isPreferred) {
             channelItemList = mSource.getPreferredChannels();
         } else {

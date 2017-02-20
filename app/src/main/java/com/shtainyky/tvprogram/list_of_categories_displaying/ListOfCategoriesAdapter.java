@@ -10,7 +10,9 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.CategoryItem;
 
 import java.util.List;
-
+// основна робота адаптера в тому щоб відобразити дані які в нього прийшли і "дати знати" про то що
+// користувач взаємодіє з цими даними. Сам адаптер не вирішує нічого, не завантажує нічого,
+// не обробляє нічого. Виконує тільки свої дії, дії АДАПТЕРА
 class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolder> {
     private List<CategoryItem> mCategories;
     private Context mContext;
