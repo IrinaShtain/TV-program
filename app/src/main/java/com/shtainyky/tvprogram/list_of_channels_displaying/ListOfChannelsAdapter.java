@@ -24,8 +24,8 @@ class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsHolder> {
 
     @Override
     public ListOfChannelsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.item_channel, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_channel, parent, false);
         return new ListOfChannelsHolder(mContext, view, mFromFlag);
     }
 

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
@@ -18,20 +17,26 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ListOfChannelsFragment extends Fragment {
-    public static final String ARG_CATEGORY_ID = "categoryId";
+    public static final String ARG_CATEGORY_ID = "mCategoryId";
     public static final String ARG_IS_PREFERRED = "is_preferred";
     public static final int FLAG_PREFERRED = 1;
     public static final int FLAG_NOT_PREFERRED = 0;
 
     private DatabaseSource mSource;
-    private int categoryId;
-    private boolean isPreferred;
+    private int mCategoryId;
+    private boolean mIsPreferred;
     private View mView;
     private List<ChannelItem> mChannels;
     private ChannelListener mCategoryListener;
     private PreferredChannelListener mPreferredChannelListener;
     private ListOfChannelsAdapter mAdapter;
+
+    @BindView(R.id.list_of_channels_recycler_view)
+    RecyclerView mChannelsRecyclerView;
 
     public static ListOfChannelsFragment newInstance(int categoryId, boolean isPreferred) {
         ListOfChannelsFragment fragment = new ListOfChannelsFragment();
@@ -46,22 +51,12 @@ public class ListOfChannelsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
-        mSource = new DatabaseSource(getContext());
-        RecyclerView mChannelsRecyclerView = (RecyclerView) mView
-                .findViewById(R.id.list_of_channels_recycler_view);
-        mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager
-                (getActivity()));
+        ButterKnife.bind(this, mView);
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            categoryId = bundle.getInt(ARG_CATEGORY_ID);
-            isPreferred = bundle.getBoolean(ARG_IS_PREFERRED);
-        }
-        if (!isPreferred)
-            showChannels(categoryId);
-        else
-            showPreferredChannels();
-        mChannelsRecyclerView.setAdapter(mAdapter);
+        mSource = new DatabaseSource(getContext());
+        getBundle();
+        showChannels();
+
         return mView;
     }
 
@@ -95,8 +90,7 @@ public class ListOfChannelsFragment extends Fragment {
         }
     }
 
-
-    public void showChannels(int categoryId) {
+    public void showAllChannels(int categoryId) {
         if (categoryId == 0) {
             mChannels = mSource.getAllChannel();
         } else {
@@ -104,4 +98,25 @@ public class ListOfChannelsFragment extends Fragment {
         }
         mAdapter = new ListOfChannelsAdapter(getContext(), mChannels, FLAG_NOT_PREFERRED);
     }
+
+    private void getBundle() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mCategoryId = bundle.getInt(ARG_CATEGORY_ID);
+            mIsPreferred = bundle.getBoolean(ARG_IS_PREFERRED);
+        }
+    }
+
+    private void showChannels() {
+        if (!mIsPreferred)
+            showAllChannels(mCategoryId);
+        else
+            showPreferredChannels();
+        mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager
+                (getActivity()));
+        mChannelsRecyclerView.setAdapter(mAdapter);
+
+    }
+
+
 }

@@ -17,11 +17,19 @@ import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.utils.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private TextView mChannelNameTextView;
-    private TextView mChannelCategoryTextView;
-    private ImageView mImageView;
-    private ImageView mImageViewPreferred;
+    @BindView(R.id.channel_name)
+    TextView mChannelNameTextView;
+    @BindView(R.id.channel_category)
+    TextView mChannelCategoryTextView;
+    @BindView(R.id.channel_logo)
+    ImageView mImageView;
+    @BindView(R.id.channel_preferred)
+    ImageView mImageViewPreferred;
+
     private String mChannelName;
     private int mChannelId;
     private int mChannelPreferred;
@@ -32,17 +40,11 @@ class ListOfChannelsHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     ListOfChannelsHolder(Context context, View itemView, int fromFlag) {
         super(itemView);
+        ButterKnife.bind(this, itemView);
         mFromFlag = fromFlag;
         mContext = context;
         mSource = new DatabaseSource(mContext);
-        mChannelNameTextView = (TextView) itemView.findViewById(R.id.channel_name);
-        mChannelNameTextView.setOnClickListener(this);
-        mChannelCategoryTextView = (TextView) itemView.findViewById(R.id.channel_category);
-        mChannelCategoryTextView.setOnClickListener(this);
-        mImageView = (ImageView) itemView.findViewById(R.id.channel_logo);
-        mImageView.setOnClickListener(this);
-        mImageViewPreferred = (ImageView) itemView.findViewById(R.id.channel_preferred);
-        mImageViewPreferred.setOnClickListener(this);
+        itemView.setOnClickListener(this);
     }
 
     void bindChannel(ChannelItem channel) {
