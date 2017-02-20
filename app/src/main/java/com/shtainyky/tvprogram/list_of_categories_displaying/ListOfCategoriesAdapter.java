@@ -22,8 +22,8 @@ class ListOfCategoriesAdapter extends RecyclerView.Adapter<ListOfCategoriesHolde
 
     @Override
     public ListOfCategoriesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.item_category, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_category, parent, false);
         return new ListOfCategoriesHolder(mContext, view);
     }
 

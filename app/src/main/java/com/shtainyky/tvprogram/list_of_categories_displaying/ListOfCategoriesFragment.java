@@ -16,8 +16,12 @@ import com.shtainyky.tvprogram.model.CategoryItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ListOfCategoriesFragment extends Fragment {
-    private RecyclerView mCategoryRecyclerView;
+    @BindView(R.id.categories_recycler_view)
+    RecyclerView mCategoryRecyclerView;
     private DatabaseSource mSource;
     private List<CategoryItem> mCategories;
 
@@ -30,10 +34,10 @@ public class ListOfCategoriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        ButterKnife.bind(this, view);
         mSource = new DatabaseSource(getContext());
         mCategories = new ArrayList<>();
-        mCategoryRecyclerView = (RecyclerView) view
-                .findViewById(R.id.categories_recycler_view);
+
         mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager
                 (getActivity()));
         requestData();

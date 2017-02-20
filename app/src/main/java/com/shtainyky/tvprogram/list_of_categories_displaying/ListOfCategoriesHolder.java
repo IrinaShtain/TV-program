@@ -11,23 +11,26 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.utils.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private TextView mCategoryNameTextView;
-    private ImageView mImageView;
+    @BindView(R.id.category_name)
+    TextView mCategoryNameTextView;
+    @BindView(R.id.category_logo)
+    ImageView mImageView;
     private int mCategoryId;
     private Context mContext;
     private ChannelListener mChannelListener;
 
     ListOfCategoriesHolder(Context context, View itemView) {
         super(itemView);
+        ButterKnife.bind(this, itemView);
         mContext = context;
         if (!(mContext instanceof ChannelListener))
             throw new AssertionError("Your class must implement ChannelListener");
         mChannelListener = (ChannelListener) mContext;
-        mCategoryNameTextView = (TextView) itemView.findViewById(R.id.category_name);
-        mCategoryNameTextView.setOnClickListener(this);
-        mImageView = (ImageView) itemView.findViewById(R.id.category_logo);
-        mImageView.setOnClickListener(this);
+        itemView.setOnClickListener(this);
     }
 
     void bindCategory(CategoryItem category) {
