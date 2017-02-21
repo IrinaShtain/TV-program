@@ -124,9 +124,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
+    // TODO: 20.02.17 тіло методу не має перевищувати одного екрану, якщо більше, то можна розбити на менші методи
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
+        // TODO: 20.02.17 check codestyle oracle
+        if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
         if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
             message = getResources().getString(R.string.question_today_updating);
             wasOn = false;
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setTitle(R.string.tv_day_updating)
                 .setMessage(message)
                 .setCancelable(false)
+                // TODO: 20.02.17 користувач і так знає що він натиснув, не треба тост
                 .setNegativeButton(getResources().getString(R.string.answer_no),
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -188,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setFragment(Fragment fragment) {
+        // TODO: 20.02.17 m prefix mean member and can be used only for global variables, rename it
         FragmentManager mFragmentManager = getSupportFragmentManager();
         Fragment mFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
         if (mFragment == null) {
@@ -222,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         if (Constants.Type.FREE == Constants.type) {
+        // TODO: 20.02.17 don't need this, set the right string in build.gradle and get it from there
+        if (Constants.Type.FREE == Constants.type)
+        {
             mToolbar.setSubtitle("Free Version");
         } else {
             mToolbar.setSubtitle("Paid Version");
@@ -229,12 +237,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    // TODO: 20.02.17 you don't know this action name here, rename it
+//    this action can be names as onCategoryClick or something like this
     public void setChannelsForCategoryId(int categoryId, boolean isPreferred) {
         ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
         setFragment(fragment);
     }
 
     @Override
+    // TODO: 20.02.17 you don't know this action name here, rename it
+//    this action can be names as onChannelClick or something like this
     public void showPreferredChannels() {
         TVProgramFragment fragment = TVProgramFragment.newInstance(true);
         setFragment(fragment);

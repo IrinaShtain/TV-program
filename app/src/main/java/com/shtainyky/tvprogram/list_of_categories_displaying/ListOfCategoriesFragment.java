@@ -20,8 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListOfCategoriesFragment extends Fragment {
+    // TODO: 20.02.17 do fragment interaction in the right way https://developer.android.com/training/basics/fragments/communicating.html
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;
+
     private DatabaseSource mSource;
     private List<CategoryItem> mCategories;
 
@@ -38,13 +40,14 @@ public class ListOfCategoriesFragment extends Fragment {
         mSource = new DatabaseSource(getContext());
         mCategories = new ArrayList<>();
 
-        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager
-                (getActivity()));
+        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         requestData();
 
+        // TODO: 20.02.17 show data loading progress
         return view;
     }
 
+    // TODO: 20.02.17 request data ASYNC using content provider
     private void requestData() {
         mCategories = mSource.getAllCategories();
         ListOfCategoriesAdapter mAdapter = new ListOfCategoriesAdapter(getContext(), mCategories);

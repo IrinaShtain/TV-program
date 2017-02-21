@@ -16,8 +16,8 @@ import android.widget.Button;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TVProgramAdapter;
+import com.shtainyky.tvprogram.model.ProgramItem;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -85,6 +85,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            // TODO: 20.02.17 check SimpleDateFormat
             mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
             setupUI();
             showProgram(String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
@@ -107,8 +108,7 @@ public class TVProgramViewPagerFragment extends Fragment {
 
     public void setupUI() {
         mForDate = String.valueOf(mGetDateButton.getText());
-        mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager
-                (getActivity()));
+        mTVProgramRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void showProgram(String forDate) {

@@ -14,11 +14,12 @@ import com.shtainyky.tvprogram.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO: 20.02.17 holder is used only for ListOfCategoriesAdapter, can be declared inside as public static class
 class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @BindView(R.id.category_name)
-    TextView mCategoryNameTextView;
+    private TextView mCategoryNameTextView;
     @BindView(R.id.category_logo)
-    ImageView mImageView;
+    private ImageView mImageView;
     private int mCategoryId;
     private Context mContext;
     private ChannelListener mChannelListener;
@@ -35,13 +36,16 @@ class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnC
 
     void bindCategory(CategoryItem category) {
         mCategoryNameTextView.setText(category.getTitle());
-        if (!Utils.isOnline(mContext))
+        // TODO: 20.02.17 don't handle any actions here, you can simply display data
+//        and let know about user actions
+        if (!Utils.isOnline(mContext)) // you do not need to care about internet here
             Toast.makeText(mContext, R.string.turn_on_Internet_for_categoryImage, Toast.LENGTH_SHORT).show();
         Utils.loadImageFromServerWithPicasso(mContext, category.getImage_url(), mImageView);
         mCategoryId = category.getId();
     }
 
     @Override
+    // TODO: 20.02.17 use ButterKnife
     public void onClick(View v) {
         if (mChannelListener != null) {
             mChannelListener.setChannelsForCategoryId(mCategoryId, false);
