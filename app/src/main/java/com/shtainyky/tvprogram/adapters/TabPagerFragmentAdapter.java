@@ -1,11 +1,9 @@
-package com.shtainyky.tvprogram.list_of_programs_displaying.adapters;
+package com.shtainyky.tvprogram.adapters;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment;
 import com.shtainyky.tvprogram.model.ChannelItem;
 
@@ -15,34 +13,28 @@ import java.util.List;
 // користувач взаємодіє з цими даними. Сам адаптер не вирішує нічого, не завантажує нічого,
 // не обробляє нічого. Виконує тільки свої дії, дії АДАПТЕРА
 public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
-    private List<ChannelItem> channelItemList;
+    private List<ChannelItem> mChannelItems;
 
-    public TabPagerFragmentAdapter(Context context, FragmentManager fm, boolean isPreferred) {
+    public TabPagerFragmentAdapter(FragmentManager fm, List<ChannelItem> channelItems) {
         super(fm);
-        DatabaseSource mSource = new DatabaseSource(context);
+        mChannelItems = channelItems;
         // TODO: 20.02.17 do not get any data here, send channelItem list as input parameter
-        if (isPreferred) {
-            channelItemList = mSource.getPreferredChannels();
-        } else {
-            channelItemList = mSource.getAllChannel();
-        }
-
     }
 
     @Override
     public Fragment getItem(int position) {
-        int channelId = channelItemList.get(position).getId();
+        int channelId = mChannelItems.get(position).getId();
         return TVProgramViewPagerFragment.newInstance(channelId);
     }
 
     @Override
     public int getCount() {
-        return channelItemList.size();
+        return mChannelItems.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return channelItemList.get(position).getName();
+        return mChannelItems.get(position).getName();
     }
 
 }

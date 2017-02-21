@@ -10,15 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TabPagerFragmentAdapter;
+import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
+import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.model.ChannelItem;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TVProgramFragment extends Fragment {
     public static final String ARG_PREFERRED = "is_preferred";
-    boolean mIsPreferred;
-
+    private boolean mIsPreferred;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.tabLayout)
@@ -42,15 +45,25 @@ public class TVProgramFragment extends Fragment {
         if (bundle != null) {
             mIsPreferred = bundle.getBoolean(ARG_PREFERRED);
         }
-
-        setupTabs(mIsPreferred);
+        setupTabs();
         return view;
     }
 
-    private void setupTabs(boolean isPreferred) {
-        TabPagerFragmentAdapter mAdapter = new TabPagerFragmentAdapter(getContext(), getActivity().getSupportFragmentManager(), isPreferred);
-        mViewPager.setAdapter(mAdapter);
+    private void setupTabs() {
+        TabPagerFragmentAdapter adapter = new TabPagerFragmentAdapter(getActivity().getSupportFragmentManager(),
+                getChannelItems());
+        mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
+    private List<ChannelItem> getChannelItems() {
+        List<ChannelItem> channelItems;
+        DatabaseSource source = new DatabaseSource(getContext());
+        if (mIsPreferred) {
+            channelItems = source.getPreferredChannels();
+        } else {
+            channelItems = source.getAllChannel();
+        }
+        return channelItems;
+    }
 }
