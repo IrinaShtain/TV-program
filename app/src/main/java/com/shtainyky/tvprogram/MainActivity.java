@@ -128,8 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
-        // TODO: 20.02.17 check codestyle oracle
-        if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
+        // TODO: 20.02.17 check codestyle oracle{
         if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
             message = getResources().getString(R.string.question_today_updating);
             wasOn = false;
@@ -227,30 +226,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         if (Constants.Type.FREE == Constants.type) {
-        // TODO: 20.02.17 don't need this, set the right string in build.gradle and get it from there
-        if (Constants.Type.FREE == Constants.type)
-        {
-            mToolbar.setSubtitle("Free Version");
-        } else {
-            mToolbar.setSubtitle("Paid Version");
+            // TODO: 20.02.17 don't need this, set the right string in build.gradle and get it from there
+            if (Constants.Type.FREE == Constants.type) {
+                mToolbar.setSubtitle("Free Version");
+            } else {
+                mToolbar.setSubtitle("Paid Version");
+            }
         }
     }
 
-    @Override
-    // TODO: 20.02.17 you don't know this action name here, rename it
+        @Override
+        // TODO: 20.02.17 you don't know this action name here, rename it
 //    this action can be names as onCategoryClick or something like this
-    public void setChannelsForCategoryId(int categoryId, boolean isPreferred) {
-        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
-        setFragment(fragment);
-    }
+        public void setChannelsForCategoryId ( int categoryId, boolean isPreferred){
+            ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
+            setFragment(fragment);
+        }
 
-    @Override
-    // TODO: 20.02.17 you don't know this action name here, rename it
+
+
+        // TODO: 20.02.17 you don't know this action name here, rename it
 //    this action can be names as onChannelClick or something like this
-    public void showPreferredChannels() {
-        TVProgramFragment fragment = TVProgramFragment.newInstance(true);
-        setFragment(fragment);
-    }
+        @Override
+        public void showPreferredChannels () {
+            TVProgramFragment fragment = TVProgramFragment.newInstance(true);
+            setFragment(fragment);
+        }
 
 
 }
