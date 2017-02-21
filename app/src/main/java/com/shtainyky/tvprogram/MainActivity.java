@@ -20,25 +20,33 @@ import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
 import com.shtainyky.tvprogram.list_of_categories_displaying.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.list_of_channels_displaying.ListOfChannelsFragment;
-import com.shtainyky.tvprogram.loading_data.LoadingDataActivity;
-import com.shtainyky.tvprogram.list_of_programs_displaying.TVProgramFragment;
 import com.shtainyky.tvprogram.list_of_channels_displaying.PreferredChannelListener;
-import com.shtainyky.tvprogram.services.LoadingMonthProgramsIntentService;
+import com.shtainyky.tvprogram.list_of_programs_displaying.TVProgramFragment;
+import com.shtainyky.tvprogram.loading_data.LoadingDataActivity;
 import com.shtainyky.tvprogram.services.UpdatingTodayProgramIntentService;
-import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
+import com.shtainyky.tvprogram.utils.Utils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ChannelListener,
-        PreferredChannelListener{
-    private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private DatabaseSource mSource;
+        ChannelListener, PreferredChannelListener {
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigationView)
+    NavigationView mNavigationView;
+
+    DatabaseSource mSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         mSource = new DatabaseSource(this);
 
         setupToolbarMenu();
@@ -119,13 +127,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
-        if (!QueryPreferences.getShouldUpdateDayProgram(this))
-        {
+        if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
             message = getResources().getString(R.string.question_today_updating);
             wasOn = false;
-        }
-        else
-        {
+        } else {
             message = getResources().getString(R.string.question_today_updating_is_on);
             wasOn = true;
         }
@@ -153,9 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     Toast.makeText(getApplicationContext(),
                                             R.string.data_update_four_times,
                                             Toast.LENGTH_LONG).show();
-                                }
-                                else
-                                {
+                                } else {
                                     QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), false);
                                     UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
                                     Toast.makeText(getApplicationContext(),
@@ -205,10 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupNavigationDrawerMenu() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
                 mToolbar,
@@ -220,25 +220,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupToolbarMenu() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.app_name);
-        if (Constants.Type.FREE == Constants.type)
-        {
+        if (Constants.Type.FREE == Constants.type) {
             mToolbar.setSubtitle("Free Version");
-        }
-        else {
+        } else {
             mToolbar.setSubtitle("Paid Version");
         }
     }
-
 
     @Override
     public void setChannelsForCategoryId(int categoryId, boolean isPreferred) {
         ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
         setFragment(fragment);
     }
-
-
 
     @Override
     public void showPreferredChannels() {
