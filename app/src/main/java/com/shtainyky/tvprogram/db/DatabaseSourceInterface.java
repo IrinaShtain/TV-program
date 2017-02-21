@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.utils;
+package com.shtainyky.tvprogram.db;
 
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;

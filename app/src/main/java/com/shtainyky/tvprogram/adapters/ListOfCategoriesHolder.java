@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.list_of_categories_displaying;
+package com.shtainyky.tvprogram.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.adapters.ChannelListener;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.utils.Utils;
 
@@ -17,9 +18,9 @@ import butterknife.ButterKnife;
 // TODO: 20.02.17 holder is used only for ListOfCategoriesAdapter, can be declared inside as public static class
 class ListOfCategoriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @BindView(R.id.category_name)
-    private TextView mCategoryNameTextView;
+     TextView mCategoryNameTextView;
     @BindView(R.id.category_logo)
-    private ImageView mImageView;
+     ImageView mImageView;
     private int mCategoryId;
     private Context mContext;
     private ChannelListener mChannelListener;

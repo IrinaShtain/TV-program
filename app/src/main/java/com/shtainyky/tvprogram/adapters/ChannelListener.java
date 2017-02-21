@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.list_of_categories_displaying;
+package com.shtainyky.tvprogram.adapters;
 
 public interface ChannelListener {
     void setChannelsForCategoryId(int categoryId, boolean isPreferred);

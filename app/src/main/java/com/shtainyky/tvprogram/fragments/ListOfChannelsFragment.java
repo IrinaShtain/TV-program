@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.list_of_channels_displaying;
+package com.shtainyky.tvprogram.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +12,9 @@ import android.widget.Button;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
+import com.shtainyky.tvprogram.adapters.ChannelListener;
+import com.shtainyky.tvprogram.list_of_channels_displaying.ListOfChannelsAdapter;
+import com.shtainyky.tvprogram.list_of_channels_displaying.PreferredChannelListener;
 import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;

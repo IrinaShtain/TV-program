@@ -12,7 +12,8 @@ import android.util.Log;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.httpconnection.HttpManager;
+import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
+import com.shtainyky.tvprogram.utils.NotificationAboutLoading;
 import com.shtainyky.tvprogram.utils.Utils;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 

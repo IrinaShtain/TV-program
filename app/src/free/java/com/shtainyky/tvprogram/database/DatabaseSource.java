@@ -10,7 +10,7 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.utils.DatabaseSourceInterface;
+import com.shtainyky.tvprogram.db.DatabaseSourceInterface;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.httpconnection;
+package com.shtainyky.tvprogram.services.httpconnection;
 
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;

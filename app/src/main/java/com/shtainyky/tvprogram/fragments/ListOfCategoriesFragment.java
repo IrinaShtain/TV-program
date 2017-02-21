@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.list_of_categories_displaying;
+package com.shtainyky.tvprogram.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.adapters.ListOfCategoriesAdapter;
 import com.shtainyky.tvprogram.model.CategoryItem;
 
 import java.util.ArrayList;

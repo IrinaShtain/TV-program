@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram;
+package com.shtainyky.tvprogram.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,13 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+
+import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.list_of_categories_displaying.ChannelListener;
-import com.shtainyky.tvprogram.list_of_categories_displaying.ListOfCategoriesFragment;
-import com.shtainyky.tvprogram.list_of_channels_displaying.ListOfChannelsFragment;
+import com.shtainyky.tvprogram.adapters.ChannelListener;
+import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
+import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.list_of_channels_displaying.PreferredChannelListener;
-import com.shtainyky.tvprogram.list_of_programs_displaying.TVProgramFragment;
-import com.shtainyky.tvprogram.loading_data.LoadingDataActivity;
+import com.shtainyky.tvprogram.fragments.TVProgramFragment;
 import com.shtainyky.tvprogram.services.UpdatingTodayProgramIntentService;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 import com.shtainyky.tvprogram.utils.Utils;
@@ -141,13 +142,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setMessage(message)
                 .setCancelable(false)
                 // TODO: 20.02.17 користувач і так знає що він натиснув, не треба тост
+                //Done
                 .setNegativeButton(getResources().getString(R.string.answer_no),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.cancel,
-                                        Toast.LENGTH_LONG).show();
                             }
                         })
 
@@ -192,15 +191,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setFragment(Fragment fragment) {
         // TODO: 20.02.17 m prefix mean member and can be used only for global variables, rename it
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        Fragment mFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
-        if (mFragment == null) {
-            mFragmentManager.beginTransaction()
+        //Done
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragmentFromContainer = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (fragmentFromContainer == null) {
+            fragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
         } else {
-            mFragmentManager.beginTransaction()
+            fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
@@ -225,14 +225,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
-        if (Constants.Type.FREE == Constants.type) {
-            // TODO: 20.02.17 don't need this, set the right string in build.gradle and get it from there
-            if (Constants.Type.FREE == Constants.type) {
-                mToolbar.setSubtitle("Free Version");
-            } else {
-                mToolbar.setSubtitle("Paid Version");
-            }
-        }
+//        if (SyncStateContract.Constants.Type.FREE == Constants.type) {
+//            // TODO: 20.02.17 don't need this, set the right string in build.gradle and get it from there
+//            if (Constants.Type.FREE == Constants.type) {
+//                mToolbar.setSubtitle("Free Version");
+//            } else {
+//                mToolbar.setSubtitle("Paid Version");
+//            }
+//        }
     }
 
         @Override

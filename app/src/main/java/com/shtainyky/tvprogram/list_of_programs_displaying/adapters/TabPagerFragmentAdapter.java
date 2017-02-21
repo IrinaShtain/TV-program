@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.list_of_programs_displaying.TVProgramViewPagerFragment;
+import com.shtainyky.tvprogram.fragments.TVProgramViewPagerFragment;
 import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;

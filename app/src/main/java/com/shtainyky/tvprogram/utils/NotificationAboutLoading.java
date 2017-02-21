@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.services;
+package com.shtainyky.tvprogram.utils;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,11 +9,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import com.shtainyky.tvprogram.MainActivity;
+import com.shtainyky.tvprogram.activities.MainActivity;
 import com.shtainyky.tvprogram.R;
 
-class NotificationAboutLoading {
-    static void sendNotification(Context context, String msg, int id) {
+public class NotificationAboutLoading {
+   public static void sendNotification(Context context, String msg, int id) {
         Resources resources = context.getResources();
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);

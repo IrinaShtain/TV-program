@@ -11,12 +11,12 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
 
-class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsHolder> {
+public class ListOfChannelsAdapter extends RecyclerView.Adapter<ListOfChannelsHolder> {
     private List<ChannelItem> mChannels;
     private Context mContext;
     private int mFromFlag;
 
-    ListOfChannelsAdapter(Context context, List<ChannelItem> channels, int fromFlag) {
+    public ListOfChannelsAdapter(Context context, List<ChannelItem> channels, int fromFlag) {
         mContext = context;
         mChannels = channels;
         mFromFlag = fromFlag;

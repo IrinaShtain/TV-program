@@ -6,8 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.activities.LoadingDataActivity;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.httpconnection.HttpManager;
+import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
