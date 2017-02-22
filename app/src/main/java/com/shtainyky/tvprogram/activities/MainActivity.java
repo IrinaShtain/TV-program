@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
 import com.shtainyky.tvprogram.database.DatabaseSource;
 import com.shtainyky.tvprogram.adapters.ChannelListener;
 import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ChannelListener, PreferredChannelListener {
+        ChannelListener, PreferredChannelListener, CategoriesRecyclerViewAdapter.OnCategoryClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         // TODO: 20.02.17 you don't know this action name here, rename it
 //    this action can be names as onCategoryClick or something like this
-        public void setChannelsForCategoryId ( int categoryId, boolean isPreferred){
+        public void setChannelsForCategoryId (int categoryId, boolean isPreferred){
             ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryId, isPreferred);
             setFragment(fragment);
         }
@@ -254,4 +255,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+    @Override
+    public void onCategoryClick(int categoryID) {
+        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(categoryID, false);
+        setFragment(fragment);
+    }
 }

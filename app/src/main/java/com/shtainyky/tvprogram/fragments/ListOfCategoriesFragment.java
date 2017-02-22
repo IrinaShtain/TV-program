@@ -1,5 +1,7 @@
 package com.shtainyky.tvprogram.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.adapters.ListOfCategoriesAdapter;
 import com.shtainyky.tvprogram.model.CategoryItem;
 
 import java.util.ArrayList;
@@ -27,10 +29,26 @@ public class ListOfCategoriesFragment extends Fragment {
 
     private DatabaseSource mSource;
     private List<CategoryItem> mCategories;
+    private CategoriesRecyclerViewAdapter.OnCategoryClickListener mCallback;
 
     public static ListOfCategoriesFragment newInstance() {
 
         return new ListOfCategoriesFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity activity = null;
+        if (context instanceof Activity){
+            activity=(Activity) context;
+        }
+        try {
+            mCallback = (CategoriesRecyclerViewAdapter.OnCategoryClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement ChannelListener");
+        }
+
     }
 
     @Nullable
@@ -51,7 +69,8 @@ public class ListOfCategoriesFragment extends Fragment {
     // TODO: 20.02.17 request data ASYNC using content provider
     private void requestData() {
         mCategories = mSource.getAllCategories();
-        ListOfCategoriesAdapter mAdapter = new ListOfCategoriesAdapter(getContext(), mCategories);
+        CategoriesRecyclerViewAdapter mAdapter = new CategoriesRecyclerViewAdapter(getContext(), mCategories);
+        mAdapter.setOnCategoryClickListener(mCallback);
         mCategoryRecyclerView.setAdapter(mAdapter);
     }
 
