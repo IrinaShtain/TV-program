@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.loading_data;
+package com.shtainyky.tvprogram.services;
 
 import android.app.IntentService;
 import android.content.Intent;

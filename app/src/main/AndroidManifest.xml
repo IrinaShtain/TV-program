@@ -34,7 +34,7 @@
             android:exported="false" />
 
         <service
-            android:name=".loading_data.LoadingDataIntentService"
+            android:name=".services.LoadingDataIntentService"
             android:exported="false"/>
         <provider
             android:authorities="com.shtainyky.tvprogram"

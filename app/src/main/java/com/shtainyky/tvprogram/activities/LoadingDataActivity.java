@@ -10,9 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.shtainyky.tvprogram.activities.MainActivity;
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.loading_data.LoadingDataIntentService;
+import com.shtainyky.tvprogram.services.LoadingDataIntentService;
 import com.shtainyky.tvprogram.services.LoadingMonthProgramsIntentService;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 import com.shtainyky.tvprogram.utils.Utils;

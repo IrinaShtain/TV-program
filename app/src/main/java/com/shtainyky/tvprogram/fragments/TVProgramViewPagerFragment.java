@@ -16,7 +16,7 @@ import android.widget.Button;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.list_of_programs_displaying.adapters.TVProgramAdapter;
+import com.shtainyky.tvprogram.adapters.TVProgramRecyclerViewAdapter;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -115,7 +115,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         startAnim();
         mPrograms = mSource.getPrograms(mChannelId, forDate);
         stopAnim();
-        TVProgramAdapter mAdapter = new TVProgramAdapter(getContext(), mPrograms);
+        TVProgramRecyclerViewAdapter mAdapter = new TVProgramRecyclerViewAdapter(getContext(), mPrograms);
         mTVProgramRecyclerView.setAdapter(mAdapter);
     }
 
