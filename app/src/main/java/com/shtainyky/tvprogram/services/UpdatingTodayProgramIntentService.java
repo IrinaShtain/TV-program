@@ -38,7 +38,7 @@ public class UpdatingTodayProgramIntentService extends IntentService {
 
     public static void setServiceAlarm(Context context) {
         Intent i = UpdatingTodayProgramIntentService.newIntent(context);
-        boolean isOn = QueryPreferences.getShouldUpdateDayProgram(context);
+        boolean isOn = QueryPreferences.isUpdatingDayProgramOn(context);
         Log.i(TAG, "Received an intent:setServiceAlarm " + isOn);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
         AlarmManager alarmManager = (AlarmManager)

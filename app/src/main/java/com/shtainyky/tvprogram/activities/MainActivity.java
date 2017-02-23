@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupToolbarMenu();
         setupNavigationDrawerMenu();
-        if (QueryPreferences.getStoredFirstInstallation(this)) {
+        if (QueryPreferences.isFirstInstallation(this)) {
             startLoadingActivity();
         } else {
             setFragment(new TVProgramFragment());
@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), R.string.cancel, Toast.LENGTH_SHORT).show();
                             }
                         })
                 .setPositiveButton(getResources().getString(R.string.answer_yes),
@@ -124,23 +123,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
-    // TODO: 20.02.17 тіло методу не має перевищувати одного екрану, якщо більше, то можна розбити на менші методи
+    // 20.02.17 тіло методу не має перевищувати одного екрану, якщо більше, то можна розбити на менші методи
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
-        // TODO: 20.02.17 check codestyle oracle{
-        if (!QueryPreferences.getShouldUpdateDayProgram(this)) {
+        // 20.02.17 check codestyle oracle{
+        if (!QueryPreferences.isUpdatingDayProgramOn(this)) {
             message = getResources().getString(R.string.question_today_updating);
             wasOn = false;
         } else {
             message = getResources().getString(R.string.question_today_updating_is_on);
             wasOn = true;
         }
+        showAlertDialog(message, wasOn);
+    }
+
+    private void showAlertDialog(String message, final boolean wasOnUpdating) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.tv_day_updating)
                 .setMessage(message)
                 .setCancelable(false)
-                // TODO: 20.02.17 користувач і так знає що він натиснув, не треба тост
+                // 20.02.17 користувач і так знає що він натиснув, не треба тост
                 //Done
                 .setNegativeButton(getResources().getString(R.string.answer_no),
                         new DialogInterface.OnClickListener() {
@@ -153,18 +156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (!wasOn) {
-                                    QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), true);
-                                    UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-                                    Toast.makeText(getApplicationContext(),
-                                            R.string.data_update_four_times,
-                                            Toast.LENGTH_LONG).show();
+                                if (!wasOnUpdating) {
+                                    startServiceAndShowToast(true, getString(R.string.data_update_four_times));
                                 } else {
-                                    QueryPreferences.setShouldUpdateDayProgram(getApplicationContext(), false);
-                                    UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-                                    Toast.makeText(getApplicationContext(),
-                                            R.string.data_update_not_four_times,
-                                            Toast.LENGTH_LONG).show();
+                                    startServiceAndShowToast(false, getString(R.string.data_dont_update_four_times));
                                 }
                             }
                         });
@@ -172,12 +167,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
+    private void startServiceAndShowToast(boolean updateDayProgram, String toastMessage) {
+        QueryPreferences.setUpdatingDayProgram(getApplicationContext(), updateDayProgram);
+        UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
+        Toast.makeText(getApplicationContext(),
+                toastMessage,
+                Toast.LENGTH_LONG).show();
+    }
+
     private void startLoadingData() {
         mSource.deleteAllTables();
         Toast.makeText(this, R.string.data_syns, Toast.LENGTH_SHORT).show();
-        QueryPreferences.setProgramLoaded(this, false);
-        QueryPreferences.setChannelLoaded(this, false);
-        QueryPreferences.setCategoryLoaded(this, false);
+        QueryPreferences.setProgramsAreLoaded(this, false);
+        QueryPreferences.setChannelsAreLoaded(this, false);
+        QueryPreferences.setCategoriesAreLoaded(this, false);
         startLoadingActivity();
 
     }
@@ -189,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setFragment(Fragment fragment) {
-        // TODO: 20.02.17 m prefix mean member and can be used only for global variables, rename it
+        // 20.02.17 m prefix mean member and can be used only for global variables, rename it
         //Done
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragmentFromContainer = fragmentManager.findFragmentById(R.id.fragment_container);
@@ -219,14 +222,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
     }
-
+    // 20.02.17 don't need this, set the right string in build.gradle and get it from there
+    //Done
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle(BuildConfig.FLAVORS_VERSION);
-        // 20.02.17 don't need this, set the right string in build.gradle and get it from there
-        //Done
     }
 
 

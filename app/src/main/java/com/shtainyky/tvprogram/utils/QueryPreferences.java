@@ -11,12 +11,12 @@ public class QueryPreferences {
     private static final String PREF_SERVICE_WORKING = "PREF_SERVICE_WORKED";
     private static final String PREF_DAY_UPDATING = "PREF_DAY_UPDATING";
 
-    public static boolean getShouldUpdateDayProgram(Context context) {
+    public static boolean isUpdatingDayProgramOn(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_DAY_UPDATING, false);
     }
 
-    public static void setShouldUpdateDayProgram(Context context, boolean isFirstInstallation) {
+    public static void setUpdatingDayProgram(Context context, boolean isFirstInstallation) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_DAY_UPDATING, isFirstInstallation)
@@ -35,12 +35,12 @@ public class QueryPreferences {
                 .apply();
     }
 
-    public static boolean getStoredFirstInstallation(Context context) {
+    public static boolean isFirstInstallation(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_FIRST_INSTALLATION, true);
     }
 
-    public static void setStoredFirstInstallation(Context context, boolean isFirstInstallation) {
+    public static void setFirstInstallation(Context context, boolean isFirstInstallation) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_FIRST_INSTALLATION, isFirstInstallation)
@@ -51,7 +51,7 @@ public class QueryPreferences {
                 .getBoolean(PREF_CHANNELS_LOADED, false);
     }
 
-    public static void setChannelLoaded(Context context, boolean isLoaded) {
+    public static void setChannelsAreLoaded(Context context, boolean isLoaded) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_CHANNELS_LOADED, isLoaded)
@@ -62,18 +62,18 @@ public class QueryPreferences {
                 .getBoolean(PREF_CATEGORIES_LOADED, false);
     }
 
-    public static void setCategoryLoaded(Context context, boolean isLoaded) {
+    public static void setCategoriesAreLoaded(Context context, boolean isLoaded) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_CATEGORIES_LOADED, isLoaded)
                 .apply();
     }
-    public static boolean areProgramLoaded(Context context) {
+    public static boolean areProgramsLoaded(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(PREF_PROGRAMS_LOADED, false);
     }
 
-    public static void setProgramLoaded(Context context, boolean isLoaded) {
+    public static void setProgramsAreLoaded(Context context, boolean isLoaded) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_PROGRAMS_LOADED, isLoaded)

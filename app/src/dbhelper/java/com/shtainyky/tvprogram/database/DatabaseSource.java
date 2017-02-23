@@ -163,7 +163,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);
             mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
         }
-        QueryPreferences.setChannelLoaded(mContext, true);
+        QueryPreferences.setChannelsAreLoaded(mContext, true);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             values.put(COLUMN_CATEGORY_IMAGE_URL, category.getImage_url());
             mContext.getContentResolver().insert(ContractClass.Categories.CONTENT_URI, values);
         }
-        QueryPreferences.setCategoryLoaded(mContext, true);
+        QueryPreferences.setCategoriesAreLoaded(mContext, true);
     }
 
     @Override
@@ -242,7 +242,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             mContext.getContentResolver().insert(ContractClass.Programs.CONTENT_URI, values);
         }
         Log.i("myLog", "size =" + programs.size());
-        QueryPreferences.setProgramLoaded(mContext, true);
+        QueryPreferences.setProgramsAreLoaded(mContext, true);
     }
 
     @Override

@@ -58,7 +58,7 @@ public class LoadingDataIntentService extends IntentService {
                 }
                 mSource.insertListChannels(response.body());
                 if (QueryPreferences.areCategoriesLoaded(getApplicationContext())
-                        && QueryPreferences.areProgramLoaded(getApplicationContext()))
+                        && QueryPreferences.areProgramsLoaded(getApplicationContext()))
                     sendResult();
                 Log.i(TAG, "ChannelsOnResponse");
             }
@@ -80,7 +80,7 @@ public class LoadingDataIntentService extends IntentService {
                     return;
                 }
                 mSource.insertListCategories(response.body());
-                if (QueryPreferences.areProgramLoaded(getApplicationContext())
+                if (QueryPreferences.areProgramsLoaded(getApplicationContext())
                         && QueryPreferences.areChannelsLoaded(getApplicationContext()))
                     sendResult();
                 Log.i(TAG, "CATEGORIESonResponse");

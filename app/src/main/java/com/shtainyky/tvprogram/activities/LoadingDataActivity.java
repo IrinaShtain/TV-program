@@ -70,7 +70,7 @@ public class LoadingDataActivity extends AppCompatActivity {
 
     private void finishLoading() {
         Toast.makeText(getApplicationContext(), R.string.data_are_loaded, Toast.LENGTH_SHORT).show();
-        QueryPreferences.setStoredFirstInstallation(getApplicationContext(), false);
+        QueryPreferences.setFirstInstallation(getApplicationContext(), false);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         LoadingMonthProgramsIntentService.startService(this, true);
         startActivity(intent);

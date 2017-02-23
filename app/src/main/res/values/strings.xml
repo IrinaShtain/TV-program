@@ -20,7 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_internet">Please, turn on the Internet and restart the application</string>
     <string name="tv_day_updating">Day updating</string>
-    <string name="data_update_not_four_times">Data for today will not be updated four times a day</string>
+    <string name="data_dont_update_four_times">Data for today will not be updated four times a day</string>
     <string name="data_update_four_times">Data for today will be updated four times a day</string>
     <string name="data_syns">Please, wait.\nData will be loaded from server soon</string>
     <string name="delete_data_db">Data are deleted from database</string>
