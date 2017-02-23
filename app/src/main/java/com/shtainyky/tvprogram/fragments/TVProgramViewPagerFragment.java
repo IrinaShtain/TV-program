@@ -20,10 +20,12 @@ import com.shtainyky.tvprogram.adapters.TVProgramRecyclerViewAdapter;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +38,7 @@ public class TVProgramViewPagerFragment extends Fragment {
     private String mForDate;
     private DatabaseSource mSource;
     private List<ProgramItem> mPrograms;
+    private SimpleDateFormat simpleDateFormat;
 
     @BindView(R.id.tvprogram_recycler_view)
     RecyclerView mTVProgramRecyclerView;
@@ -62,6 +65,7 @@ public class TVProgramViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_vp_tvprograms, container, false);
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
         ButterKnife.bind(this, view);
         mPrograms = new ArrayList<>();
         mSource = new DatabaseSource(getContext());
@@ -85,17 +89,17 @@ public class TVProgramViewPagerFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            // TODO: 20.02.17 check SimpleDateFormat
-            mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", date));
+            // 20.02.17 check SimpleDateFormat
+            mGetDateButton.setText(simpleDateFormat.format(date));
             setupUI();
-            showProgram(String.valueOf(DateFormat.format("dd/MM/yyyy", date)));
+            showProgram(String.valueOf(simpleDateFormat.format(date)));
             Log.i("myLog", mForDate);
         }
     }
 
 
     public void setupButtonDate() {
-        mGetDateButton.setText(DateFormat.format("dd/MM/yyyy", Calendar.getInstance()));
+        mGetDateButton.setText(simpleDateFormat.format(new Date()));
         mGetDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

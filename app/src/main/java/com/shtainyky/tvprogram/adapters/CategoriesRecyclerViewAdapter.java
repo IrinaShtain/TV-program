@@ -31,7 +31,7 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
         mCategories = categories;
     }
 
-    // TODO: 20.02.17 use this listener to let know fragment/activity that use this adapter
+    //  20.02.17 use this listener to let know fragment/activity that use this adapter
     //Done
     public void setOnCategoryClickListener(OnCategoryClickListener listener) {
         mOnCategoryClickListener = listener;
@@ -58,7 +58,7 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
     @Override
     public int getItemCount() {
-        // TODO: 20.02.17 check null?
+        // 20.02.17 check null?
         //Done
         if (mCategories != null)
             return mCategories.size();
@@ -70,8 +70,8 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
         void onCategoryClick(int categoryID);
     }
 
-    // TODO: 20.02.17 simple inner holder class to bind with category
-    // TODO: 20.02.17 holder is used only for CategoriesRecyclerViewAdapter, can be declared inside as public static class
+    //  20.02.17 simple inner holder class to bind with category
+    //  20.02.17 holder is used only for CategoriesRecyclerViewAdapter, can be declared inside as public static class
     //Done
     public static class CategoriesHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.category_name)
@@ -85,8 +85,8 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-        // TODO: 20.02.17 don't handle any actions here, you can simply display data
-        //Maybe done
+        //  20.02.17 don't handle any actions here, you can simply display data
+        //Done
         // and let know about user actions
         // you do not need to care about internet here
 

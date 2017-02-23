@@ -18,7 +18,7 @@ public class TabPagerFragmentAdapter extends FragmentStatePagerAdapter {
     public TabPagerFragmentAdapter(FragmentManager fm, List<ChannelItem> channelItems) {
         super(fm);
         mChannelItems = channelItems;
-        // TODO: 20.02.17 do not get any data here, send channelItem list as input parameter
+        // 20.02.17 do not get any data here, send channelItem list as input parameter
         //Done
     }
 

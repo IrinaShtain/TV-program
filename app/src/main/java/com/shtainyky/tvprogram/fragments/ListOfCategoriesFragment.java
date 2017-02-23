@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListOfCategoriesFragment extends Fragment {
-    // TODO: 20.02.17 do fragment interaction in the right way https://developer.android.com/training/basics/fragments/communicating.html
+    //  20.02.17 do fragment interaction in the right way https://developer.android.com/training/basics/fragments/communicating.html
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;
 

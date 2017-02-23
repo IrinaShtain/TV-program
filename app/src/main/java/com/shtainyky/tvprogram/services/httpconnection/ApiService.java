@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-// TODO: 20.02.17 avoid My prefix, make no sense
-public interface MyApiService {
+//  20.02.17 avoid My prefix, make no sense
+public interface ApiService {
 
     @GET("chanels")
     Call<List<ChannelItem>> getChannelsList();
