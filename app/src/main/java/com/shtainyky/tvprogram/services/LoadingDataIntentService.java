@@ -7,7 +7,10 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.activities.LoadingDataActivity;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.models.models_retrofit.Category;
+import com.shtainyky.tvprogram.models.models_retrofit.Channel;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
@@ -25,7 +28,7 @@ import retrofit2.Response;
 
 public class LoadingDataIntentService extends IntentService {
     private final static String TAG = "myLog";
-    private DatabaseSource mSource;
+    private DatabaseStoreImp mSource;
 
     public LoadingDataIntentService() {
         super("LoadingDataIntentService");
@@ -35,7 +38,7 @@ public class LoadingDataIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (Utils.isOnline(this)) {
             Log.i(TAG, "LoadingDataIntentService");
-            mSource = new DatabaseSource(getApplicationContext());
+            mSource = new DatabaseStoreImp(getApplicationContext());
             loadChannels();
             loadCategories();
             loadPrograms();
@@ -48,10 +51,10 @@ public class LoadingDataIntentService extends IntentService {
     }
 
     private void loadChannels() {
-        Call<List<ChannelItem>> callChannels = HttpManager.getApiService().getChannelsList();
-        callChannels.enqueue(new Callback<List<ChannelItem>>() {
+        Call<List<Channel>> callChannels = HttpManager.getApiService().getChannelsList();
+        callChannels.enqueue(new Callback<List<Channel>>() {
             @Override
-            public void onResponse(Call<List<ChannelItem>> call, Response<List<ChannelItem>> response) {
+            public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
                 if (response.body() == null) {
                     showMessageToUser();
                     return;
@@ -64,17 +67,17 @@ public class LoadingDataIntentService extends IntentService {
             }
 
             @Override
-            public void onFailure(Call<List<ChannelItem>> call, Throwable t) {
+            public void onFailure(Call<List<Channel>> call, Throwable t) {
                 Log.i(TAG, "ChannelsOnFailure");
             }
         });
     }
 
     private void loadCategories() {
-        Call<List<CategoryItem>> callCategories = HttpManager.getApiService().getCategoriesList();
-        callCategories.enqueue(new Callback<List<CategoryItem>>() {
+        Call<List<Category>> callCategories = HttpManager.getApiService().getCategoriesList();
+        callCategories.enqueue(new Callback<List<Category>>() {
             @Override
-            public void onResponse(Call<List<CategoryItem>> call, Response<List<CategoryItem>> response) {
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.body() == null) {
                     showMessageToUser();
                     return;
@@ -87,7 +90,7 @@ public class LoadingDataIntentService extends IntentService {
             }
 
             @Override
-            public void onFailure(Call<List<CategoryItem>> call, Throwable t) {
+            public void onFailure(Call<List<Category>> call, Throwable t) {
                 Log.i(TAG, "CATEGORIESonFailure");
             }
         });
@@ -96,10 +99,10 @@ public class LoadingDataIntentService extends IntentService {
     private void loadPrograms() {
         Calendar calendar = Calendar.getInstance();
         long timeStamp = calendar.getTimeInMillis();
-        Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
-        callPrograms.enqueue(new Callback<List<ProgramItem>>() {
+        Call<List<Program>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+        callPrograms.enqueue(new Callback<List<Program>>() {
             @Override
-            public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+            public void onResponse(Call<List<Program>> call, Response<List<Program>> response) {
                 if (response.body() == null) {
                     showMessageToUser();
                     return;
@@ -113,7 +116,7 @@ public class LoadingDataIntentService extends IntentService {
             }
 
             @Override
-            public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
+            public void onFailure(Call<List<Program>> call, Throwable t) {
                 Log.i(TAG, "ProgramItemonFailure");
             }
         });

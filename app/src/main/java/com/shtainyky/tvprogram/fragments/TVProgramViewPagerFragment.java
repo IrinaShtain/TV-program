@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.adapters.TVProgramRecyclerViewAdapter;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +34,7 @@ public class TVProgramViewPagerFragment extends Fragment {
 
     private int mChannelId;
     private String mForDate;
-    private DatabaseSource mSource;
+    private DatabaseStoreImp mSource;
     private List<ProgramItem> mPrograms;
     private SimpleDateFormat simpleDateFormat;
 
@@ -68,7 +66,7 @@ public class TVProgramViewPagerFragment extends Fragment {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
         ButterKnife.bind(this, view);
         mPrograms = new ArrayList<>();
-        mSource = new DatabaseSource(getContext());
+        mSource = new DatabaseStoreImp(getContext());
 
         setupButtonDate();
         setupUI();

@@ -6,11 +6,11 @@ public class Program {
     private String time;
     private String title;
 
-    public int getId() {
+    public int getChannelID() {
         return channel_id;
     }
 
-    public void setId(int id) {
+    public void setChannelID(int id) {
         this.channel_id = id;
     }
 

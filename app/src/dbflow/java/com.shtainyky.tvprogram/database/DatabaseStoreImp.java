@@ -5,26 +5,29 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.shtainyky.tvprogram.db.DatabaseSourceInterface;
+import com.shtainyky.tvprogram.db.DatabaseStoreInterface;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.CategoryItem_Table;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ChannelItem_Table;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.model.ProgramItem_Table;
+import com.shtainyky.tvprogram.models.models_retrofit.Category;
+import com.shtainyky.tvprogram.models.models_retrofit.Channel;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseSource implements DatabaseSourceInterface {
+public class DatabaseStoreImp implements DatabaseStoreInterface {
 
     private Context mContext;
     private CategoryItem mCategoryItem;
     private ChannelItem mChannelItem;
     private ProgramItem mProgramItem;
 
-    public DatabaseSource(Context context) {
+    public DatabaseStoreImp(Context context) {
         mContext = context;
         mCategoryItem = new CategoryItem();
         mChannelItem = new ChannelItem();
@@ -37,6 +40,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
         mContext.getContentResolver().delete(mChannelItem.getDeleteUri(), null, null);
         mContext.getContentResolver().delete(mProgramItem.getDeleteUri(), null, null);
     }
+
     //for working with channels
     @Override
     public List<ChannelItem> getAllChannel() {
@@ -140,20 +144,20 @@ public class DatabaseSource implements DatabaseSourceInterface {
     }
 
     @Override
-    public void insertListChannels(List<ChannelItem> channels) {
-       if (channels == null) return;
+    public void insertListChannels(List<Channel> channels) {
+        if (channels == null) return;
         for (int i = 0; i < channels.size(); i++) {
-            ChannelItem channel = channels.get(i);
+            Channel channel = channels.get(i);
             ContentValues values = new ContentValues();
             values.put(String.valueOf(ChannelItem_Table.id), channel.getId());
             values.put(String.valueOf(ChannelItem_Table.name), channel.getName().trim());
             values.put(String.valueOf(ChannelItem_Table.picture), channel.getPicture());
-            values.put(String.valueOf(ChannelItem_Table.category_id), channel.getCategory());
+            values.put(String.valueOf(ChannelItem_Table.category_id), channel.getCategory_id());
             values.put(String.valueOf(ChannelItem_Table.is_preferred), 0);
             mContext.getContentResolver().insert(mChannelItem.getInsertUri(), values);
         }
         QueryPreferences.setChannelsAreLoaded(mContext, true);
-        Log.i("myLog", "is_preferred =" + channels.get(0).is_preferred);
+        Log.i("myLog", "insertListChannels****** =");
     }
 
     @Override
@@ -162,16 +166,17 @@ public class DatabaseSource implements DatabaseSourceInterface {
         values.put(String.valueOf(ChannelItem_Table.is_preferred), state);
         int k = mContext.getContentResolver().update(mChannelItem.getQueryUri(),
                 values,
-                ChannelItem_Table.id+ " = ?",
+                ChannelItem_Table.id + " = ?",
                 new String[]{"" + channelPreferredId});
         Log.i("myLog", "Channels.updat " + k);
     }
-//for working with categories
+
+    //for working with categories
     @Override
-    public void insertListCategories(final List<CategoryItem> categories) {
+    public void insertListCategories(final List<Category> categories) {
         if (categories == null) return;
         for (int i = 0; i < categories.size(); i++) {
-            CategoryItem category = categories.get(i);
+            Category category = categories.get(i);
             ContentValues values = new ContentValues();
             values.put(String.valueOf(CategoryItem_Table.id), category.getId());
             values.put(String.valueOf(CategoryItem_Table.title), category.getTitle());
@@ -179,7 +184,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             mContext.getContentResolver().insert(mCategoryItem.getInsertUri(), values);
         }
         QueryPreferences.setCategoriesAreLoaded(mContext, true);
-        Log.i("myLog", "  mCategoryItem.getInsertUri(), =" +   mCategoryItem.getInsertUri());
+        Log.i("myLog", "  mCategoryItem.getInsertUri(), =" + mCategoryItem.getInsertUri());
     }
 
     @Override
@@ -205,13 +210,14 @@ public class DatabaseSource implements DatabaseSourceInterface {
             cursor.close();
         }
         Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
-        Log.i("myLog", "  mCategoryItem.getQueryUri(), = " +   mCategoryItem.getQueryUri());
+        Log.i("myLog", "  mCategoryItem.getQueryUri(), = " + mCategoryItem.getQueryUri());
         return categories;
 
     }
-//for working with programs
+
+    //for working with programs
     @Override
-    public void updateListPrograms(List<ProgramItem> programs, String whereDate) {
+    public void updateListPrograms(List<Program> programs, String whereDate) {
         mContext.getContentResolver().delete(mProgramItem.getDeleteUri(),
                 ProgramItem_Table.date + " = ?",
                 new String[]{whereDate});
@@ -219,14 +225,14 @@ public class DatabaseSource implements DatabaseSourceInterface {
     }
 
     @Override
-    public void insertListPrograms( List<ProgramItem> programs) {
+    public void insertListPrograms(List<Program> programs) {
         for (int i = 0; i < programs.size(); i++) {
-            ProgramItem program = programs.get(i);
+            Program program = programs.get(i);
             ContentValues values = new ContentValues();
             values.put(String.valueOf(ProgramItem_Table.title), program.getTitle());
             values.put(String.valueOf(ProgramItem_Table.date), program.getDate());
             values.put(String.valueOf(ProgramItem_Table.time), program.getTime());
-            values.put(String.valueOf(ProgramItem_Table.channel_id), program.getChannel());
+            values.put(String.valueOf(ProgramItem_Table.channel_id), program.getChannelID());
             mContext.getContentResolver().insert(mProgramItem.getInsertUri(), values);
         }
         Log.i("myLog", "size =" + programs.size());

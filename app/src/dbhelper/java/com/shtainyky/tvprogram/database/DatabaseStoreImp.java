@@ -7,10 +7,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.db.DatabaseStoreInterface;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.db.DatabaseSourceInterface;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
@@ -29,11 +29,11 @@ import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PRO
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TIME;
 import static com.shtainyky.tvprogram.database.ContractClass.Programs.COLUMN_PROGRAM_TITLE;
 
-public class DatabaseSource implements DatabaseSourceInterface {
+public class DatabaseStoreImp implements DatabaseStoreInterface {
 
     private Context mContext;
 
-    public DatabaseSource(Context context) {
+    public DatabaseStoreImp(Context context) {
         mContext = context;
     }
 

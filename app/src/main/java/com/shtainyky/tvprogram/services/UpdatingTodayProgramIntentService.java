@@ -10,8 +10,9 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.NotificationAboutLoading;
 import com.shtainyky.tvprogram.utils.Utils;
@@ -57,20 +58,20 @@ public class UpdatingTodayProgramIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "Received an intent: " + intent);
         if (!Utils.isOnline(getApplicationContext())) return;
-        final DatabaseSource source = new DatabaseSource(getApplicationContext());
+        final DatabaseStoreImp source = new DatabaseStoreImp(getApplicationContext());
         Calendar calendar = Calendar.getInstance();
         long timeStamp = calendar.getTimeInMillis();
-        Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
-        callPrograms.enqueue(new Callback<List<ProgramItem>>() {
+        Call<List<Program>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+        callPrograms.enqueue(new Callback<List<Program>>() {
             @Override
-            public void onResponse(Call<List<ProgramItem>> call, Response<List<ProgramItem>> response) {
+            public void onResponse(Call<List<Program>> call, Response<List<Program>> response) {
                 source.updateListPrograms(response.body(), String.valueOf(DateFormat.format("dd/MM/yyyy", Calendar.getInstance())));
                 NotificationAboutLoading.sendNotification(getApplicationContext(), getString(R.string.data_updated), 1);
                 Log.i(TAG, "ProgramItemononHandleIntentResponse");
             }
 
             @Override
-            public void onFailure(Call<List<ProgramItem>> call, Throwable t) {
+            public void onFailure(Call<List<Program>> call, Throwable t) {
                 Log.i(TAG, "ProgramItemonFailure");
             }
         });

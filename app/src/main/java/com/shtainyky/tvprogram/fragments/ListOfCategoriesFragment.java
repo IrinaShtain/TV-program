@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.model.CategoryItem;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class ListOfCategoriesFragment extends Fragment {
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;
 
-    private DatabaseSource mSource;
+    private DatabaseStoreImp mSource;
     private List<CategoryItem> mCategories;
     private CategoriesRecyclerViewAdapter.OnCategoryClickListener mCallback;
 
@@ -56,7 +56,7 @@ public class ListOfCategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         ButterKnife.bind(this, view);
-        mSource = new DatabaseSource(getContext());
+        mSource = new DatabaseStoreImp(getContext());
         mCategories = new ArrayList<>();
 
         mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

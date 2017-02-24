@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class TVProgramFragment extends Fragment {
 
     private List<ChannelItem> getChannelItems() {
         List<ChannelItem> channelItems;
-        DatabaseSource source = new DatabaseSource(getContext());
+        DatabaseStoreImp source = new DatabaseStoreImp(getContext());
         if (mIsPreferred) {
             channelItems = source.getPreferredChannels();
         } else {

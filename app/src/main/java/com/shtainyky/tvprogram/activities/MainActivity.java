@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.shtainyky.tvprogram.BuildConfig;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;
@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.navigationView)
     NavigationView mNavigationView;
 
-    DatabaseSource mSource;
+    DatabaseStoreImp mSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mSource = new DatabaseSource(this);
+        mSource = new DatabaseStoreImp(this);
 
         setupToolbarMenu();
         setupNavigationDrawerMenu();

@@ -3,10 +3,13 @@ package com.shtainyky.tvprogram.db;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.models.models_retrofit.Category;
+import com.shtainyky.tvprogram.models.models_retrofit.Channel;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 
 import java.util.List;
 
-public interface DatabaseSourceInterface {
+public interface DatabaseStoreInterface {
 
     void deleteAllTables();
 
@@ -19,19 +22,19 @@ public interface DatabaseSourceInterface {
 
     String getCategoryNameForChannel(int id);
 
-    void insertListChannels(List<ChannelItem> channels);
+    void insertListChannels(List<Channel> channels);//***
 
     void setChannelPreferred(int channelPreferredId, int state);
 
     //for working with categories
-    void insertListCategories(List<CategoryItem> categories);
+    void insertListCategories(List<Category> categories);//***
 
     List<CategoryItem> getAllCategories();
 
     //for working with programs
-    void updateListPrograms(List<ProgramItem> programs, String whereDate);
+    void updateListPrograms(List<Program> programs, String whereDate);
 
-    void insertListPrograms(List<ProgramItem> programs);
+    void insertListPrograms(List<Program> programs);//***
 
     List<ProgramItem> getPrograms(int channelId, String forDate);
 }

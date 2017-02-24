@@ -9,8 +9,8 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.database.DatabaseSource;
-import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.NotificationAboutLoading;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
@@ -65,16 +65,16 @@ public class LoadingMonthProgramsIntentService extends IntentService {
 
     private void loadPrograms() {
         Log.i("myLog", "loadPrograms begin");
-        DatabaseSource source = new DatabaseSource(getApplicationContext());
-        List<ProgramItem> programs = new ArrayList<>();
+        DatabaseStoreImp source = new DatabaseStoreImp(getApplicationContext());
+        List<Program> programs = new ArrayList<>();
         for (int i = 1; i < 31; i++) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, i);
             long timeStamp = calendar.getTimeInMillis();
-            Call<List<ProgramItem>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
+            Call<List<Program>> callPrograms = HttpManager.getApiService().getProgramsList(timeStamp);
 
             try {
-                Response<List<ProgramItem>> response = callPrograms.execute();
+                Response<List<Program>> response = callPrograms.execute();
                 programs.addAll(response.body());
                 if (i % 10 == 0) {
                     Log.i("myLog", "ProgramItemonResponse Service %10" + i);

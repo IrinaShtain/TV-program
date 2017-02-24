@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
 import com.shtainyky.tvprogram.adapters.ChannelsRecyclerViewAdapter;
-import com.shtainyky.tvprogram.database.DatabaseSource;
+import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.model.ChannelItem;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
     public static final String ARG_CATEGORY_ID = "mCategoryId";
     public static final String ARG_IS_PREFERRED = "is_preferred";
 
-    private DatabaseSource mSource;
+    private DatabaseStoreImp mSource;
     private int mCategoryId;
     private boolean mIsPreferred;
     private View mView;
@@ -81,7 +81,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
         mView = inflater.inflate(R.layout.fragment_list_of_channels, container, false);
         ButterKnife.bind(this, mView);
 
-        mSource = new DatabaseSource(getContext());
+        mSource = new DatabaseStoreImp(getContext());
         getBundle();
         showChannels();
         return mView;
