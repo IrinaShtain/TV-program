@@ -71,6 +71,7 @@ public class ListOfCategoriesFragment extends Fragment {
         mCategories = mSource.getAllCategories();
         CategoriesRecyclerViewAdapter mAdapter = new CategoriesRecyclerViewAdapter(getContext(), mCategories);
         mAdapter.setOnCategoryClickListener(mCallback);
+
         mCategoryRecyclerView.setAdapter(mAdapter);
     }
 

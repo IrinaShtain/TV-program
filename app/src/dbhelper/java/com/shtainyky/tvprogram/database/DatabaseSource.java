@@ -195,7 +195,6 @@ public class DatabaseSource implements DatabaseSourceInterface {
     @Override
     public List<CategoryItem> getAllCategories() {
         List<CategoryItem> categories = new ArrayList<>();
-
         Cursor cursor = mContext.getContentResolver().query(
                 ContractClass.Categories.CONTENT_URI,
                 ContractClass.Categories.DEFAULT_PROJECTION,
@@ -215,6 +214,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             cursor.close();
         }
         Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
+        Log.i("myLog", "  ContractClass.Categories.CONTENT_URI, =" +   ContractClass.Categories.CONTENT_URI);
         return categories;
     }
 

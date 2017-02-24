@@ -73,14 +73,14 @@ final class ContractClass {
         private Categories() {
         }
 
-        static final String TABLE_NAME_CATEGORIES = "categories";
-        static final String PATH_CATEGORIES = "/categories";
-        static final String PATH_CATEGORIES_ID = "/categories/";
+        static final String TABLE_NAME_CATEGORIES = "CategoryItem";
+        static final String PATH_CATEGORIES = "/CategoryItem";
+        static final String PATH_CATEGORIES_ID = "/CategoryItem/";
         static final int CATEGORIES_ID_PATH_POSITION = 1;
         static final Uri CONTENT_URI = Uri.parse(SCHEME + AUTHORITY + PATH_CATEGORIES);
         static final Uri CONTENT_ID_URI_BASE = Uri.parse(SCHEME + AUTHORITY + PATH_CATEGORIES_ID);
-        static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + "categories";
-        static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + "categories";
+        static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + "CategoryItem";
+        static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + "CategoryItem";
 
         static final String COLUMN_CATEGORY_ID = "_id";
         static final String COLUMN_CATEGORY_TITLE = "category_title";

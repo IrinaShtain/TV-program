@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.shtainyky.tvprogram.db.DatabaseSourceInterface;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.CategoryItem_Table;
@@ -13,7 +12,6 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ChannelItem_Table;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.model.ProgramItem_Table;
-
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
@@ -154,7 +152,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             values.put(String.valueOf(ChannelItem_Table.is_preferred), 0);
             mContext.getContentResolver().insert(mChannelItem.getInsertUri(), values);
         }
-        QueryPreferences.setChannelLoaded(mContext, true);
+        QueryPreferences.setChannelsAreLoaded(mContext, true);
         Log.i("myLog", "is_preferred =" + channels.get(0).is_preferred);
     }
 
@@ -180,14 +178,36 @@ public class DatabaseSource implements DatabaseSourceInterface {
             values.put(String.valueOf(CategoryItem_Table.picture), category.getImage_url());
             mContext.getContentResolver().insert(mCategoryItem.getInsertUri(), values);
         }
-        QueryPreferences.setCategoryLoaded(mContext, true);
+        QueryPreferences.setCategoriesAreLoaded(mContext, true);
+        Log.i("myLog", "  mCategoryItem.getInsertUri(), =" +   mCategoryItem.getInsertUri());
     }
 
     @Override
     public List<CategoryItem> getAllCategories() {
-        return SQLite.select().
-                from(CategoryItem.class).
-                queryList();
+        List<CategoryItem> categories = new ArrayList<>();
+
+        Cursor cursor = mContext.getContentResolver().query(
+                mCategoryItem.getQueryUri(),
+                null,
+                null,
+                null,
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    CategoryItem category = new CategoryItem();
+                    category.setId(cursor.getInt(0));
+                    category.setTitle(cursor.getString(1));
+                    category.setImage_url(cursor.getString(2));
+                    categories.add(category);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
+        Log.i("myLog", "  mCategoryItem.getQueryUri(), = " +   mCategoryItem.getQueryUri());
+        return categories;
+
     }
 //for working with programs
     @Override
@@ -210,7 +230,7 @@ public class DatabaseSource implements DatabaseSourceInterface {
             mContext.getContentResolver().insert(mProgramItem.getInsertUri(), values);
         }
         Log.i("myLog", "size =" + programs.size());
-        QueryPreferences.setProgramLoaded(mContext, true);
+        QueryPreferences.setProgramsAreLoaded(mContext, true);
     }
 
     @Override

@@ -5,9 +5,9 @@ package com.shtainyky.tvprogram;
  */
 
 public class Review {
-    // TODO: 20.02.17 reorganize package structure check rules from https://www.linkedin.com/pulse/android-package-structure-performance-tam-nguyen
-    // TODO: 20.02.17 check code style
+    //  20.02.17 reorganize package structure check rules from https://www.linkedin.com/pulse/android-package-structure-performance-tam-nguyen
+    //  20.02.17 check code style
 //    oracle :: http://www.oracle.com/technetwork/java/codeconventions-150003.pdf
 //    android ::https://github.com/ribot/android-guidelines/blob/master/project_and_code_guidelines.md
-    // TODO: 20.02.17 use meaningful names
+    //  20.02.17 use meaningful names
 }
