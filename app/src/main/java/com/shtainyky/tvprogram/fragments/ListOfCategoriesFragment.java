@@ -52,7 +52,7 @@ public class ListOfCategoriesFragment extends Fragment implements
         try {
             mCallback = (CategoriesRecyclerViewAdapter.OnCategoryClickListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement ChannelListener");
+            throw new ClassCastException(activity.toString() + " must implement OnCategoryClickListener");
         }
 
     }
