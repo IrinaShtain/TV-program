@@ -3,7 +3,7 @@ package com.shtainyky.tvprogram.database;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-final class ContractClass {
+public final class ContractClass {
     static final String AUTHORITY = "com.shtainyky.tvprogram";
     private static final String SCHEME = "content://";
 
@@ -13,7 +13,6 @@ final class ContractClass {
     static final class Programs implements BaseColumns {
         private Programs() {
         }
-
         static final String TABLE_NAME_PROGRAMS = "programs";
         static final String PATH_PROGRAMS = "/programs";
         static final String PATH_PROGRAMS_ID = "/programs/";
@@ -69,7 +68,7 @@ final class ContractClass {
 
     }
 
-    static final class Categories implements BaseColumns {
+    public static final class Categories implements BaseColumns {
         private Categories() {
         }
 
@@ -82,11 +81,11 @@ final class ContractClass {
         static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + "CategoryItem";
         static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + "CategoryItem";
 
-        static final String COLUMN_CATEGORY_ID = "_id";
-        static final String COLUMN_CATEGORY_TITLE = "category_title";
-        static final String COLUMN_CATEGORY_IMAGE_URL = "category_image_url";
+        public static final String COLUMN_CATEGORY_ID = "_id";
+        public static final String COLUMN_CATEGORY_TITLE = "category_title";
+        public static final String COLUMN_CATEGORY_IMAGE_URL = "category_image_url";
 
-        static final String[] DEFAULT_PROJECTION = new String[]{
+        public static final String[] DEFAULT_PROJECTION = new String[]{
                 ContractClass.Categories.COLUMN_CATEGORY_ID,
                 ContractClass.Categories.COLUMN_CATEGORY_TITLE,
                 ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL

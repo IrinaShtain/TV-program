@@ -133,7 +133,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         Cursor cursor = mContext.getContentResolver().query(
                 mCategoryItem.getQueryUri(),
                 null,
-                CategoryItem_Table.id + " = ? ",
+                CategoryItem_Table._id + " = ? ",
                 new String[]{"" + id},
                 null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -178,7 +178,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         for (int i = 0; i < categories.size(); i++) {
             Category category = categories.get(i);
             ContentValues values = new ContentValues();
-            values.put(String.valueOf(CategoryItem_Table.id), category.getId());
+            values.put(String.valueOf(CategoryItem_Table._id), category.getId());
             values.put(String.valueOf(CategoryItem_Table.title), category.getTitle());
             values.put(String.valueOf(CategoryItem_Table.picture), category.getImage_url());
             mContext.getContentResolver().insert(mCategoryItem.getInsertUri(), values);
@@ -187,33 +187,6 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         Log.i("myLog", "  mCategoryItem.getInsertUri(), =" + mCategoryItem.getInsertUri());
     }
 
-    @Override
-    public List<CategoryItem> getAllCategories() {
-        List<CategoryItem> categories = new ArrayList<>();
-
-        Cursor cursor = mContext.getContentResolver().query(
-                mCategoryItem.getQueryUri(),
-                null,
-                null,
-                null,
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    CategoryItem category = new CategoryItem();
-                    category.setId(cursor.getInt(0));
-                    category.setTitle(cursor.getString(1));
-                    category.setImage_url(cursor.getString(2));
-                    categories.add(category);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
-        Log.i("myLog", "  mCategoryItem.getQueryUri(), = " + mCategoryItem.getQueryUri());
-        return categories;
-
-    }
 
     //for working with programs
     @Override

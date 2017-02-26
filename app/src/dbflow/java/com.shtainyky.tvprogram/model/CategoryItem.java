@@ -13,7 +13,7 @@ import com.shtainyky.tvprogram.database.MyDatabase;
 public class CategoryItem extends BaseProviderModel<CategoryItem> {
     @Column
     @PrimaryKey
-    public  int id;
+    public int _id;
 
     @Column
     public String title;
@@ -43,11 +43,11 @@ public class CategoryItem extends BaseProviderModel<CategoryItem> {
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        _id = id;
     }
 
     public String getTitle() {

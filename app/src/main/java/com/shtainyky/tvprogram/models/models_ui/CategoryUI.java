@@ -1,5 +1,9 @@
 package com.shtainyky.tvprogram.models.models_ui;
 
+import android.database.Cursor;
+
+import com.shtainyky.tvprogram.database.ContractClass;
+
 public class CategoryUI {
     private int id;
     private String title;
@@ -27,5 +31,19 @@ public class CategoryUI {
 
     public void setImage_url(String image_url) {
         this.picture = image_url;
+    }
+
+    public static CategoryUI getCategory(Cursor cursor) {
+        CategoryUI category = new CategoryUI();
+        category.setId(cursor.
+                getInt(cursor.
+                        getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_ID)));
+        category.setTitle(cursor.
+                getString(cursor.
+                        getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_TITLE)));
+        category.setImage_url(cursor.
+                getString(cursor.
+                        getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL)));
+        return category;
     }
 }

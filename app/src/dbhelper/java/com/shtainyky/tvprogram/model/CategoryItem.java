@@ -1,16 +1,16 @@
 package com.shtainyky.tvprogram.model;
 
 public class CategoryItem {
-    private int id;
+    private int _id;
     private String title;
     private String picture;
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        _id = id;
     }
 
     public String getTitle() {

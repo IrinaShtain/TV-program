@@ -11,6 +11,9 @@ import com.shtainyky.tvprogram.db.DatabaseStoreInterface;
 import com.shtainyky.tvprogram.model.CategoryItem;
 import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.models.models_retrofit.Category;
+import com.shtainyky.tvprogram.models.models_retrofit.Channel;
+import com.shtainyky.tvprogram.models.models_retrofit.Program;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.ArrayList;
@@ -151,10 +154,10 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
     }
 
     @Override
-    public void insertListChannels(List<ChannelItem> channels) {
+    public void insertListChannels(List<Channel> channels) {
 
         for (int i = 0; i < channels.size(); i++) {
-            ChannelItem channel = channels.get(i);
+            Channel channel = channels.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_CHANNEL_ID, channel.getId());
             values.put(COLUMN_CHANNEL_TITLE, channel.getName().trim());
@@ -179,10 +182,10 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
 
     //working with categories
     @Override
-    public void insertListCategories(List<CategoryItem> categories) {
+    public void insertListCategories(List<Category> categories) {
 
         for (int i = 0; i < categories.size(); i++) {
-            CategoryItem category = categories.get(i);
+            Category category = categories.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_CATEGORY_ID, category.getId());
             values.put(COLUMN_CATEGORY_TITLE, category.getTitle());
@@ -192,35 +195,11 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         QueryPreferences.setCategoriesAreLoaded(mContext, true);
     }
 
-    @Override
-    public List<CategoryItem> getAllCategories() {
-        List<CategoryItem> categories = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(
-                ContractClass.Categories.CONTENT_URI,
-                ContractClass.Categories.DEFAULT_PROJECTION,
-                null,
-                null,
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    CategoryItem category = new CategoryItem();
-                    category.setId(cursor.getInt(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_ID)));
-                    category.setTitle(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_TITLE)));
-                    category.setImage_url(cursor.getString(cursor.getColumnIndex(ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL)));
-                    categories.add(category);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        Log.i("myLog", "getAllCategories =" + categories.get(0).getTitle());
-        Log.i("myLog", "  ContractClass.Categories.CONTENT_URI, =" +   ContractClass.Categories.CONTENT_URI);
-        return categories;
-    }
+
 
     //working with programs
     @Override
-    public void updateListPrograms(List<ProgramItem> programs, String whereDate) {
+    public void updateListPrograms(List<Program> programs, String whereDate) {
         Log.i("myLog", "update =" + programs.get(0).getDate());
 
         int k = mContext.getContentResolver().delete(ContractClass.Programs.CONTENT_URI,
@@ -231,14 +210,14 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
     }
 
     @Override
-    public void insertListPrograms(List<ProgramItem> programs) {
+    public void insertListPrograms(List<Program> programs) {
         for (int i = 0; i < programs.size(); i++) {
-            ProgramItem program = programs.get(i);
+            Program program = programs.get(i);
             ContentValues values = new ContentValues();
             values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
             values.put(COLUMN_PROGRAM_DATE, program.getDate());
             values.put(COLUMN_PROGRAM_TIME, program.getTime());
-            values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getId());
+            values.put(COLUMN_PROGRAM_CHANNEL_ID, program.getChannelID());
             mContext.getContentResolver().insert(ContractClass.Programs.CONTENT_URI, values);
         }
         Log.i("myLog", "size =" + programs.size());
