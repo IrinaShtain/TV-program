@@ -20,6 +20,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField  'String', 'BASE_API', '"http://52.50.138.211:8080/ChanelAPI/"'
+        buildConfigField  'String', 'FLAVORS_VERSION', versionName
     }
     buildTypes {
         release {
@@ -27,25 +30,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".release"
             signingConfig signingConfigs.theReleaseKey
-            buildConfigField  'String', 'BASE_API', '"' + 'http://52.50.138.211:8080/ChanelAPI/' + '"'
-            //   find out how to introduce variable here (String BASE_API = "YOUR_BASE_API"
-            //  Done
         }
-        debug{
-            buildConfigField  'String', 'BASE_API', '"' + 'http://52.50.138.211:8080/ChanelAPI/' + '"'
-        }
-
     }
     productFlavors {
-//  name shall have the meanings, rename to dbhelper and dbflow
-        //Done
         dbhelper {
-            applicationIdSuffix "com.shtainyky.tvprogram.dbhelper"
-            buildConfigField  'String', 'FLAVORS_VERSION', '"' + 'dbhelper version' + '"'
+            applicationIdSuffix "dbhelper"
+            versionNameSuffix "-dbhelper"
         }
         dbflow {
-            applicationIdSuffix "com.shtainyky.tvprogram.dbflow"
-            buildConfigField  'String', 'FLAVORS_VERSION', '"' + 'dbflow version' + '"'
+            applicationIdSuffix "dbflow"
+            versionNameSuffix "-dbflow"
         }
     }
 }
@@ -74,6 +68,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
 
 //    dbFlow library related only for dbflow flavors
+//    todo move this variable into global gradle file or create new version.gradle file
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:3.1.1"
     dbflowCompile "com.github.Raizlabs.DBFlow:dbflow-core:3.1.1"
     dbflowCompile "com.github.Raizlabs.DBFlow:dbflow:3.1.1"

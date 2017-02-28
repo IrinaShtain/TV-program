@@ -87,6 +87,7 @@ public class ChannelsRecyclerViewAdapter extends RecyclerView.Adapter<ChannelsRe
         }
 
         private void setIconForChannel() {
+            // TODO: 28/02/17 use drawable states to set image
             if (mIsChannelPreferred) {
                 setImage(R.drawable.ic_preferred_channel);
             } else {

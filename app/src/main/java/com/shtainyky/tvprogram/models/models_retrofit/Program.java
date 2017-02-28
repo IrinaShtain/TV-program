@@ -1,5 +1,7 @@
 package com.shtainyky.tvprogram.models.models_retrofit;
 
+
+// TODO: 28/02/17 can use generated classes using http://www.jsonschema2pojo.org/
 public class Program {
     private int channel_id;
     private String date;

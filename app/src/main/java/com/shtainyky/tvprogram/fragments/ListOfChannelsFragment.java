@@ -63,6 +63,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
             activity = (Activity) context;
         }
         try {
+            // TODO: 28/02/17 category click inside channels list???
             mOnCategoryClickListener = (CategoriesRecyclerViewAdapter.OnCategoryClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnCategoryClickListener");

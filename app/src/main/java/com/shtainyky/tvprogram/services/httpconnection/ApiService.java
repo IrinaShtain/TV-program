@@ -1,8 +1,5 @@
 package com.shtainyky.tvprogram.services.httpconnection;
 
-import com.shtainyky.tvprogram.model.CategoryItem;
-import com.shtainyky.tvprogram.model.ChannelItem;
-import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.models.models_retrofit.Category;
 import com.shtainyky.tvprogram.models.models_retrofit.Channel;
 import com.shtainyky.tvprogram.models.models_retrofit.Program;
@@ -13,7 +10,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-//  20.02.17 avoid My prefix, make no sense
 public interface ApiService {
 
     @GET("chanels")

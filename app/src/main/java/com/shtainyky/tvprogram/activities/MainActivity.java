@@ -102,12 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setTitle(R.string.tv_program_manual)
                 .setMessage(getResources().getString(R.string.question_manual))
                 .setCancelable(false)
-                .setNegativeButton(getResources().getString(R.string.answer_no),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
+                .setNegativeButton(getResources().getString(R.string.answer_no), null)
                 .setPositiveButton(getResources().getString(R.string.answer_yes),
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -123,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
-    // 20.02.17 тіло методу не має перевищувати одного екрану, якщо більше, то можна розбити на менші методи
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
@@ -143,15 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setTitle(R.string.tv_day_updating)
                 .setMessage(message)
                 .setCancelable(false)
-                // 20.02.17 користувач і так знає що він натиснув, не треба тост
-                //Done
-                .setNegativeButton(getResources().getString(R.string.answer_no),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-
+                .setNegativeButton(getResources().getString(R.string.answer_no), null)
                 .setPositiveButton(getResources().getString(R.string.answer_yes),
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -170,9 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startServiceAndShowToast(boolean updateDayProgram, String toastMessage) {
         QueryPreferences.setUpdatingDayProgram(getApplicationContext(), updateDayProgram);
         UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-        Toast.makeText(getApplicationContext(),
-                toastMessage,
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
     private void startLoadingData() {
@@ -192,8 +176,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setFragment(Fragment fragment) {
-        // 20.02.17 m prefix mean member and can be used only for global variables, rename it
-        //Done
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragmentFromContainer = fragmentManager.findFragmentById(R.id.fragment_container);
         if (fragmentFromContainer == null) {
@@ -223,8 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
-    // 20.02.17 don't need this, set the right string in build.gradle and get it from there
-    //Done
+
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle(BuildConfig.FLAVORS_VERSION);
@@ -238,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(fragment);
     }
 
-    // 20.02.17 you don't know this action name here, rename it
-    // this action can be names as onChannelClick or something like this
+
     @Override
     public void onPreferredChannelClick() {
         TVProgramFragment fragment = TVProgramFragment.newInstance(true);

@@ -17,9 +17,6 @@ import com.shtainyky.tvprogram.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-// основна робота адаптера в тому щоб відобразити дані які в нього прийшли і "дати знати" про то що
-// користувач взаємодіє з цими даними. Сам адаптер не вирішує нічого, не завантажує нічого,
-// не обробляє нічого. Виконує тільки свої дії, дії АДАПТЕРА
 public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<CategoriesRecyclerViewAdapter.CategoriesHolder> {
     private Context mContext;
     private OnCategoryClickListener mOnCategoryClickListener;
@@ -29,8 +26,6 @@ public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<Cat
         mContext = context;
     }
 
-    //  20.02.17 use this listener to let know fragment/activity that use this adapter
-    //Done
     public void setOnCategoryClickListener(OnCategoryClickListener listener) {
         mOnCategoryClickListener = listener;
     }
@@ -59,9 +54,7 @@ public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<Cat
         void onCategoryClick(int categoryID);
     }
 
-    //  20.02.17 simple inner holder class to bind with category
-    //  20.02.17 holder is used only for CategoriesRecyclerViewAdapter, can be declared inside as public static class
-    //Done
+
     static class CategoriesHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.category_name)
         TextView mCategoryNameTextView;
@@ -74,11 +67,6 @@ public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<Cat
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-        //  20.02.17 don't handle any actions here, you can simply display data
-        //Done
-        // and let know about user actions
-        // you do not need to care about internet here
-
     }
 }
 

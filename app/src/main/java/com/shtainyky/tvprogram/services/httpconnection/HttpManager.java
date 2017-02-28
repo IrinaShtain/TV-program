@@ -8,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HttpManager {
-    //  20.02.17 declare this variable in build.gradle file
 
     public static ApiService getApiService(){
         Retrofit retrofit = new Retrofit.Builder()

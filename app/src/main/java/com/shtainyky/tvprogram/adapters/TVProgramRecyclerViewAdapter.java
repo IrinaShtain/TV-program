@@ -20,8 +20,8 @@ public class TVProgramRecyclerViewAdapter extends RecyclerView.Adapter<TVProgram
     private Context mContext;
 
     public TVProgramRecyclerViewAdapter(Context context, List<ProgramItem> programs) {
-        mPrograms = programs;
         mContext = context;
+        mPrograms = programs;
     }
 
     @Override

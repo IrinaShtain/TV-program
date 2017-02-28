@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
 import com.shtainyky.tvprogram.database.ContractClass;
-import com.shtainyky.tvprogram.database.DatabaseStoreImp;
-import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.models.models_ui.ChannelUI;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -74,8 +72,7 @@ public class TVProgramFragment extends Fragment implements
     }
 
     private void setupTabs() {
-        mAdapter = new TabPagerFragmentAdapter(getActivity().getSupportFragmentManager(),
-                null);
+        mAdapter = new TabPagerFragmentAdapter(getActivity().getSupportFragmentManager(), null);
 
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

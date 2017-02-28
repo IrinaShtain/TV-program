@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shtainyky.tvprogram.BuildConfig;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
 import com.shtainyky.tvprogram.database.ContractClass;
@@ -26,11 +25,12 @@ import com.wang.avi.AVLoadingIndicatorView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//  20.02.17 do fragment interaction in the right way https://developer.android.com/training/basics/fragments/communicating.html
 public class ListOfCategoriesFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static int LOADER_ID = 0;
+    // TODO: 28/02/17  CategoriesRecyclerViewAdapter.OnCategoryClickListener and ListOfCategoriesFragment.<InteractionListener> not the same
+//    inside of activity you don't know about CategoriesRecyclerViewAdapter
     private CategoriesRecyclerViewAdapter.OnCategoryClickListener mCallback;
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;
