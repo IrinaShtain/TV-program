@@ -42,12 +42,10 @@ android {
         dbhelper {
             applicationIdSuffix "com.shtainyky.tvprogram.dbhelper"
             buildConfigField  'String', 'FLAVORS_VERSION', '"' + 'dbhelper version' + '"'
-            buildConfigField  'String', 'URI_CATEGORY', '"' + 'content://com.shtainyky.tvprogram/CategoryItem' + '"'
         }
         dbflow {
             applicationIdSuffix "com.shtainyky.tvprogram.dbflow"
             buildConfigField  'String', 'FLAVORS_VERSION', '"' + 'dbflow version' + '"'
-            buildConfigField  'String', 'URI_CATEGORY', '"' + 'content://com.shtainyky.tvprogram/CategoryItem' + '"'
         }
     }
 }

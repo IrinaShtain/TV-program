@@ -8,6 +8,7 @@ public final class ContractClass {
     static final class Programs {
         private Programs() {
         }
+        static final Uri CONTENT_URI = "content://com.shtainyky.tvprogram/ProgramItem";
         static final String COLUMN_PROGRAM_ID = "_id";
         static final String COLUMN_PROGRAM_CHANNEL_ID = "program_channel_id";
         static final String COLUMN_PROGRAM_TITLE = "program_title";
@@ -28,6 +29,7 @@ public final class ContractClass {
     static final class Channels{
         private Channels() {
         }
+        static final Uri CONTENT_URI = "content://com.shtainyky.tvprogram/ChannelItem";
         static final String COLUMN_CHANNEL_ID = "_id";
         static final String COLUMN_CHANNEL_TITLE = "channel_title";
         static final String COLUMN_CHANNEL_IMAGE_URL = "channel_image_url";
@@ -47,6 +49,7 @@ public final class ContractClass {
     public static final class Categories{
         private Categories() {
         }
+        static final Uri CONTENT_URI = "content://com.shtainyky.tvprogram/CategoryItem";
         public static final String COLUMN_CATEGORY_ID = "_id";
         public static final String COLUMN_CATEGORY_TITLE = "title";
         public static final String COLUMN_CATEGORY_IMAGE_URL = "picture";

@@ -62,6 +62,7 @@ public class ListOfCategoriesFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         ButterKnife.bind(this, view);
+        setupAdapterForRecycleView();
         // TODO: 20.02.17 show data loading progress
         return view;
     }
@@ -74,11 +75,14 @@ public class ListOfCategoriesFragment extends Fragment implements
 
     // TODO: 20.02.17 request data ASYNC using content provider
     private void requestData() {
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+
+    private void setupAdapterForRecycleView() {
         mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         CategoriesRecyclerViewAdapter adapter = new CategoriesRecyclerViewAdapter(getContext(), null);
         adapter.setOnCategoryClickListener(mCallback);
         mCategoryRecyclerView.setAdapter(adapter);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
 
@@ -86,13 +90,14 @@ public class ListOfCategoriesFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i("myLog", "onCreateLoader =");
         mProgress.show();
-        Uri CONTACT_URI = Uri.parse(BuildConfig.URI_CATEGORY);
+        Uri CONTACT_URI = Uri.parse(String.valueOf(ContractClass.Categories.CONTENT_URI));
         return new CursorLoader(getContext(), CONTACT_URI, ContractClass.Categories.DEFAULT_PROJECTION,
                 null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
         ((CategoriesRecyclerViewAdapter) mCategoryRecyclerView.getAdapter()).swapCursor(data);
         Log.i("myLog", "onLoadFinished =");
         mProgress.hide();

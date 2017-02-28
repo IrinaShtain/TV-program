@@ -35,7 +35,7 @@ public class DatePickerFragment extends DialogFragment {
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         View view = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_date, null);
+                .inflate(R.layout.fragment_dialog_date, null);
         ButterKnife.bind(this,view);
         mDatePicker.init(mYear, mMonth, mDay, null);
         mDatePicker.setMinDate(calendar.getTimeInMillis());

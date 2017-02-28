@@ -27,7 +27,7 @@ public class TVProgramRecyclerViewAdapter extends RecyclerView.Adapter<TVProgram
     @Override
     public TVProgramRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_program, parent, false);
+                .inflate(R.layout.adapter_item_program, parent, false);
         return new TVProgramRecyclerViewHolder(view);
     }
 

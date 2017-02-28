@@ -37,7 +37,7 @@ public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<Cat
 
     @Override
     public CategoriesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_category, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_item_category, parent, false);
         return new CategoriesHolder(view);
     }
 
