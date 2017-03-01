@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ListOfChannelsFragment.OnPreferredChannelClickListener, CategoriesRecyclerViewAdapter.OnCategoryClickListener {
+        ListOfChannelsFragment.OnPreferredChannelClickListener, ListOfChannelsFragment.OnChannelClickListener,CategoriesRecyclerViewAdapter.OnCategoryClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -102,7 +103,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setTitle(R.string.tv_program_manual)
                 .setMessage(getResources().getString(R.string.question_manual))
                 .setCancelable(false)
-                .setNegativeButton(getResources().getString(R.string.answer_no), null)
+                .setNegativeButton(getResources().getString(R.string.answer_no),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
                 .setPositiveButton(getResources().getString(R.string.answer_yes),
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -121,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showDialogTodaysUpdating() {
         String message;
         final boolean wasOn;
-        // 20.02.17 check codestyle oracle{
         if (!QueryPreferences.isUpdatingDayProgramOn(this)) {
             message = getResources().getString(R.string.question_today_updating);
             wasOn = false;
@@ -156,7 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startServiceAndShowToast(boolean updateDayProgram, String toastMessage) {
         QueryPreferences.setUpdatingDayProgram(getApplicationContext(), updateDayProgram);
         UpdatingTodayProgramIntentService.setServiceAlarm(getApplicationContext());
-        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),
+                toastMessage,
+                Toast.LENGTH_LONG).show();
     }
 
     private void startLoadingData() {
@@ -205,7 +212,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
-
+    // 20.02.17 don't need this, set the right string in build.gradle and get it from there
+    //Done
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle(BuildConfig.FLAVORS_VERSION);
@@ -219,10 +227,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(fragment);
     }
 
-
+    // 20.02.17 you don't know this action name here, rename it
+    // this action can be names as onChannelClick or something like this
     @Override
     public void onPreferredChannelClick() {
         TVProgramFragment fragment = TVProgramFragment.newInstance(true);
+        setFragment(fragment);
+    }
+
+    @Override
+    public void onChannelClick() {
+        ListOfChannelsFragment fragment = ListOfChannelsFragment.newInstance(0, false);
         setFragment(fragment);
     }
 }

@@ -35,7 +35,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
     private boolean mIsPreferred;
     private View mView;
     private List<ChannelItem> mChannels;
-    private CategoriesRecyclerViewAdapter.OnCategoryClickListener mOnCategoryClickListener;
+    private OnChannelClickListener mOnChannelClickListener;
     private OnPreferredChannelClickListener mOnPreferredChannelClickListener;
     private ChannelsRecyclerViewAdapter mAdapter;
 
@@ -54,6 +54,10 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
     public interface OnPreferredChannelClickListener {
         void onPreferredChannelClick();
     }
+    public interface OnChannelClickListener {
+        void onChannelClick();
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -63,8 +67,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
             activity = (Activity) context;
         }
         try {
-            // TODO: 28/02/17 category click inside channels list???
-            mOnCategoryClickListener = (CategoriesRecyclerViewAdapter.OnCategoryClickListener) activity;
+            mOnChannelClickListener = (OnChannelClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnCategoryClickListener");
         }
@@ -128,7 +131,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
             buttonPreferred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnCategoryClickListener.onCategoryClick(0);
+                    mOnChannelClickListener.onChannelClick();
                 }
             });
         }
