@@ -212,8 +212,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
-    // 20.02.17 don't need this, set the right string in build.gradle and get it from there
-    //Done
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle(BuildConfig.FLAVORS_VERSION);
@@ -227,8 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(fragment);
     }
 
-    // 20.02.17 you don't know this action name here, rename it
-    // this action can be names as onChannelClick or something like this
+
     @Override
     public void onPreferredChannelClick() {
         TVProgramFragment fragment = TVProgramFragment.newInstance(true);

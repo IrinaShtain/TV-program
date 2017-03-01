@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
 import com.shtainyky.tvprogram.adapters.ChannelsRecyclerViewAdapter;
 import com.shtainyky.tvprogram.database.DatabaseStoreImp;
 import com.shtainyky.tvprogram.model.ChannelItem;
@@ -69,7 +68,7 @@ public class ListOfChannelsFragment extends Fragment implements ChannelsRecycler
         try {
             mOnChannelClickListener = (OnChannelClickListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnCategoryClickListener");
+            throw new ClassCastException(activity.toString() + " must implement OnChannelClickListener");
         }
         try {
             mOnPreferredChannelClickListener = (OnPreferredChannelClickListener) activity;
