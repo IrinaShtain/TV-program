@@ -3,14 +3,14 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    signingConfigs {
-        theReleaseKey {
-            keyAlias 'the.release.key'
-            keyPassword '123456'
-            storeFile file('C:/Users/Bell/my_release/release_key_version_001.jks')
-            storePassword '123456'
-        }
-    }
+//    signingConfigs {
+//        theReleaseKey {
+//            keyAlias 'the.release.key'
+//            keyPassword '123456'
+//            storeFile file('C:/Users/Bell/my_release/release_key_version_001.jks')
+//            storePassword '123456'
+//        }
+//    }
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
@@ -20,16 +20,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        buildConfigField  'String', 'BASE_API', '"http://52.50.138.211:8080/ChanelAPI/"'
-        buildConfigField  'String', 'FLAVORS_VERSION', versionName
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".release"
-            signingConfig signingConfigs.theReleaseKey
+//            signingConfig signingConfigs.theReleaseKey
+        }
+        all {
+            buildConfigField 'String', 'BASE_API', '"http://52.50.138.211:8080/ChanelAPI/"'
         }
     }
     productFlavors {
