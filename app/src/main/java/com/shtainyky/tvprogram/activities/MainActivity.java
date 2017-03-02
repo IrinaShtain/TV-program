@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -32,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ListOfChannelsFragment.OnPreferredChannelClickListener, ListOfChannelsFragment.OnChannelClickListener,CategoriesRecyclerViewAdapter.OnCategoryClickListener {
+        ListOfChannelsFragment.OnPreferredChannelClickListener, ListOfChannelsFragment.OnChannelClickListener, CategoriesRecyclerViewAdapter.OnCategoryClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -188,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragmentFromContainer == null) {
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
                     .commit();
         } else {
             fragmentManager.beginTransaction()
@@ -212,9 +210,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
+
     private void setupToolbarMenu() {
         mToolbar.setTitle(R.string.app_name);
-        mToolbar.setSubtitle(BuildConfig.FLAVORS_VERSION);
+        mToolbar.setSubtitle(BuildConfig.VERSION_NAME);
     }
 
 

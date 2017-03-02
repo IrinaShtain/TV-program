@@ -13,7 +13,7 @@ public class ChannelItem extends BaseProviderModel<ChannelItem> {
 
     @Column
     @PrimaryKey
-    public int id;
+    public int _id;
 
     @Column
     public String name;
@@ -52,11 +52,11 @@ public class ChannelItem extends BaseProviderModel<ChannelItem> {
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getName() {

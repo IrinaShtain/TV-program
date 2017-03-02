@@ -34,7 +34,6 @@ public class TVProgramFragment extends Fragment implements
     private static final String ARG_PREFERRED_FOR_LOADERS = "is_preferred_loading";
     private boolean mIsPreferred;
     private TabPagerFragmentAdapter mAdapter;
-    private List<ChannelUI> mChannelUIList = new ArrayList<>();
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.tabLayout)
@@ -109,8 +108,7 @@ public class TVProgramFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (!data.isClosed()) mChannelUIList = ChannelUI.getListOfChannelsForUI(data) ;
-        mAdapter.swapListOfChannels(mChannelUIList);
+        ((TabPagerFragmentAdapter) mViewPager.getAdapter()).swapListOfChannels(ChannelUI.getListOfChannelsForUI(data));
         mProgress.hide();
     }
 

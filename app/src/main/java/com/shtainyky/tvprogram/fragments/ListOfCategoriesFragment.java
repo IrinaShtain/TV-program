@@ -30,7 +30,7 @@ public class ListOfCategoriesFragment extends Fragment implements
 
     private static int LOADER_ID = 0;
     // TODO: 28/02/17  CategoriesRecyclerViewAdapter.OnCategoryClickListener and ListOfCategoriesFragment.<InteractionListener> not the same
-//    inside of activity you don't know about CategoriesRecyclerViewAdapter
+
     private CategoriesRecyclerViewAdapter.OnCategoryClickListener mCallback;
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;

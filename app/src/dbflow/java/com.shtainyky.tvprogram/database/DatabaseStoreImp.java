@@ -149,7 +149,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         for (int i = 0; i < channels.size(); i++) {
             Channel channel = channels.get(i);
             ContentValues values = new ContentValues();
-            values.put(String.valueOf(ChannelItem_Table.id), channel.getId());
+            values.put(String.valueOf(ChannelItem_Table._id), channel.getId());
             values.put(String.valueOf(ChannelItem_Table.name), channel.getName().trim());
             values.put(String.valueOf(ChannelItem_Table.picture), channel.getPicture());
             values.put(String.valueOf(ChannelItem_Table.category_id), channel.getCategory_id());
@@ -166,7 +166,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         values.put(String.valueOf(ChannelItem_Table.is_preferred), state);
         int k = mContext.getContentResolver().update(mChannelItem.getQueryUri(),
                 values,
-                ChannelItem_Table.id + " = ?",
+                ChannelItem_Table._id + " = ?",
                 new String[]{"" + channelPreferredId});
         Log.i("myLog", "Channels.updat " + k);
     }
