@@ -1,6 +1,7 @@
 package com.shtainyky.tvprogram.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,20 @@ import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.ProgramItem;
+import com.shtainyky.tvprogram.models.models_ui.ProgramUI;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TVProgramRecyclerViewAdapter extends RecyclerView.Adapter<TVProgramRecyclerViewAdapter.TVProgramRecyclerViewHolder> {
+public class TVProgramRecyclerViewAdapter extends CursorRecyclerViewAdapter<TVProgramRecyclerViewAdapter.TVProgramRecyclerViewHolder> {
     private List<ProgramItem> mPrograms;
     private Context mContext;
 
-    public TVProgramRecyclerViewAdapter(Context context, List<ProgramItem> programs) {
+    public TVProgramRecyclerViewAdapter(Context context, Cursor cursor) {
+        super(context, cursor);
         mContext = context;
-        mPrograms = programs;
     }
 
     @Override
@@ -32,17 +34,10 @@ public class TVProgramRecyclerViewAdapter extends RecyclerView.Adapter<TVProgram
     }
 
     @Override
-    public void onBindViewHolder(TVProgramRecyclerViewHolder holder, int position) {
-        ProgramItem program = mPrograms.get(position);
-        holder.bindProgram(program);
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mPrograms != null)
-            return mPrograms.size();
-        else
-            return 0;
+    public void onBindViewHolder(TVProgramRecyclerViewHolder viewHolder, Cursor cursor) {
+        cursor.moveToPosition(cursor.getPosition());
+        final ProgramUI program = ProgramUI.getProgram(cursor);
+        viewHolder.bindProgram(program);
     }
 
 
@@ -59,7 +54,7 @@ public class TVProgramRecyclerViewAdapter extends RecyclerView.Adapter<TVProgram
             ButterKnife.bind(this, itemView);
         }
 
-        void bindProgram(ProgramItem program) {
+        void bindProgram(ProgramUI program) {
             mTitleTextView.setText(program.getTitle());
             mTimeTextView.setText(program.getTime());
             mDateTextView.setText(program.getDate());

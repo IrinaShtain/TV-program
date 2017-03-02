@@ -14,7 +14,7 @@ public class ProgramItem extends BaseProviderModel<ProgramItem> {
 
     @Column
     @PrimaryKey(autoincrement = true)
-    public int id;
+    public int _id;
 
     @Column
     public String title;
@@ -50,11 +50,11 @@ public class ProgramItem extends BaseProviderModel<ProgramItem> {
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getTitle() {

@@ -224,30 +224,5 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
         QueryPreferences.setProgramsAreLoaded(mContext, true);
     }
 
-    @Override
-    public List<ProgramItem> getPrograms(int channelId, String forDate) {
-        List<ProgramItem> programs = new ArrayList<>();
-        String[] whereArgs = new String[]{String.valueOf(channelId), forDate};
-        Cursor cursor = mContext.getContentResolver().query(ContractClass.Programs.CONTENT_URI,
-                ContractClass.Programs.DEFAULT_PROJECTION,
-                COLUMN_PROGRAM_CHANNEL_ID + " = ? AND " + COLUMN_PROGRAM_DATE + " = ?",
-                whereArgs,
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int titleColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TITLE);
-                int dateColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_DATE);
-                int timeColIndex = cursor.getColumnIndex(COLUMN_PROGRAM_TIME);
-                do {
-                    ProgramItem program = new ProgramItem();
-                    program.setTitle(cursor.getString(titleColIndex));
-                    program.setTime(cursor.getString(timeColIndex));
-                    program.setDate(cursor.getString(dateColIndex));
-                    programs.add(program);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        return programs;
-    }
+
 }

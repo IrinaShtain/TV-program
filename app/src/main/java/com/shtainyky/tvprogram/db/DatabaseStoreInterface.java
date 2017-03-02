@@ -34,5 +34,5 @@ public interface DatabaseStoreInterface {
 
     void insertListPrograms(List<Program> programs);//
 
-    List<ProgramItem> getPrograms(int channelId, String forDate);
+
 }
