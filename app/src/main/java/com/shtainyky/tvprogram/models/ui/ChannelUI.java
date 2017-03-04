@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.models.models_ui;
+package com.shtainyky.tvprogram.models.ui;
 
 import android.database.Cursor;
 import android.util.Log;

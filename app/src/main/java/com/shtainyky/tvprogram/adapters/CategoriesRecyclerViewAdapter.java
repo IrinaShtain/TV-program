@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.models.models_ui.CategoryUI;
+import com.shtainyky.tvprogram.models.ui.CategoryUI;
 import com.shtainyky.tvprogram.utils.Utils;
 
 import butterknife.BindView;

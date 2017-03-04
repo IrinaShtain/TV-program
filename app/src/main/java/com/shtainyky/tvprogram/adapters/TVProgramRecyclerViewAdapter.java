@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.model.ProgramItem;
-import com.shtainyky.tvprogram.models.models_ui.ProgramUI;
+import com.shtainyky.tvprogram.models.ui.ProgramUI;
 
 import java.util.List;
 

@@ -17,11 +17,8 @@ import android.view.ViewGroup;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.TabPagerFragmentAdapter;
 import com.shtainyky.tvprogram.database.ContractClass;
-import com.shtainyky.tvprogram.models.models_ui.ChannelUI;
+import com.shtainyky.tvprogram.models.ui.ChannelUI;
 import com.wang.avi.AVLoadingIndicatorView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

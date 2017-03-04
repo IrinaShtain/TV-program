@@ -1,8 +1,8 @@
 package com.shtainyky.tvprogram.services.httpconnection;
 
-import com.shtainyky.tvprogram.models.models_retrofit.Category;
-import com.shtainyky.tvprogram.models.models_retrofit.Channel;
-import com.shtainyky.tvprogram.models.models_retrofit.Program;
+import com.shtainyky.tvprogram.models.retrofit.Category;
+import com.shtainyky.tvprogram.models.retrofit.Channel;
+import com.shtainyky.tvprogram.models.retrofit.Program;
 
 import java.util.List;
 

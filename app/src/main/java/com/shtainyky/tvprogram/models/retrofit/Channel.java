@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.models.models_retrofit;
+package com.shtainyky.tvprogram.models.retrofit;
 
 public class Channel {
     private int id;

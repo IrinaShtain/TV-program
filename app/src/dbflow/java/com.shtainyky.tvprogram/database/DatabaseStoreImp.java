@@ -12,9 +12,9 @@ import com.shtainyky.tvprogram.model.ChannelItem;
 import com.shtainyky.tvprogram.model.ChannelItem_Table;
 import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.model.ProgramItem_Table;
-import com.shtainyky.tvprogram.models.models_retrofit.Category;
-import com.shtainyky.tvprogram.models.models_retrofit.Channel;
-import com.shtainyky.tvprogram.models.models_retrofit.Program;
+import com.shtainyky.tvprogram.models.retrofit.Category;
+import com.shtainyky.tvprogram.models.retrofit.Channel;
+import com.shtainyky.tvprogram.models.retrofit.Program;
 import com.shtainyky.tvprogram.utils.QueryPreferences;
 
 import java.util.List;
