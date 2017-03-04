@@ -56,7 +56,8 @@ public final class ContractClass {
         public static final String COLUMN_CHANNEL_ID = "_id";
         public static final String COLUMN_CHANNEL_TITLE = "channel_title";
         public static final String COLUMN_CHANNEL_IMAGE_URL = "channel_image_url";
-        static final String COLUMN_CHANNEL_CATEGORY_ID = "category_id";
+        public static final String COLUMN_CHANNEL_CATEGORY_ID = "category_id";
+        public static final String COLUMN_CHANNEL_CATEGORY_TITLE = "category_title";
         public static final String COLUMN_CHANNEL_IS_PREFERRED = "is_preferred";
 
         public static final String[] DEFAULT_PROJECTION = new String[]{
@@ -64,6 +65,7 @@ public final class ContractClass {
                 ContractClass.Channels.COLUMN_CHANNEL_TITLE,
                 ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL,
                 ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_ID,
+                ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_TITLE,
                 ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED
         };
 

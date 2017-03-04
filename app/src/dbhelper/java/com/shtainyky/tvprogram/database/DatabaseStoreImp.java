@@ -23,6 +23,7 @@ import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_C
 import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL;
 import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_TITLE;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_TITLE;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_ID;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED;
@@ -52,93 +53,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
 
     //working with channels
     @Override
-    public List<ChannelItem> getAllChannel() {
-        List<ChannelItem> channels = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(
-                ContractClass.Channels.CONTENT_URI,
-                ContractClass.Channels.DEFAULT_PROJECTION,
-                null,
-                null,
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    ChannelItem channel = new ChannelItem();
-                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
-                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
-                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
-                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
-                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
-                    channel.setCategory_name(categoryName);
-                    channels.add(channel);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        Log.d("myLog", "getAllChannel" + channels.get(0).getName());
-        return channels;
-
-    }
-
-    @Override
-    public List<ChannelItem> getChannelsForCategory(Integer categoryId) {
-        List<ChannelItem> channels = new ArrayList<>();
-        Log.d("myLog", "getChannelsForCategory" + categoryId);
-        Cursor cursor = mContext.getContentResolver().query(
-                ContractClass.Channels.CONTENT_URI,
-                ContractClass.Channels.DEFAULT_PROJECTION,
-                COLUMN_CHANNEL_CATEGORY_ID + "=?",
-                new String[]{String.valueOf(categoryId)},
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    ChannelItem channel = new ChannelItem();
-                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
-                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
-                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
-                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
-                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
-                    channel.setCategory_name(categoryName);
-                    channels.add(channel);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        Log.d("myLog", "getChannelsForCategory");
-        return channels;
-    }
-
-    @Override
-    public List<ChannelItem> getPreferredChannels() {
-        List<ChannelItem> channels = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(
-                ContractClass.Channels.CONTENT_URI,
-                ContractClass.Channels.DEFAULT_PROJECTION,
-                COLUMN_CHANNEL_IS_PREFERRED + "=?",
-                new String[]{"" + 1},
-                null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    ChannelItem channel = new ChannelItem();
-                    channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
-                    channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
-                    channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
-                    channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
-                    String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
-                    channel.setCategory_name(categoryName);
-                    channels.add(channel);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            Log.d("myLog", "getPreferredChannels");
-        }
-        return channels;
-    }
-
-    @Override
-    public String getCategoryNameForChannel(int id) {
+    public String getCategoryNameForChannel(String id) {
         String titleCategory = "category";
         Cursor cursor = mContext.getContentResolver().query(
                 ContractClass.Categories.CONTENT_URI,
@@ -155,7 +70,6 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
 
     @Override
     public void insertListChannels(List<Channel> channels) {
-
         for (int i = 0; i < channels.size(); i++) {
             Channel channel = channels.get(i);
             ContentValues values = new ContentValues();
@@ -163,6 +77,7 @@ public class DatabaseStoreImp implements DatabaseStoreInterface {
             values.put(COLUMN_CHANNEL_TITLE, channel.getName().trim());
             values.put(COLUMN_CHANNEL_IMAGE_URL, channel.getPicture());
             values.put(COLUMN_CHANNEL_CATEGORY_ID, channel.getCategory_id());
+            values.put(COLUMN_CHANNEL_CATEGORY_TITLE, getCategoryNameForChannel(String.valueOf(channel.getCategory_id())));
             values.put(COLUMN_CHANNEL_IS_PREFERRED, 0);
             mContext.getContentResolver().insert(ContractClass.Channels.CONTENT_URI, values);
         }

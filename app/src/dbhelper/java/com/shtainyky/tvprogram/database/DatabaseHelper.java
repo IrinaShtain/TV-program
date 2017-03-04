@@ -8,6 +8,7 @@ import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_C
 import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_IMAGE_URL;
 import static com.shtainyky.tvprogram.database.ContractClass.Categories.COLUMN_CATEGORY_TITLE;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_ID;
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_TITLE;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_ID;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED;
@@ -48,6 +49,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_CHANNEL_TITLE + " text not null ," +
             COLUMN_CHANNEL_IMAGE_URL + " text not null ," +
             COLUMN_CHANNEL_CATEGORY_ID + " integer not null ," +
+            COLUMN_CHANNEL_CATEGORY_TITLE + " text not null ," +
             COLUMN_CHANNEL_IS_PREFERRED + " integer not null);";
     private static final String DROP_TABLE_CHANNELS = "DROP TABLE IF EXISTS " + TABLE_NAME_CHANNELS;
 

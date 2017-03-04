@@ -63,7 +63,6 @@ public class ListOfCategoriesFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         ButterKnife.bind(this, view);
         setupAdapterForRecycleView();
-        // TODO: 20.02.17 show data loading progress
         return view;
     }
 
@@ -73,7 +72,6 @@ public class ListOfCategoriesFragment extends Fragment implements
         requestData();
     }
 
-    // TODO: 20.02.17 request data ASYNC using content provider
     private void requestData() {
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
@@ -90,7 +88,7 @@ public class ListOfCategoriesFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i("myLog", "onCreateLoader =");
         mProgress.show();
-        Uri CONTACT_URI = Uri.parse(String.valueOf(ContractClass.Categories.CONTENT_URI));
+        Uri CONTACT_URI = ContractClass.Categories.CONTENT_URI;
         return new CursorLoader(getContext(), CONTACT_URI, ContractClass.Categories.DEFAULT_PROJECTION,
                 null, null, null);
     }

@@ -13,13 +13,8 @@ public interface DatabaseStoreInterface {
     void deleteAllTables();
 
     //for working with channels
-    List<ChannelItem> getAllChannel();
 
-    List<ChannelItem> getChannelsForCategory(Integer categoryId);
-
-    List<ChannelItem> getPreferredChannels();
-
-    String getCategoryNameForChannel(int id);
+    String getCategoryNameForChannel(String id);
 
     void insertListChannels(List<Channel> channels);//
 

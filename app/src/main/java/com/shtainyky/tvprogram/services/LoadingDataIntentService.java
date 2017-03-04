@@ -39,9 +39,10 @@ public class LoadingDataIntentService extends IntentService {
         if (Utils.isOnline(this)) {
             Log.i(TAG, "LoadingDataIntentService");
             mSource = new DatabaseStoreImp(getApplicationContext());
-            loadChannels();
             loadCategories();
             loadPrograms();
+            loadChannels();
+
 
         } else {
             Toast.makeText(getApplicationContext(),

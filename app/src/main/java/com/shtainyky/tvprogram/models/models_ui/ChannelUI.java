@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_TITLE;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_ID;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL;
 import static com.shtainyky.tvprogram.database.ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED;
@@ -69,8 +70,7 @@ public class ChannelUI {
                     channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
                     channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
                     channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
-                    // String categoryName = getCategoryNameForChannel(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_ID)));
-                    channel.setCategory_name("categoryName");
+                    channel.setCategory_name(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_TITLE)));
                     channels.add(channel);
                 } while (cursor.moveToNext());
             }
@@ -79,4 +79,15 @@ public class ChannelUI {
         return channels;
     }
 
+    public static ChannelUI getChannel(Cursor cursor) {
+        ChannelUI channel = new ChannelUI();
+        if (cursor != null) {
+            channel.setName(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_TITLE)));
+            channel.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_ID)));
+            channel.setPictureUrl(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_IMAGE_URL)));
+            channel.setIs_preferred(cursor.getInt(cursor.getColumnIndex(COLUMN_CHANNEL_IS_PREFERRED)));
+            channel.setCategory_name(cursor.getString(cursor.getColumnIndex(COLUMN_CHANNEL_CATEGORY_TITLE)));
+        }
+        return channel;
+    }
 }

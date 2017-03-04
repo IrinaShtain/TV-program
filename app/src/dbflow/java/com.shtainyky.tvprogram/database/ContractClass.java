@@ -10,6 +10,7 @@ public final class ContractClass {
     public static final class Programs {
         private Programs() {
         }
+
         public static final Uri CONTENT_URI = Uri.parse("content://com.shtainyky.tvprogram/ProgramItem");
         public static final String COLUMN_PROGRAM_ID = "_id";
         public static final String COLUMN_PROGRAM_CHANNEL_ID = "channel_id";
@@ -28,14 +29,16 @@ public final class ContractClass {
 
     }
 
-    public static final class Channels{
+    public static final class Channels {
         private Channels() {
         }
+
         public static final Uri CONTENT_URI = Uri.parse("content://com.shtainyky.tvprogram/ChannelItem");
         public static final String COLUMN_CHANNEL_ID = "_id";
         public static final String COLUMN_CHANNEL_TITLE = "name";
         public static final String COLUMN_CHANNEL_IMAGE_URL = "picture";
         public static final String COLUMN_CHANNEL_CATEGORY_ID = "category_id";
+        public static final String COLUMN_CHANNEL_CATEGORY_TITLE = "category_title";
         public static final String COLUMN_CHANNEL_IS_PREFERRED = "is_preferred";
 
         public static final String[] DEFAULT_PROJECTION = new String[]{
@@ -43,14 +46,16 @@ public final class ContractClass {
                 ContractClass.Channels.COLUMN_CHANNEL_TITLE,
                 ContractClass.Channels.COLUMN_CHANNEL_IMAGE_URL,
                 ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_ID,
+                ContractClass.Channels.COLUMN_CHANNEL_CATEGORY_TITLE,
                 ContractClass.Channels.COLUMN_CHANNEL_IS_PREFERRED
         };
 
     }
 
-    public static final class Categories{
+    public static final class Categories {
         private Categories() {
         }
+
         public static final Uri CONTENT_URI = Uri.parse("content://com.shtainyky.tvprogram/CategoryItem");
         public static final String COLUMN_CATEGORY_ID = "_id";
         public static final String COLUMN_CATEGORY_TITLE = "title";

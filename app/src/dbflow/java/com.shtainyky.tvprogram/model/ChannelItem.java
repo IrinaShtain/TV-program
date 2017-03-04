@@ -30,6 +30,9 @@ public class ChannelItem extends BaseProviderModel<ChannelItem> {
     @Column
     public int category_id;
 
+    @Column
+    public String category_title;
+
 
     @Override
     public Uri getDeleteUri() {

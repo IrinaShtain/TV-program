@@ -1,6 +1,7 @@
 package com.shtainyky.tvprogram.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,22 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.model.ChannelItem;
+import com.shtainyky.tvprogram.models.models_ui.ChannelUI;
 import com.shtainyky.tvprogram.utils.Utils;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChannelsRecyclerViewAdapter extends RecyclerView.Adapter<ChannelsRecyclerViewAdapter.ChannelsRecyclerViewHolder> {
-    private List<ChannelItem> mChannels;
+public class ChannelsRecyclerViewAdapter extends CursorRecyclerViewAdapter<ChannelsRecyclerViewAdapter.ChannelsRecyclerViewHolder> {
     private Context mContext;
     private OnChannelClickListener mOnChannelClickListener;
 
-    public ChannelsRecyclerViewAdapter(Context context, List<ChannelItem> channels) {
+    public ChannelsRecyclerViewAdapter(Context context, Cursor cursor) {
+        super(context, cursor);
         mContext = context;
-        mChannels = channels;
+
     }
 
     public void setOnChannelClickListener(OnChannelClickListener listener) {
@@ -40,19 +39,14 @@ public class ChannelsRecyclerViewAdapter extends RecyclerView.Adapter<ChannelsRe
     }
 
     @Override
-    public void onBindViewHolder(ChannelsRecyclerViewHolder holder, int position) {
-        ChannelItem channel = mChannels.get(position);
-        holder.bindChannel(channel, mOnChannelClickListener);
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mChannels != null) return mChannels.size();
-        else return 0;
+    public void onBindViewHolder(ChannelsRecyclerViewHolder viewHolder, Cursor cursor) {
+        cursor.moveToPosition(cursor.getPosition());
+        final ChannelUI channel = ChannelUI.getChannel(cursor);
+        viewHolder.bindChannel(channel, mOnChannelClickListener);
     }
 
     public interface OnChannelClickListener {
-        void onChannelClick(int channelPosition);
+        void onChannelClick(ChannelUI channel);
     }
 
     public static class ChannelsRecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -72,7 +66,7 @@ public class ChannelsRecyclerViewAdapter extends RecyclerView.Adapter<ChannelsRe
             ButterKnife.bind(this, itemView);
         }
 
-        void bindChannel(ChannelItem channel, final OnChannelClickListener listener) {
+        void bindChannel(final ChannelUI channel, final OnChannelClickListener listener) {
             mIsChannelPreferred = channel.getIs_preferred() == 1;
             mChannelNameTextView.setText(channel.getName());
             mChannelCategoryTextView.setText(String.valueOf(channel.getCategory_name()));
@@ -81,7 +75,7 @@ public class ChannelsRecyclerViewAdapter extends RecyclerView.Adapter<ChannelsRe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onChannelClick(getAdapterPosition());
+                    listener.onChannelClick(channel);
                 }
             });
         }
