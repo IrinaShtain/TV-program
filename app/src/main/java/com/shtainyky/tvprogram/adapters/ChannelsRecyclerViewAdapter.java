@@ -2,7 +2,6 @@ package com.shtainyky.tvprogram.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.models.ui.ChannelUI;
 import com.shtainyky.tvprogram.utils.Utils;
+import com.shtainyky.tvprogram.widgets.CustomImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +57,7 @@ public class ChannelsRecyclerViewAdapter extends CursorRecyclerViewAdapter<Chann
         @BindView(R.id.channel_logo)
         ImageView mImageView;
         @BindView(R.id.channel_preferred)
-        ImageView mImageViewPreferred;
+        CustomImageView mImageViewPreferred;
 
         private boolean mIsChannelPreferred;
 
@@ -81,21 +81,8 @@ public class ChannelsRecyclerViewAdapter extends CursorRecyclerViewAdapter<Chann
         }
 
         private void setIconForChannel() {
-            // TODO: 28/02/17 use drawable states to set image
-            if (mIsChannelPreferred) {
-                setImage(R.drawable.ic_preferred_channel);
-            } else {
-                setImage(R.drawable.ic_no);
-            }
+            mImageViewPreferred.setPreferred(mIsChannelPreferred);
         }
 
-        private void setImage(int drawable) {
-            Context context = itemView.getContext();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //>= API 21
-                mImageViewPreferred.setImageDrawable(context.getResources().getDrawable(drawable, context.getTheme()));
-            } else {
-                mImageViewPreferred.setImageDrawable(context.getResources().getDrawable(drawable));
-            }
-        }
     }
 }
