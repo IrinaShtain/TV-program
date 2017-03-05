@@ -29,9 +29,7 @@ public class ListOfCategoriesFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static int LOADER_ID = 0;
-    // TODO: 28/02/17  CategoriesRecyclerViewAdapter.OnCategoryClickListener and ListOfCategoriesFragment.<InteractionListener> not the same
-
-    private CategoriesRecyclerViewAdapter.OnCategoryClickListener mCallback;
+    private OnCategoryClickListener mCallback;
     @BindView(R.id.categories_recycler_view)
     RecyclerView mCategoryRecyclerView;
     @BindView(R.id.progress)
@@ -50,7 +48,7 @@ public class ListOfCategoriesFragment extends Fragment implements
             activity = (Activity) context;
         }
         try {
-            mCallback = (CategoriesRecyclerViewAdapter.OnCategoryClickListener) activity;
+            mCallback = (OnCategoryClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnCategoryClickListener");
         }
@@ -104,5 +102,9 @@ public class ListOfCategoriesFragment extends Fragment implements
     @Override
     public void onLoaderReset(Loader loader) {
         ((CategoriesRecyclerViewAdapter) mCategoryRecyclerView.getAdapter()).swapCursor(null);
+    }
+
+    public interface OnCategoryClickListener {
+        void onCategoryClick(int categoryID);
     }
 }

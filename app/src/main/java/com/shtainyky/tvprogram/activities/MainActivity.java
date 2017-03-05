@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ListOfChannelsFragment.OnPreferredChannelClickListener, ListOfChannelsFragment.OnChannelClickListener, CategoriesRecyclerViewAdapter.OnCategoryClickListener {
+        ListOfChannelsFragment.OnPreferredChannelClickListener, ListOfChannelsFragment.OnChannelClickListener, ListOfCategoriesFragment.OnCategoryClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;

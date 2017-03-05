@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.models.ui.CategoryUI;
 import com.shtainyky.tvprogram.utils.Utils;
 
@@ -19,14 +20,14 @@ import butterknife.ButterKnife;
 
 public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<CategoriesRecyclerViewAdapter.CategoriesHolder> {
     private Context mContext;
-    private OnCategoryClickListener mOnCategoryClickListener;
+    private ListOfCategoriesFragment.OnCategoryClickListener mOnCategoryClickListener;
 
     public CategoriesRecyclerViewAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         mContext = context;
     }
 
-    public void setOnCategoryClickListener(OnCategoryClickListener listener) {
+    public void setOnCategoryClickListener(ListOfCategoriesFragment.OnCategoryClickListener listener) {
         mOnCategoryClickListener = listener;
     }
 
@@ -50,9 +51,6 @@ public class CategoriesRecyclerViewAdapter extends CursorRecyclerViewAdapter<Cat
         });
     }
 
-    public interface OnCategoryClickListener {
-        void onCategoryClick(int categoryID);
-    }
 
 
     static class CategoriesHolder extends RecyclerView.ViewHolder {
