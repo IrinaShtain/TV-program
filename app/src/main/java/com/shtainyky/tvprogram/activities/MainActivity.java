@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.shtainyky.tvprogram.BuildConfig;
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.CategoriesRecyclerViewAdapter;
-import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.db.DatabaseStoreImp;
 import com.shtainyky.tvprogram.fragments.ListOfCategoriesFragment;
 import com.shtainyky.tvprogram.fragments.ListOfChannelsFragment;
 import com.shtainyky.tvprogram.fragments.TVProgramFragment;

@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.model;
+package com.shtainyky.tvprogram.database.tables;
 
 import android.net.Uri;
 

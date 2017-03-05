@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.activities.LoadingDataActivity;
-import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.db.DatabaseStoreImp;
 import com.shtainyky.tvprogram.models.retrofit.Category;
 import com.shtainyky.tvprogram.models.retrofit.Channel;
 import com.shtainyky.tvprogram.models.retrofit.Program;

@@ -9,7 +9,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.db.DatabaseStoreImp;
 import com.shtainyky.tvprogram.models.retrofit.Program;
 import com.shtainyky.tvprogram.services.httpconnection.HttpManager;
 import com.shtainyky.tvprogram.utils.NotificationAboutLoading;

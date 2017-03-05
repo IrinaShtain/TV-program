@@ -24,7 +24,7 @@ import com.shtainyky.tvprogram.R;
 import com.shtainyky.tvprogram.adapters.ChannelsRecyclerViewAdapter;
 import com.shtainyky.tvprogram.adapters.CursorRecyclerViewAdapter;
 import com.shtainyky.tvprogram.database.ContractClass;
-import com.shtainyky.tvprogram.database.DatabaseStoreImp;
+import com.shtainyky.tvprogram.db.DatabaseStoreImp;
 import com.shtainyky.tvprogram.models.ui.ChannelUI;
 
 import butterknife.BindView;

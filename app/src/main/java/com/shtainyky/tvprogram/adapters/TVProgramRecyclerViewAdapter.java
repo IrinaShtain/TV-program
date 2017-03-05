@@ -9,16 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shtainyky.tvprogram.R;
-import com.shtainyky.tvprogram.model.ProgramItem;
 import com.shtainyky.tvprogram.models.ui.ProgramUI;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TVProgramRecyclerViewAdapter extends CursorRecyclerViewAdapter<TVProgramRecyclerViewAdapter.TVProgramRecyclerViewHolder> {
-    private List<ProgramItem> mPrograms;
     private Context mContext;
 
     public TVProgramRecyclerViewAdapter(Context context, Cursor cursor) {

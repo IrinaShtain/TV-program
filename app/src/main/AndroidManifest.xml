@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:name=".database.DBFLowApplication"
+        android:name=".database.NewApplication"
         android:allowTaskReparenting="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

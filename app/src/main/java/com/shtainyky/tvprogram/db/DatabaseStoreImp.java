@@ -1,4 +1,4 @@
-package com.shtainyky.tvprogram.database;
+package com.shtainyky.tvprogram.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.shtainyky.tvprogram.R;
+import com.shtainyky.tvprogram.database.ContractClass;
 import com.shtainyky.tvprogram.db.DatabaseStoreInterface;
 import com.shtainyky.tvprogram.models.retrofit.Category;
 import com.shtainyky.tvprogram.models.retrofit.Channel;

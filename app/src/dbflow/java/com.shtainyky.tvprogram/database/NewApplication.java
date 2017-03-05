@@ -6,7 +6,7 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-public class DBFLowApplication extends Application {
+public class NewApplication extends Application {
 
     @Override
     public void onCreate() {
